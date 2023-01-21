@@ -4,8 +4,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/blocksix
-    username: name
-    password: pass
+    username: postgres
+    password: password
     driver-class-name: org.postgresql.Driver
 
   jpa:
