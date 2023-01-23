@@ -37,9 +37,9 @@ dependencies {
 	//lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-  
+
   // postgresql https://mvnrepository.com/artifact/org.postgresql/postgresql
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.19'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.27'
 	runtimeOnly 'org.postgresql:postgresql'
 }
 
