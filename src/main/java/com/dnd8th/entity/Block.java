@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Block {
     @Id
-    @Column(name = "block_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 

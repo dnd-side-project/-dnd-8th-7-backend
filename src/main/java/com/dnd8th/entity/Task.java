@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Task {
     @Id
-    @Column(name = "task_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
