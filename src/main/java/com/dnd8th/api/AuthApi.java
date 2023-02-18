@@ -3,6 +3,7 @@ package com.dnd8th.api;
 import com.dnd8th.auth.jwt.JwtProviderService;
 import com.dnd8th.dto.GoogleOAuthTokenResponse;
 import com.dnd8th.dto.GoogleOAuthUserInfoResponse;
+import com.dnd8th.dto.UserLoginRequest;
 import com.dnd8th.error.exception.auth.AccessTokenNotFoundException;
 import com.dnd8th.error.exception.auth.ExternalApiFailException;
 import com.dnd8th.service.UserService;
@@ -76,6 +77,13 @@ public class AuthApi {
                 .getGivenName();
 
         //email을 통해 회원 가입 여부를 확인 후, 비회원일시 회원가입
+        if (!userService.existsByEmail(email)) {
+            userService.signUp(UserLoginRequest.builder()
+                    .email(email)
+                    .name(givenName)
+                    .imagePath("")
+                    .build());
+        }
 
         // JWT token 생성
         String jwtToken = jwtProviderService.generateToken(email,
