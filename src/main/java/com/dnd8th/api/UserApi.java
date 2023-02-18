@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserApi {
 
     private final UserService userService;
 
-    @GetMapping("/api/user/{user-id}")
+    @GetMapping("/{user-id}")
     public User findUser(@PathVariable("user-id") Long userId) {
         User userFindById = userService.findById(userId);
 
