@@ -1,6 +1,5 @@
 package com.dnd8th.api;
 
-import com.dnd8th.entity.User;
 import com.dnd8th.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
-public class UserApi {
+public class User {
 
     private final UserService userService;
 
     @GetMapping("/api/user/{user-id}")
-    public User findUser(@PathVariable("user-id") Long userId) {
-        User userFindById = userService.findById(userId);
+    public com.dnd8th.entity.User findUser(@PathVariable("user-id") Long userId) {
+        com.dnd8th.entity.User userFindById = userService.findById(userId);
 
         return userFindById;
     }
