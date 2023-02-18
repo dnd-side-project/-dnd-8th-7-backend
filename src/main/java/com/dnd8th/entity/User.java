@@ -2,6 +2,7 @@ package com.dnd8th.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,11 +12,12 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor
-public class User extends BaseEntity {
+public class User extends BaseEntity{
 
     @Id
+    @JsonIgnore
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -27,7 +29,7 @@ public class User extends BaseEntity {
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "roles", nullable = false)
     private Role role;
 
     @Column(name = "introduction")
