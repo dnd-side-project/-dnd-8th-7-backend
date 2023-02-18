@@ -2,7 +2,6 @@ package com.dnd8th.service;
 
 import com.dnd8th.dto.MainWeekDTO;
 import com.dnd8th.dto.WeekDTO;
-import com.dnd8th.entity.Block;
 import com.dnd8th.repository.BlockRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +30,8 @@ public class BlockService {
         targetDate.setDate(targetDate.getDate() - 4);
         for (int i = 0; i < 7; i++){
             targetDate.setDate(targetDate.getDate() +  1);
-            List<Block> blocks = blockRepository.findByIdAndDate(Long.parseLong(id), targetDate);
-            WeekDTO week = convertBlockToWeekDTO(blocks, targetDate);
+            List<String> color = blockRepository.findByIdAndDate(Long.parseLong(id), targetDate);
+            WeekDTO week = convertToWeekDTO(color, targetDate);
             weekDTO.add(week);
         }
         mainWeekDTO.setUser("user");
@@ -40,21 +39,17 @@ public class BlockService {
         return mainWeekDTO;
     }
 
-    private WeekDTO convertBlockToWeekDTO(List<Block> blocks, Date date){
+    private WeekDTO convertToWeekDTO(List<String> colors, Date date){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dateFormat = simpleDateFormat.format(date);
-        if (blocks.isEmpty()){
+        if (colors.isEmpty()){
             WeekDTO week = new WeekDTO();
             week.setDate(dateFormat);
             return week;
         }
         WeekDTO week = new WeekDTO();
-        List<String> color = new ArrayList<>();
-        for (Block block:blocks){
-            color.add(block.getBlockColor());
-        }
         week.setDate(dateFormat);
-        week.setColor(color);
+        week.setColor(colors);
         return week;
     }
 
