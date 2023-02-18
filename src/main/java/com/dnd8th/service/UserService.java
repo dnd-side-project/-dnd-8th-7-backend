@@ -23,7 +23,7 @@ public class UserService {
     private final JwtProviderService jwtProviderService;
 
     public User findById(Long id) {
-        User findUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User findUser = userRepository.findById(id).orElseThrow();
 
         return findUser;
     }
