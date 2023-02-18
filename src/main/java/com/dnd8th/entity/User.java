@@ -1,24 +1,22 @@
 package com.dnd8th.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 @Getter
-@Table(name = "member")
+@Table(name = "user")
 @NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -40,4 +38,7 @@ public class User extends BaseEntity {
 
     @Column(name = "img_path")
     private String imagePath;
+
+    @OneToMany(mappedBy = "user")
+    private List<Block> blocks = new ArrayList<>();
 }
