@@ -1,4 +1,4 @@
-package com.dnd8th.error.exception.user;
+package com.dnd8th.error.exception.auth;
 
 import com.dnd8th.error.exception.AccessDeniedException;
 import com.dnd8th.error.exception.ErrorCode;
