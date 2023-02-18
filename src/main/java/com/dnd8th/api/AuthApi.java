@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,7 +59,7 @@ public class AuthApi {
                 .build();
     }
 
-    @GetMapping("/login/callback/google")
+    @PostMapping("/login/callback/google")
     public ResponseEntity<String> googleCallback(@RequestParam String code) {
         // code로 access_token 가져오기
         ResponseEntity<GoogleOAuthTokenResponse> responseEntity = getTokenResponse(code);
