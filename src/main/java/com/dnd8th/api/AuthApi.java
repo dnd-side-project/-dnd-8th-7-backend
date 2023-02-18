@@ -36,7 +36,7 @@ public class AuthApi {
     private final JwtProviderService jwtProviderService;
     private final UserService userService;
 
-    @Value("${app.auth.redirectUri}")
+    @Value("${app.auth.redirect-uri}")
     private String redirectUri;
 
     @Value("${app.auth.client-id}")
