@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -12,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class Block {
     @Id
+    @Column(name = "block_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -35,4 +38,11 @@ public class Block {
 
     @Column(name = "emotion")
     private String emotion;
+
+    @OneToMany(mappedBy = "block")
+    private List<Task> tasks = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

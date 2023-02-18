@@ -11,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Task {
     @Id
+    @Column(name = "task_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -22,4 +23,8 @@ public class Task {
 
     @Column(name = "status")
     private Boolean status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "block_id")
+    private Block block;
 }
