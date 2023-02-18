@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +27,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Column(name = "nickname", nullable = false)
-    private String nickname;
+    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -40,4 +41,12 @@ public class User extends BaseEntity {
 
     @Column(name = "img_path")
     private String imagePath;
+
+    @Builder
+    public User(String email, String name, Role role, String imagePath) {
+        this.email = email;
+        this.name = name;
+        this.role = role;
+        this.imagePath = imagePath;
+    }
 }
