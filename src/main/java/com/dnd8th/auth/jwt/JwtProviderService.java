@@ -33,7 +33,7 @@ public class JwtProviderService {
     private final HttpSession httpSession;
     private final long accessTokenPeriod = 1000L * 60L * 60L; // 60분
     private final long refreshPeriod = 1000L * 60L * 60L * 24L * 14L;      // 14일
-    @Value("${app.auth.tokenSecret}")
+    @Value("${app.auth.token-secret-key}")
     private String secretKey;
     private Key key;
 
