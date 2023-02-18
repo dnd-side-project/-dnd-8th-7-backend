@@ -3,8 +3,7 @@ CREATE TABLE IF NOT EXISTS "user" (
     email VARCHAR(45),
     nickname VARCHAR(45),
     introduction VARCHAR(45),
-    user_lock BOOLEAN,
-    password VARCHAR(100)
+    user_lock BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS block (
