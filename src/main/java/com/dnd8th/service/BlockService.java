@@ -23,7 +23,7 @@ public class BlockService {
 
     private final BlockFindDao blockFindDao;
 
-    public MainWeekDTO getBlockWeek(String id, String date){
+    public MainWeekDTO getBlockWeek(String email, String date){
         MainWeekDTO mainWeekDTO = new MainWeekDTO();
         List<WeekDTO> weekDTO = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -36,7 +36,7 @@ public class BlockService {
         targetDate.setDate(targetDate.getDate() - 4);
         for (int i = 0; i < 7; i++){
             targetDate.setDate(targetDate.getDate() +  1);
-            List<String> color = blockFindDao.findByIdAndDate(Long.parseLong(id), targetDate);
+            List<String> color = blockFindDao.findByEmailAndDate(email, targetDate);
             WeekDTO week = convertToWeekDTO(color, targetDate);
             weekDTO.add(week);
         }

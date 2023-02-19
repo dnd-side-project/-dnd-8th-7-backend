@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +25,11 @@ public class BlockApi {
 
     @GetMapping("/{date}")
     public ResponseEntity
-            <MainWeekDTO> findUser(@PathVariable("date") String date){
+            <MainWeekDTO> findUser(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("date") String date){
         MainWeekDTO mainWeek;
+        String email = userDetails.getUsername();
         try {
-            mainWeek = blockService.getBlockWeek("1", date);
+            mainWeek = blockService.getBlockWeek(email, date);
         } catch (DateFormatInvalidException e) {
             throw new DateFormatInvalidException();
         }
