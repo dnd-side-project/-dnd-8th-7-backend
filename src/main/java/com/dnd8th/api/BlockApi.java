@@ -28,8 +28,8 @@ public class BlockApi {
         MainWeekDTO mainWeek;
         try {
             mainWeek = blockService.getBlockWeek("1", date);
-        } catch (RuntimeException e) {
-            throw new DateFormatInvalidException(ErrorCode.INVALID_TYPE_VALUE);
+        } catch (DateFormatInvalidException e) {
+            throw new DateFormatInvalidException();
         }
         return ResponseEntity.status(HttpStatus.OK).body(mainWeek);
     }

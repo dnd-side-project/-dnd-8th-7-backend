@@ -5,7 +5,7 @@ import com.dnd8th.error.exception.FormattingException;
 
 public class DateFormatInvalidException extends FormattingException {
 
-    public DateFormatInvalidException(ErrorCode errorCode){
-        super(errorCode);
+    public DateFormatInvalidException(){
+        super(ErrorCode.INVALID_TYPE_VALUE);
     }
 }
