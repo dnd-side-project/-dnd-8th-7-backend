@@ -1,5 +1,10 @@
 package com.dnd8th.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -23,6 +26,7 @@ import lombok.NoArgsConstructor;
 public class Block {
 
     @Id
+    @JsonIgnore
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -39,7 +43,8 @@ public class Block {
     @Column(name = "block_color")
     private String blockColor;
 
-    @Column(name = "date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "datetime")
     private Date date;
 
     @Column(name = "emotion")

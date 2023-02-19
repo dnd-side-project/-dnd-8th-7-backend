@@ -1,5 +1,6 @@
 package com.dnd8th.entity;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 @Entity
 @Getter
 @Table(name = "users")
 @NoArgsConstructor
-public class User extends BaseEntity {
+public class User extends BaseEntity{
 
     @Id
     @Column(name = "id")
@@ -35,7 +34,7 @@ public class User extends BaseEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "roles", nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user")

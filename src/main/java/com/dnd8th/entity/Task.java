@@ -23,8 +23,8 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "task")
-    private String task;
+    @Column(name = "contents")
+    private String contents;
 
     @Column(name = "status")
     private Boolean status;
