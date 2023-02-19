@@ -14,13 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
-
 @Slf4j
 @RestController
 @RequestMapping("/api/block")
 @RequiredArgsConstructor
-public class Block {
+public class BlockApi {
 
     private final BlockService blockService;
 
