@@ -21,12 +21,7 @@ import lombok.Builder;
 @Table(name = "users")
 @NoArgsConstructor
 public class User extends BaseEntity{
-
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
