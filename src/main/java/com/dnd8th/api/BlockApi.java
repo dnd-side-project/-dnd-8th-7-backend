@@ -2,7 +2,6 @@ package com.dnd8th.api;
 
 
 import com.dnd8th.dto.MainWeekDTO;
-import com.dnd8th.error.exception.ErrorCode;
 import com.dnd8th.error.exception.block.DateFormatInvalidException;
 import com.dnd8th.service.BlockService;
 import lombok.RequiredArgsConstructor;
