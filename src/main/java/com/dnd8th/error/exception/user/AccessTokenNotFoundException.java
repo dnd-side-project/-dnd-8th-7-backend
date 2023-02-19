@@ -5,7 +5,7 @@ import com.dnd8th.error.exception.ErrorCode;
 
 public class AccessTokenNotFoundException extends AccessDeniedException {
 
-    public AccessTokenNotFoundException(ErrorCode errorCode) {
+    public AccessTokenNotFoundException(ErrorCode errorCode){
         super(errorCode);
     }
 }

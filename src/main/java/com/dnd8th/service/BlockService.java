@@ -2,6 +2,8 @@ package com.dnd8th.service;
 
 import com.dnd8th.dto.MainWeekDTO;
 import com.dnd8th.dto.WeekDTO;
+import com.dnd8th.error.exception.ErrorCode;
+import com.dnd8th.error.exception.block.DateFormatInvalidException;
 import com.dnd8th.repository.BlockRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +24,16 @@ public class BlockService {
 
     private final BlockRepositoryImpl blockRepository;
 
-    public MainWeekDTO getBlockWeek(String id, String date) throws ParseException {
+    public MainWeekDTO getBlockWeek(String id, String date){
         MainWeekDTO mainWeekDTO = new MainWeekDTO();
         List<WeekDTO> weekDTO = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date targetDate = format.parse(date);
+        Date targetDate = null;
+        try {
+            targetDate = format.parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         targetDate.setDate(targetDate.getDate() - 4);
         for (int i = 0; i < 7; i++){
             targetDate.setDate(targetDate.getDate() +  1);
