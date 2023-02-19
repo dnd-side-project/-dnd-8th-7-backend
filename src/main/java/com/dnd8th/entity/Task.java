@@ -22,7 +22,6 @@ public class Task extends BaseEntity{
     @Column(name = "status")
     private Boolean status;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "block_id")
     private Block block;

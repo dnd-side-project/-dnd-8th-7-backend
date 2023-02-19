@@ -43,7 +43,6 @@ public class Block extends BaseEntity{
     @OneToMany(mappedBy = "block")
     private List<Task> tasks = new ArrayList<>();
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

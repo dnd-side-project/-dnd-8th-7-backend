@@ -14,13 +14,13 @@ import java.text.ParseException;
 
 @Slf4j
 @RestController
-@RequestMapping
+@RequestMapping("/api/block")
 @RequiredArgsConstructor
 public class Block {
 
     private final BlockService blockService;
 
-    @GetMapping("/api/main/block/{date}")
+    @GetMapping("/{date}")
     public MainWeekDTO findUser(@PathVariable("date") String date) throws ParseException {
         return blockService.getBlockWeek("1",date);
     }
