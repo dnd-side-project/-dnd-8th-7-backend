@@ -1,9 +1,11 @@
 package com.dnd8th.config;
 
 import com.dnd8th.auth.RestAuthenticationEntryPoint;
-import com.dnd8th.entity.Role;
+import com.dnd8th.auth.jwt.JwtAuthFilter;
+import com.dnd8th.auth.jwt.JwtProviderService;
 import java.util.Arrays;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
@@ -19,11 +22,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtProviderService jwtProviderService;
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public WebSecurityCustomizer ignoreConfigure() {
-        return (web) -> web.ignoring().mvcMatchers();
+        //filter 타지 않도록 함
+        return web -> web.ignoring()
+                .mvcMatchers("/api/auth/token/**", "/api/login/**");
     }
 
     @Bean
@@ -50,15 +59,16 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .authenticationEntryPoint(
+                        new RestAuthenticationEntryPoint()) // 인증, 인가가 되지 않은 요청 발생시
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**") // 권한 불필요한 곳 허용, 현재는 전체 허용으로 임시 설정
-                .permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/api/login/**", "/api/auth/**").permitAll() // Security 허용 url
-                .antMatchers("/api/**").hasRole(Role.USER.name())   // 모든 api 요청에 대해 user 권한
-                .anyRequest().authenticated(); // 나머지 요청은 권한을 필요로 함
+                .antMatchers("/api/**").hasRole("USER");   // 모든 api 요청에 대해 user 권한
+
+        http
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
