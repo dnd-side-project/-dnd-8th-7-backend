@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(45),
+    email VARCHAR(45) PRIMARY KEY,
     nickname VARCHAR(45),
     introduction VARCHAR(45),
     user_lock BOOLEAN,
@@ -16,7 +15,7 @@ CREATE TABLE IF NOT EXISTS block (
     block_color VARCHAR(10),
     datetime DATE,
     emotion VARCHAR(45),
-    user_id INTEGER REFERENCES users
+    user_email VARCHAR(45) REFERENCES users
 );
 
 CREATE TABLE IF NOT EXISTS task (
