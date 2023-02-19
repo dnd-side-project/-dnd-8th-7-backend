@@ -32,26 +32,16 @@ public class BlockApi {
     @GetMapping("/{date}")
     public ResponseEntity
             <MainWeekDTO> getMainWeek(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("date") String date){
-        MainWeekDTO mainWeek;
         String email = userDetails.getUsername();
-        try {
-            mainWeek = blockService.getBlockWeek(email, date);
-        } catch (DateFormatInvalidException e) {
-            throw new DateFormatInvalidException();
-        }
+        MainWeekDTO mainWeek = blockService.getBlockWeek(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainWeek);
     }
 
     @GetMapping("/detail/{date}")
     public ResponseEntity
             <MainDTO> getMainDetail(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("date") String date){
-        MainDTO mainDto;
         String email = userDetails.getUsername();
-        try {
-            mainDto = blockService.getBlockDetail(email, date);
-        } catch (DateFormatInvalidException e) {
-            throw new DateFormatInvalidException();
-        }
+        MainDTO mainDto = blockService.getBlockDetail(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainDto);
     }
 }

@@ -50,7 +50,6 @@ public class BlockService {
     }
 
     public MainDTO getBlockDetail(String email, String date){
-        MainDTO mainDto = new MainDTO();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date targetDate = null;
         try {
@@ -63,29 +62,17 @@ public class BlockService {
         SumBlock sumBlock = convertToSumBlock(blocks);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M월 d일 E요일");
         String dateFormat = simpleDateFormat.format(targetDate);
-        mainDto.setDate(dateFormat);
-        mainDto.setTotalBlock(sumBlock.getTotalBlock());
-        mainDto.setTotalTask(sumBlock.getTotalTask());
-        mainDto.setBlocks(sumBlock.getBlocks());
-        return mainDto;
+        return new MainDTO(dateFormat,sumBlock.getTotalBlock(),sumBlock.getTotalTask(),sumBlock.getBlocks());
     }
 
     private WeekDTO convertToWeekDTO(List<String> colors, Date date){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dateFormat = simpleDateFormat.format(date);
-        if (colors.isEmpty()){
-            WeekDTO week = new WeekDTO();
-            week.setDate(dateFormat);
-            return week;
-        }
-        WeekDTO week = new WeekDTO();
-        week.setDate(dateFormat);
-        week.setColor(colors);
-        return week;
+
+        return new WeekDTO(dateFormat,colors);
     }
 
     private SumBlock convertToSumBlock(List<Block> blocks){
-        SumBlock sumBlock = new SumBlock();
         Integer totalTask = 0;
         List<BlockDTO> blocksDto = new ArrayList<>();
         for (Block block:blocks){
@@ -95,14 +82,10 @@ public class BlockService {
             blocksDto.add(blockdto);
             totalTask = totalTask + task.getSumOfTask();
         }
-        sumBlock.setTotalTask(totalTask);
-        sumBlock.setTotalBlock(blocksDto.size());
-        sumBlock.setBlocks(blocksDto);
-        return sumBlock;
+        return new SumBlock(blocksDto.size(), totalTask, blocksDto);
     }
 
     private SumTask convertToSumTask(long blockId){
-        SumTask sumTask = new SumTask();
         List<TaskDTO> tasksDto = new ArrayList<>();
         List<Task> tasks = blockFindDao.getDailyTask(blockId);
         Integer done = 0;
@@ -113,10 +96,7 @@ public class BlockService {
                 done = done + 1;
             }
         }
-        sumTask.setSumOfDoneTask(done);
-        sumTask.setSumOfTask(tasks.size());
-        sumTask.setTasks(tasksDto);
-        return sumTask;
+        return new SumTask(tasks.size(), done, tasksDto);
     }
 
 }

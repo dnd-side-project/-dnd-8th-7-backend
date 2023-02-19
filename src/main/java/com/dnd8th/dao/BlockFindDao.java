@@ -34,16 +34,14 @@ public class BlockFindDao{
 
     public List<Block> getDailyBlock(String email, Date date) {
         return queryFactory
-                .select(block)
-                .from(block)
+                .selectFrom(block)
                 .where(block.user.email.eq(email), block.date.eq(date))
                 .fetch();
     }
 
     public List<Task> getDailyTask(long bockId) {
         return queryFactory
-                .select(task)
-                .from(task)
+                .selectFrom(task)
                 .where(task.block.id.eq(bockId))
                 .fetch();
     }
