@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class UserLoginRequest {
 
     @NotBlank
-    @Email(message = "이메일을 양식을 지켜주세요.")
+    @Email(message = "Invalid Email Format")
     private String email;
 
     @NotBlank

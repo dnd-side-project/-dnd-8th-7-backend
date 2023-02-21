@@ -2,8 +2,11 @@ package com.dnd8th.dto.block;
 
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.User;
+import com.dnd8th.util.validator.ColorHex;
+import com.dnd8th.util.validator.YYYYMMDD;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,17 +15,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BlockCreateRequest {
 
+    @YYYYMMDD
     @NotBlank
     private String date;
 
     @NotBlank
     private String blockTitle;
 
+    //    @Emoji
     @NotBlank
     private String emoticon;
+
+    @ColorHex
     @NotBlank
     private String blockColor;
-    
+
+    @NotNull
     private Boolean isSecret;
 
     @Builder
