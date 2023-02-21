@@ -26,6 +26,11 @@ public enum ErrorCode {
             HttpStatus.UNAUTHORIZED.value()),
     REFRESH_TOKEN_EXPIRED("AT06", "Refreshed Token is Expired.", HttpStatus.UNAUTHORIZED.value()),
 
+    // Block
+
+    BLOCK_NOT_FOUND("B01", "Block is not Found", HttpStatus.BAD_REQUEST.value()),
+    BLOCK_ACCESS_DENIED("B02", "Block Access is Denied", HttpStatus.UNAUTHORIZED.value()),
+
     // external API
     EXTERNAL_API_FAILED("E01", "External API Request is failed.",
             HttpStatus.INTERNAL_SERVER_ERROR.value());;
