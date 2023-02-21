@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,5 +52,13 @@ public class BlockApi {
         String email = userDetails.getUsername();
         MainDTO mainDto = blockService.getBlockDetail(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainDto);
+    }
+
+    @DeleteMapping("/{blockId}")
+    public ResponseEntity<String> deleteBlock(@PathVariable Long blockId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        blockService.deleteBlock(blockId, email);
+        return ResponseEntity.ok("");
     }
 }

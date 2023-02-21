@@ -13,6 +13,8 @@ import com.dnd8th.dto.block.BlockCreateRequest;
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Task;
 import com.dnd8th.entity.User;
+import com.dnd8th.error.exception.block.BlockAccessDeniedException;
+import com.dnd8th.error.exception.block.BlockNotFoundException;
 import com.dnd8th.error.exception.user.UserNotFoundException;
 import com.dnd8th.repository.BlockRepository;
 import com.dnd8th.repository.UserRepository;
@@ -43,6 +45,17 @@ public class BlockService {
         Date date = dateParser.parseDate(blockCreateRequest.getDate());
 
         blockRepository.save(blockCreateRequest.toEntity(user, date));
+    }
+
+    public void deleteBlock(Long blockId, String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+        Block block = blockRepository.findById(blockId).orElseThrow(BlockNotFoundException::new);
+
+        User blockOwner = block.getUser();
+        if (user != blockOwner) {
+            throw new BlockAccessDeniedException();
+        }
+        blockRepository.delete(block);
     }
 
     public MainWeekDTO getBlockWeek(String email, String date) {
