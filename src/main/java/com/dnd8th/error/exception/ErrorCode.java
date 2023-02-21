@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     // Common
     INVALID_INPUT_VALUE("C01", "Invalid Input Value.", HttpStatus.BAD_REQUEST.value()),
-    METHOD_NOT_ALLOWED("C02", "Invalid Input Value.", HttpStatus.METHOD_NOT_ALLOWED.value()),
+    METHOD_NOT_ALLOWED("C02", "Invalid Method Type.", HttpStatus.METHOD_NOT_ALLOWED.value()),
     ENTITY_NOT_FOUND("C03", "Entity Not Found.", HttpStatus.BAD_REQUEST.value()),
     INTERNAL_SERVER_ERROR("C04", "Server Error.", HttpStatus.INTERNAL_SERVER_ERROR.value()),
     INVALID_TYPE_VALUE("C05", " Invalid Type Value.", HttpStatus.BAD_REQUEST.value()),
