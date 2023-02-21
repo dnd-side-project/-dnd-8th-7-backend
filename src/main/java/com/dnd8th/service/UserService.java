@@ -21,12 +21,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final JwtProviderService jwtProviderService;
-
-    public User findById(Long id) {
-        User findUser = userRepository.findById(id).orElseThrow();
-
-        return findUser;
-    }
+    
 
     public User getUserByAccessToken(HttpServletRequest request) {
         String email = getEmailFromAuthentication(request);
