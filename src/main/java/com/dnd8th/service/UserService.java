@@ -21,7 +21,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final JwtProviderService jwtProviderService;
-    
+
 
     public User getUserByAccessToken(HttpServletRequest request) {
         String email = getEmailFromAuthentication(request);
@@ -62,5 +62,11 @@ public class UserService {
         return UserSignUpResponse.builder()
                 .user(savedUser)
                 .build();
+    }
+
+    public void deleteUser(final String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+        userRepository.delete(user);
     }
 }
