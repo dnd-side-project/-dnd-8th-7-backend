@@ -1,4 +1,4 @@
-package com.dnd8th.dto;
+package com.dnd8th.dto.auth;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

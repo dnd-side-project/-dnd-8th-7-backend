@@ -1,4 +1,4 @@
-package com.dnd8th.dto;
+package com.dnd8th.dto.auth;
 
 import com.dnd8th.entity.Role;
 import com.dnd8th.entity.User;

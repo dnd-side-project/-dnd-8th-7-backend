@@ -1,8 +1,8 @@
 package com.dnd8th.service;
 
 import com.dnd8th.auth.jwt.JwtProviderService;
-import com.dnd8th.dto.UserLoginRequest;
-import com.dnd8th.dto.UserSignUpResponse;
+import com.dnd8th.dto.auth.UserLoginRequest;
+import com.dnd8th.dto.auth.UserSignUpResponse;
 import com.dnd8th.entity.User;
 import com.dnd8th.error.exception.auth.EmailDuplicateException;
 import com.dnd8th.error.exception.user.UserNotFoundException;

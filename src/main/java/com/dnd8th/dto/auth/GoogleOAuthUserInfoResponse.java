@@ -1,4 +1,4 @@
-package com.dnd8th.dto;
+package com.dnd8th.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

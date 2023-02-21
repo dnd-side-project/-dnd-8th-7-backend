@@ -1,9 +1,9 @@
 package com.dnd8th.api;
 
 import com.dnd8th.auth.jwt.JwtProviderService;
-import com.dnd8th.dto.GoogleOAuthTokenResponse;
-import com.dnd8th.dto.GoogleOAuthUserInfoResponse;
-import com.dnd8th.dto.UserLoginRequest;
+import com.dnd8th.dto.auth.GoogleOAuthTokenResponse;
+import com.dnd8th.dto.auth.GoogleOAuthUserInfoResponse;
+import com.dnd8th.dto.auth.UserLoginRequest;
 import com.dnd8th.error.exception.auth.AccessTokenNotFoundException;
 import com.dnd8th.error.exception.auth.ExternalApiFailException;
 import com.dnd8th.service.UserService;

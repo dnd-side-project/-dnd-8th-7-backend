@@ -1,4 +1,4 @@
-package com.dnd8th.dto;
+package com.dnd8th.dto.auth;
 
 import com.dnd8th.entity.User;
 import lombok.AccessLevel;
