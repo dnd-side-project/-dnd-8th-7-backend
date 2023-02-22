@@ -1,10 +1,7 @@
 package com.dnd8th.dao;
 
-import com.dnd8th.dto.BlockDTO;
-import com.dnd8th.dto.TaskDTO;
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Task;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

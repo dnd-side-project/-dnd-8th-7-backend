@@ -1,15 +1,15 @@
-package com.dnd8th.dto;
+package com.dnd8th.dto.task;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class TaskDTO {
+public class TaskPartDto {
     private String task;
     private Boolean isDone;
 
     @Builder
-    public TaskDTO(String task, Boolean isDone) {
+    public TaskPartDto(String task, Boolean isDone) {
         this.task = task;
         this.isDone = isDone;
     }

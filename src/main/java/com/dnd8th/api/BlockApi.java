@@ -1,8 +1,8 @@
 package com.dnd8th.api;
 
 
-import com.dnd8th.dto.MainDTO;
-import com.dnd8th.dto.MainWeekDTO;
+import com.dnd8th.dto.block.BlockMainGetResponse;
+import com.dnd8th.dto.block.BlockMainWeekGetResponse;
 import com.dnd8th.dto.block.BlockCreateRequest;
 import com.dnd8th.service.BlockService;
 import javax.validation.Valid;
@@ -38,19 +38,19 @@ public class BlockApi {
 
     @GetMapping("/{date}")
     public ResponseEntity
-            <MainWeekDTO> getMainWeek(@AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable("date") String date) {
+            <BlockMainWeekGetResponse> getMainWeek(@AuthenticationPrincipal UserDetails userDetails,
+                                                   @PathVariable("date") String date) {
         String email = userDetails.getUsername();
-        MainWeekDTO mainWeek = blockService.getBlockWeek(email, date);
+        BlockMainWeekGetResponse mainWeek = blockService.getBlockWeek(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainWeek);
     }
 
     @GetMapping("/detail/{date}")
     public ResponseEntity
-            <MainDTO> getMainDetail(@AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable("date") String date) {
+            <BlockMainGetResponse> getMainDetail(@AuthenticationPrincipal UserDetails userDetails,
+                                                 @PathVariable("date") String date) {
         String email = userDetails.getUsername();
-        MainDTO mainDto = blockService.getBlockDetail(email, date);
+        BlockMainGetResponse mainDto = blockService.getBlockDetail(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainDto);
     }
 
