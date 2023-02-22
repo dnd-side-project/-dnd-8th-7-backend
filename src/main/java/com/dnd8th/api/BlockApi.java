@@ -49,8 +49,8 @@ public class BlockApi {
     public ResponseEntity
             <BlockMainGetResponse> getMainDetail(@AuthenticationPrincipal UserDetails userDetails,
                                                  @PathVariable("date") String date) {
-        String email = userDetails.getUsername();
-        BlockMainGetResponse mainDto = blockService.getBlockDetail(email, date);
+        //String email = userDetails.getUsername();
+        BlockMainGetResponse mainDto = blockService.getBlockDetail("harin14@naver.com", date);
         return ResponseEntity.status(HttpStatus.OK).body(mainDto);
     }
 

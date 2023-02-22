@@ -1,6 +1,7 @@
 package com.dnd8th.service;
 
 import com.dnd8th.dao.BlockFindDao;
+import com.dnd8th.dao.ReviewFindDao;
 import com.dnd8th.dao.UserFindDao;
 import com.dnd8th.dto.block.BlockPartDto;
 import com.dnd8th.dto.block.BlockMainGetResponse;
@@ -36,6 +37,7 @@ public class BlockService {
 
     private final BlockFindDao blockFindDao;
     private final UserFindDao userFindDao;
+    private final ReviewFindDao reviewFindDao;
     private final UserRepository userRepository;
     private final BlockRepository blockRepository;
     private final DateParser dateParser;
@@ -80,10 +82,11 @@ public class BlockService {
 
         List<Block> blocks = blockFindDao.getDailyBlock(email, targetDate);
         BlockSumDto blockSumDto = convertToSumBlock(blocks);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M월 d일 E요일");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dateFormat = simpleDateFormat.format(targetDate);
+        Long reviewId = reviewFindDao.findByEmailAndDate(email,targetDate);
         return new BlockMainGetResponse(dateFormat, blockSumDto.getTotalBlock(), blockSumDto.getTotalTask(),
-                blockSumDto.getBlocks());
+                 reviewId, blockSumDto.getBlocks());
     }
 
     private BlockWeekPartDto convertToWeekDTO(List<String> colors, Date date) {
@@ -99,7 +102,7 @@ public class BlockService {
         for (Block block : blocks) {
             TaskSumDto task = convertToSumTask(block.getId());
             BlockPartDto blockdto = new BlockPartDto(
-                    block.getBlockColor(), block.getEmotion(), block.getTitle(),
+                    block.getId(), block.getBlockColor(), block.getEmotion(),
                     task.getSumOfTask(), task.getSumOfDoneTask(), task.getTasks());
             blocksDto.add(blockdto);
             totalTask = totalTask + task.getSumOfTask();
@@ -112,7 +115,7 @@ public class BlockService {
         List<Task> tasks = blockFindDao.getDailyTask(blockId);
         Integer done = 0;
         for (Task task : tasks) {
-            TaskPartDto taskPartDto = new TaskPartDto(task.getContents(), task.getStatus());
+            TaskPartDto taskPartDto = new TaskPartDto(task.getId(), task.getContents(), task.getStatus());
             tasksDto.add(taskPartDto);
             if (task.getStatus()) {
                 done = done + 1;

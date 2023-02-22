@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class BlockPartDto {
+    private Long blockId;
     private String color;
     private String icon;
     private String title;
@@ -18,7 +19,8 @@ public class BlockPartDto {
 
     @Builder
     public BlockPartDto(
-            String color, String icon, String title, Integer sumOfTask, Integer sumOfDoneTask, List<TaskPartDto> tasks) {
+            Long blockId, String color, String icon, Integer sumOfTask, Integer sumOfDoneTask, List<TaskPartDto> tasks) {
+        this.blockId = blockId;
         this.color = color;
         this.icon = icon;
         this.title = title;
