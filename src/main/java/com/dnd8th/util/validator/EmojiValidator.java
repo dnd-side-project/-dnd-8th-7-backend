@@ -7,6 +7,6 @@ public class EmojiValidator implements ConstraintValidator<Emoji, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value.matches("");
+        return value.matches("[^\\p{L}]+");
     }
 }
