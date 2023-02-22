@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     // Common
     INVALID_INPUT_VALUE("C01", "Invalid Input Value.", HttpStatus.BAD_REQUEST.value()),
-    METHOD_NOT_ALLOWED("C02", "Invalid Input Value.", HttpStatus.METHOD_NOT_ALLOWED.value()),
+    METHOD_NOT_ALLOWED("C02", "Invalid Method Type.", HttpStatus.METHOD_NOT_ALLOWED.value()),
     ENTITY_NOT_FOUND("C03", "Entity Not Found.", HttpStatus.BAD_REQUEST.value()),
     INTERNAL_SERVER_ERROR("C04", "Server Error.", HttpStatus.INTERNAL_SERVER_ERROR.value()),
     INVALID_TYPE_VALUE("C05", " Invalid Type Value.", HttpStatus.BAD_REQUEST.value()),
@@ -25,6 +25,11 @@ public enum ErrorCode {
     REFRESH_TOKEN_NOT_FOUND("AT05", "Refreshed Token is not Found.",
             HttpStatus.UNAUTHORIZED.value()),
     REFRESH_TOKEN_EXPIRED("AT06", "Refreshed Token is Expired.", HttpStatus.UNAUTHORIZED.value()),
+
+    // Block
+
+    BLOCK_NOT_FOUND("B01", "Block is not Found", HttpStatus.BAD_REQUEST.value()),
+    BLOCK_ACCESS_DENIED("B02", "Block Access is Denied", HttpStatus.UNAUTHORIZED.value()),
 
     // external API
     EXTERNAL_API_FAILED("E01", "External API Request is failed.",

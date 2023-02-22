@@ -1,8 +1,8 @@
 package com.dnd8th.service;
 
 import com.dnd8th.auth.jwt.JwtProviderService;
-import com.dnd8th.dto.UserLoginRequest;
-import com.dnd8th.dto.UserSignUpResponse;
+import com.dnd8th.dto.auth.UserLoginRequest;
+import com.dnd8th.dto.auth.UserSignUpResponse;
 import com.dnd8th.entity.User;
 import com.dnd8th.error.exception.auth.EmailDuplicateException;
 import com.dnd8th.error.exception.user.UserNotFoundException;
@@ -22,11 +22,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtProviderService jwtProviderService;
 
-    public User findById(Long id) {
-        User findUser = userRepository.findById(id).orElseThrow();
-
-        return findUser;
-    }
 
     public User getUserByAccessToken(HttpServletRequest request) {
         String email = getEmailFromAuthentication(request);
@@ -67,5 +62,11 @@ public class UserService {
         return UserSignUpResponse.builder()
                 .user(savedUser)
                 .build();
+    }
+
+    public void deleteUser(final String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+        userRepository.delete(user);
     }
 }

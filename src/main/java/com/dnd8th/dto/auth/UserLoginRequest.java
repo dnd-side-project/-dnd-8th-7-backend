@@ -1,4 +1,4 @@
-package com.dnd8th.dto;
+package com.dnd8th.dto.auth;
 
 import com.dnd8th.entity.Role;
 import com.dnd8th.entity.User;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class UserLoginRequest {
 
     @NotBlank
-    @Email(message = "이메일을 양식을 지켜주세요.")
+    @Email(message = "Invalid Email Format")
     private String email;
 
     @NotBlank
