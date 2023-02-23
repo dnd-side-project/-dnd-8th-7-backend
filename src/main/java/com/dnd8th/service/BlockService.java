@@ -82,18 +82,13 @@ public class BlockService {
 
         List<Block> blocks = blockFindDao.getDailyBlock(email, targetDate);
         BlockSumDto blockSumDto = convertToSumBlock(blocks);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dateFormat = simpleDateFormat.format(targetDate);
         Long reviewId = reviewFindDao.findByEmailAndDate(email,targetDate);
-        return new BlockMainGetResponse(dateFormat, blockSumDto.getTotalBlock(), blockSumDto.getTotalTask(),
+        return new BlockMainGetResponse(dateParser.toString(targetDate), blockSumDto.getTotalBlock(), blockSumDto.getTotalTask(),
                  reviewId, blockSumDto.getBlocks());
     }
 
     private BlockWeekPartDto convertToWeekDTO(List<String> colors, Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dateFormat = simpleDateFormat.format(date);
-
-        return new BlockWeekPartDto(dateFormat, colors);
+        return new BlockWeekPartDto(dateParser.toString(date), colors);
     }
 
     private BlockSumDto convertToSumBlock(List<Block> blocks) {

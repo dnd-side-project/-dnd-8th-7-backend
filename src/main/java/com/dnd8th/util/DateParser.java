@@ -17,4 +17,9 @@ public class DateParser {
             throw new DateFormatInvalidException();
         }
     }
+
+    public String toString(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(date);
+    }
 }
