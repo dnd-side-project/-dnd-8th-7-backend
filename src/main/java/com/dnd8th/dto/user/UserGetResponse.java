@@ -15,7 +15,7 @@ public class UserGetResponse {
     private String user;
     @NotBlank
     private String introduction;
-    @NotBlank
+
     private Boolean lock;
 
     @Builder

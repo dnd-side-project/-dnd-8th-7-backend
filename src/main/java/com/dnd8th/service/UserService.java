@@ -2,8 +2,10 @@ package com.dnd8th.service;
 
 import com.dnd8th.auth.jwt.JwtProviderService;
 import com.dnd8th.dao.UserFindDao;
+import com.dnd8th.dao.UserUpdateDao;
 import com.dnd8th.dto.auth.UserLoginRequest;
 import com.dnd8th.dto.auth.UserSignUpResponse;
+import com.dnd8th.dto.user.UserGetDto;
 import com.dnd8th.entity.User;
 import com.dnd8th.error.exception.auth.EmailDuplicateException;
 import com.dnd8th.error.exception.user.UserNotFoundException;
@@ -23,6 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtProviderService jwtProviderService;
     private final UserFindDao userFindDao;
+    private final UserUpdateDao userUpdateDao;
 
 
     public User getUserByAccessToken(HttpServletRequest request) {
@@ -73,7 +76,10 @@ public class UserService {
     }
 
     public User getUser(String email) {
-        User user = userFindDao.getUser(email);
-        return user;
+        return userFindDao.getUser(email);
+    }
+
+    public void updateUser(String email, UserGetDto userGetDto) {
+        userUpdateDao.updateUser(email, userGetDto);
     }
 }
