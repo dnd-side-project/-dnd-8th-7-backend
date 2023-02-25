@@ -61,6 +61,10 @@ dependencies {
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 }
 
+jar {
+    enabled = false
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
