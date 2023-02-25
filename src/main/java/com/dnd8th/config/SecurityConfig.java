@@ -38,7 +38,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8081"));
+        configuration.setAllowedOrigins(
+                List.of("http://localhost:8081", "http://localhost:3000",
+                        "https://harublock.vercel.app"));
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
@@ -66,7 +68,6 @@ public class SecurityConfig {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/api/login/**", "/api/auth/**").permitAll() // Security 허용 url
                 .antMatchers("/api/**").hasRole("USER");   // 모든 api 요청에 대해 user 권한
-
 
         http
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
