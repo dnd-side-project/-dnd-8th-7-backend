@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +33,11 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "block_id")
     private Block block;
+
+    @Builder
+    public Task(String contents, Boolean status, Block block) {
+        this.contents = contents;
+        this.status = status;
+        this.block = block;
+    }
 }
