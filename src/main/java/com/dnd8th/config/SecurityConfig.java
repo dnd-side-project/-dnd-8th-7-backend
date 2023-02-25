@@ -67,7 +67,6 @@ public class SecurityConfig {
                 .antMatchers("/api/login/**", "/api/auth/**").permitAll() // Security 허용 url
                 .antMatchers("/api/**").hasRole("USER");   // 모든 api 요청에 대해 user 권한
 
-
         http
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -71,7 +71,7 @@ public class BlockService {
             BlockWeekPartDto week = convertToWeekDTO(color, targetDate);
             blockWeekPartDto.add(week);
         }
-        String name = userFindDao.findByEmail(email);
+        String name = userFindDao.findUserNameByEmail(email);
         blockMainWeekGetResponse.setUser(name);
         blockMainWeekGetResponse.setDailyBlocks(blockWeekPartDto);
         return blockMainWeekGetResponse;

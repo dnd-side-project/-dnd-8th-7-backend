@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "users")
 @NoArgsConstructor
-public class User extends BaseEntity {
+public class User extends BaseEntity{
 
     @Id
     @Column(name = "email", unique = true, nullable = false)
@@ -41,7 +41,7 @@ public class User extends BaseEntity {
     private String introduction;
 
     @Column(name = "user_lock")
-    private String userLock;
+    private Boolean userLock;
 
     @Column(name = "img_path")
     private String imagePath;
