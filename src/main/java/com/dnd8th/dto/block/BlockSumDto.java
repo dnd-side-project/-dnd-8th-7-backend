@@ -1,18 +1,19 @@
-package com.dnd8th.dto;
+package com.dnd8th.dto.block;
 
+import com.dnd8th.dto.block.BlockPartDto;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class SumBlock {
+public class BlockSumDto {
     private Integer totalBlock;
     private Integer totalTask;
-    private List<BlockDTO> blocks;
+    private List<BlockPartDto> blocks;
 
     @Builder
-    public SumBlock(Integer totalBlock, Integer totalTask, List<BlockDTO> blocks){
+    public BlockSumDto(Integer totalBlock, Integer totalTask, List<BlockPartDto> blocks){
         this.totalBlock = totalBlock;
         this.totalTask = totalTask;
         this.blocks = blocks;

@@ -1,5 +1,6 @@
-package com.dnd8th.dto;
+package com.dnd8th.dto.block;
 
+import com.dnd8th.dto.task.TaskPartDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,17 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class BlockDTO {
+public class BlockPartDto {
+    private Long blockId;
     private String color;
     private String icon;
     private String title;
     private Integer sumOfTask;
     private Integer sumOfDoneTask;
-    private List<TaskDTO> tasks = new ArrayList<>();
+    private List<TaskPartDto> tasks = new ArrayList<>();
 
     @Builder
-    public BlockDTO(
-            String color, String icon, String title, Integer sumOfTask, Integer sumOfDoneTask, List<TaskDTO> tasks) {
+    public BlockPartDto(
+            Long blockId, String color, String icon, Integer sumOfTask, Integer sumOfDoneTask, List<TaskPartDto> tasks) {
+        this.blockId = blockId;
         this.color = color;
         this.icon = icon;
         this.title = title;
