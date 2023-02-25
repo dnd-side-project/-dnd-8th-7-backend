@@ -1,9 +1,9 @@
 package com.dnd8th.api;
 
 
+import com.dnd8th.dto.block.BlockCreateRequest;
 import com.dnd8th.dto.block.BlockMainGetResponse;
 import com.dnd8th.dto.block.BlockMainWeekGetResponse;
-import com.dnd8th.dto.block.BlockCreateRequest;
 import com.dnd8th.service.BlockService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class BlockApi {
     @GetMapping("/{date}")
     public ResponseEntity
             <BlockMainWeekGetResponse> getMainWeek(@AuthenticationPrincipal UserDetails userDetails,
-                                                   @PathVariable("date") String date) {
+            @PathVariable("date") String date) {
         String email = userDetails.getUsername();
         BlockMainWeekGetResponse mainWeek = blockService.getBlockWeek(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainWeek);
@@ -48,7 +48,7 @@ public class BlockApi {
     @GetMapping("/detail/{date}")
     public ResponseEntity
             <BlockMainGetResponse> getMainDetail(@AuthenticationPrincipal UserDetails userDetails,
-                                                 @PathVariable("date") String date) {
+            @PathVariable("date") String date) {
         String email = userDetails.getUsername();
         BlockMainGetResponse mainDto = blockService.getBlockDetail(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainDto);
@@ -59,6 +59,6 @@ public class BlockApi {
             @AuthenticationPrincipal UserDetails userDetails) {
         String email = userDetails.getUsername();
         blockService.deleteBlock(blockId, email);
-        return ResponseEntity.ok("");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 }
