@@ -6,6 +6,6 @@ import com.dnd8th.error.exception.ErrorCode;
 public class TaskNotFoundException extends EntityNotFoundException {
 
     public TaskNotFoundException() {
-        super(ErrorCode.Task_NOT_FOUND);
+        super(ErrorCode.TASK_NOT_FOUND);
     }
 }
