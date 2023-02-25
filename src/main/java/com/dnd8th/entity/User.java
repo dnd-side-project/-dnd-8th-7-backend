@@ -41,7 +41,7 @@ public class User extends BaseEntity {
     private String introduction;
 
     @Column(name = "user_lock")
-    private String userLock;
+    private Boolean userLock;
 
     @Column(name = "img_path")
     private String imagePath;

@@ -1,6 +1,5 @@
 package com.dnd8th.dto.block;
 
-import com.dnd8th.dto.block.BlockPartDto;
 import lombok.Builder;
 import lombok.Data;
 

@@ -1,6 +1,5 @@
 package com.dnd8th.dto.task;
 
-import com.dnd8th.dto.task.TaskPartDto;
 import lombok.Builder;
 import lombok.Data;
 
