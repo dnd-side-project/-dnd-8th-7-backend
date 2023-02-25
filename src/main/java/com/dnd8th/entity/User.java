@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "users")
 @NoArgsConstructor
-public class User{
+public class User extends BaseEntity{
 
     @Id
     @Column(name = "email", unique = true, nullable = false)
