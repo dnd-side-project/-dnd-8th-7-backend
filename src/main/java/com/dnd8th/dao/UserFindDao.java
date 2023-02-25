@@ -14,14 +14,14 @@ import static com.dnd8th.entity.QUser.user;
 public class UserFindDao {
     private final JPAQueryFactory queryFactory;
 
-    public String findByEmail(String email) {
+    public String findUserNameByEmail(String email) {
         return queryFactory.select(user.name)
                 .from(user)
                 .where(user.email.eq(email))
                 .fetchOne();
     }
 
-    public User getUser(String email) {
+    public User findUserByEmail(String email) {
         return queryFactory.selectFrom(user)
                 .where(user.email.eq(email))
                 .fetchOne();

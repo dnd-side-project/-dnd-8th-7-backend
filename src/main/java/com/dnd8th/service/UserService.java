@@ -76,7 +76,11 @@ public class UserService {
     }
 
     public User getUser(String email) {
-        return userFindDao.getUser(email);
+        User user = userFindDao.findUserByEmail(email);
+        if (user == null){
+            throw new UserNotFoundException();
+        }
+        return userFindDao.findUserByEmail(email);
     }
 
     public void updateUser(String email, UserGetDto userGetDto) {

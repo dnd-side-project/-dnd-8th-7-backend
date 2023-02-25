@@ -36,8 +36,11 @@ public class UserApi {
         String email = userDetails.getUsername();
 
         User user = userService.getUser(email);
-        UserGetResponse userGetResponse = new UserGetResponse(
-                user.getImagePath(), user.getName(), user.getIntroduction(), user.getUserLock());
+        UserGetResponse userGetResponse =  UserGetResponse.builder()
+                .imgPath(user.getImagePath())
+                .user(user.getName())
+                .introduction(user.getIntroduction())
+                .lock(user.getUserLock()).build();
         return ResponseEntity.ok(userGetResponse);
     }
 
@@ -47,12 +50,11 @@ public class UserApi {
             @RequestBody @Valid UserGetResponse userGetResponse) {
         String email = userDetails.getUsername();
 
-        UserGetDto userGetDto = new UserGetDto(
-                userGetResponse.getImgPath(),
-                userGetResponse.getUser(),
-                userGetResponse.getIntroduction(),
-                userGetResponse.getLock()
-        );
+        UserGetDto userGetDto = UserGetDto.builder()
+                .imgPath(userGetResponse.getImgPath())
+                .user(userGetResponse.getUser())
+                .introduction(userGetResponse.getIntroduction())
+                .lock(userGetResponse.getLock()).build();
         userService.updateUser(email, userGetDto);
         return ResponseEntity.ok("");
     }

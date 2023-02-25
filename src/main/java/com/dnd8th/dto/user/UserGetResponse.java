@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
@@ -15,7 +16,7 @@ public class UserGetResponse {
     private String user;
     @NotBlank
     private String introduction;
-
+    @NotNull
     private Boolean lock;
 
     @Builder
