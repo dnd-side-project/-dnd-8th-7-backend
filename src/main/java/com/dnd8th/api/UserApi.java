@@ -1,5 +1,6 @@
 package com.dnd8th.api;
 
+import com.dnd8th.dto.user.UserGetDto;
 import com.dnd8th.dto.user.UserGetResponse;
 import com.dnd8th.entity.User;
 import com.dnd8th.service.UserService;
@@ -9,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -38,5 +39,21 @@ public class UserApi {
         UserGetResponse userGetResponse = new UserGetResponse(
                 user.getImagePath(), user.getName(), user.getIntroduction(), user.getUserLock());
         return ResponseEntity.ok(userGetResponse);
+    }
+
+    @PatchMapping("")
+    public ResponseEntity<String> patchUser(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody @Valid UserGetResponse userGetResponse) {
+        String email = userDetails.getUsername();
+
+        UserGetDto userGetDto = new UserGetDto(
+                userGetResponse.getImgPath(),
+                userGetResponse.getUser(),
+                userGetResponse.getIntroduction(),
+                userGetResponse.getLock()
+        );
+        userService.updateUser(email, userGetDto);
+        return ResponseEntity.ok("");
     }
 }
