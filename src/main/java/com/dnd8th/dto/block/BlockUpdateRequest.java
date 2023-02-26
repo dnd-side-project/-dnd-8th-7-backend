@@ -1,7 +1,6 @@
 package com.dnd8th.dto.block;
 
 import com.dnd8th.util.validator.ColorHex;
-import com.dnd8th.util.validator.Emoji;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Builder;
@@ -15,7 +14,7 @@ public class BlockUpdateRequest {
     @NotBlank
     private String title;
 
-    @Emoji
+    //    @Emoji
     @NotBlank
     private String emoticon;
 
