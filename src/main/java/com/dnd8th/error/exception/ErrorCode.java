@@ -35,6 +35,11 @@ public enum ErrorCode {
 
     TASK_NOT_FOUND("T01", "Task is not Found.", HttpStatus.BAD_REQUEST.value()),
 
+    // Keep
+
+    KEEP_NOT_FOUND("K01", "Keep is not Found.", HttpStatus.BAD_REQUEST.value()),
+    KEEP_ACCESS_DENIED("K02", "Keep Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
+
     // external API
     EXTERNAL_API_FAILED("E01", "External API Request is failed.",
             HttpStatus.INTERNAL_SERVER_ERROR.value());;
