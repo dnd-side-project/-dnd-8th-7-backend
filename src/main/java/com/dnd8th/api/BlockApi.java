@@ -4,8 +4,12 @@ package com.dnd8th.api;
 import com.dnd8th.dto.block.BlockCreateRequest;
 import com.dnd8th.dto.block.BlockMainGetResponse;
 import com.dnd8th.dto.block.BlockMainWeekGetResponse;
+import com.dnd8th.dto.keep.KeepBlockResponse;
+import com.dnd8th.dto.keep.KeepCreateRequest;
 import com.dnd8th.service.BlockService;
 import javax.validation.Valid;
+
+import com.dnd8th.service.KeepService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/block")
@@ -27,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BlockApi {
 
     private final BlockService blockService;
+    private final KeepService keepService;
 
     @PostMapping("")
     public ResponseEntity<String> createBlock(
@@ -61,4 +68,41 @@ public class BlockApi {
         blockService.deleteBlock(blockId, email);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
+
+    @PostMapping("/{blockId}/save")
+    public ResponseEntity<String> createKeepBlock(
+            @PathVariable("blockId") Long blockId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        keepService.createKeepBlock(blockId, email);
+        return ResponseEntity.status(HttpStatus.CREATED).body("");
+    }
+
+    @GetMapping ("/save")
+    public ResponseEntity<List<KeepBlockResponse>> getKeepBlock(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        List<KeepBlockResponse> keepBlocks = keepService.getKeepBlockList(email);
+        return ResponseEntity.status(HttpStatus.CREATED).body(keepBlocks);
+    }
+
+    @DeleteMapping ("/{blockId}/save")
+    public ResponseEntity<String> deleteKeepBlock(
+            @PathVariable("blockId") Long blockId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        keepService.deleteKeepBlock(blockId, email);
+        return ResponseEntity.status(HttpStatus.CREATED).body("");
+    }
+
+    @PostMapping("/load/{date}")
+    public ResponseEntity<String> createKeepBlockOnADate(
+            @RequestBody @Valid KeepCreateRequest keepCreateRequest,
+            @PathVariable("date") String date,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        keepService.createKeepBlockOnADate(keepCreateRequest.getBlockIds(), email, date);
+        return ResponseEntity.status(HttpStatus.CREATED).body("");
+    }
+
 }
