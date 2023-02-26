@@ -29,7 +29,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @RestController
-@RequestMapping("/")
+@RequestMapping
 @RequiredArgsConstructor
 public class AuthApi {
 
@@ -45,7 +45,7 @@ public class AuthApi {
     @Value("${app.auth.client-secret}")
     private String googleClientSecret;
 
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<String> getHealthCheck() {
         return ResponseEntity.ok("");
     }
