@@ -24,9 +24,6 @@ public class Block {
     @Column(name = "block_lock")
     private Boolean blockLock;
 
-    @Column(name = "save")
-    private Boolean save;
-
     @Column(name = "title")
     private String title;
 
@@ -47,11 +44,13 @@ public class Block {
     @JoinColumn(name = "user_email")
     private User user;
 
+    @OneToOne(mappedBy = "block")
+    private Keep keep;
+
     @Builder
-    public Block(Boolean blockLock, Boolean save, String title, String blockColor, Date date,
+    public Block(Boolean blockLock, String title, String blockColor, Date date,
             String emotion, User user) {
         this.blockLock = blockLock;
-        this.save = save;
         this.title = title;
         this.blockColor = blockColor;
         this.date = date;
