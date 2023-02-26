@@ -40,6 +40,11 @@ public enum ErrorCode {
     REVIEW_NOT_FOUND("R01", "Review is not Found.", HttpStatus.BAD_REQUEST.value()),
     REVIEW_ACCESS_DENIED("R02", "Review Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
 
+    // Keep
+
+    KEEP_NOT_FOUND("K01", "Keep is not Found.", HttpStatus.BAD_REQUEST.value()),
+    KEEP_ACCESS_DENIED("K02", "Keep Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
+
     // external API
     EXTERNAL_API_FAILED("E01", "External API Request is failed.",
             HttpStatus.INTERNAL_SERVER_ERROR.value());;
