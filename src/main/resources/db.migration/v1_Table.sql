@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS block (
     id SERIAL PRIMARY KEY,
     block_lock BOOLEAN,
-    save BOOLEAN,
     title VARCHAR(45),
     block_color VARCHAR(10),
     datetime DATE,
@@ -32,4 +31,14 @@ CREATE TABLE IF NOT EXISTS review (
     retrospection_lock BOOLEAN,
     emotion VARCHAR(45),
     user_email VARCHAR(45) REFERENCES users ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS keep (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(45),
+    block_color VARCHAR(10),
+    emotion VARCHAR(45),
+    sum_of_task INTEGER,
+    user_email VARCHAR(45) REFERENCES users ON DELETE CASCADE,
+    block_id INTEGER REFERENCES block ON DELETE CASCADE
 );
