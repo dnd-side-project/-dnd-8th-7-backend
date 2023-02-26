@@ -29,7 +29,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 @RequiredArgsConstructor
 public class AuthApi {
 
@@ -45,7 +45,12 @@ public class AuthApi {
     @Value("${app.auth.client-secret}")
     private String googleClientSecret;
 
-    @GetMapping("/login/google")
+    @GetMapping("/")
+    public ResponseEntity<String> getHealthCheck() {
+        return ResponseEntity.ok("");
+    }
+
+    @GetMapping("/api/login/google")
     public ResponseEntity<String> googleLogin(HttpServletRequest request) {
         // google login URL 생성
         String redirectUrl = "https://accounts.google.com/o/oauth2/v2/auth?" +
@@ -59,7 +64,7 @@ public class AuthApi {
                 .build();
     }
 
-    @PostMapping("/login/callback/google")
+    @PostMapping("/api/login/callback/google")
     public ResponseEntity<String> googleCallback(@RequestParam String code) {
         // code로 access_token 가져오기
         ResponseEntity<GoogleOAuthTokenResponse> responseEntity = getTokenResponse(code);

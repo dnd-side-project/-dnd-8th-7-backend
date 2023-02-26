@@ -34,6 +34,7 @@ public enum ErrorCode {
     // Task
 
     TASK_NOT_FOUND("T01", "Task is not Found.", HttpStatus.BAD_REQUEST.value()),
+    TASK_ACCESS_DENIED("T02", "Task Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
 
     // Keep
 
