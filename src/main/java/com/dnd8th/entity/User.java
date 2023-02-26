@@ -32,6 +32,9 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Keep> keeps = new ArrayList<>();
+
     @Column(name = "introduction")
     private String introduction;
 
