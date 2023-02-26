@@ -48,7 +48,6 @@ public class BlockCreateRequest {
         return Block.builder()
                 .user(user)
                 .blockLock(isSecret)
-                .save(false)
                 .title(title)
                 .emotion(emoticon)
                 .blockColor(blockColor)

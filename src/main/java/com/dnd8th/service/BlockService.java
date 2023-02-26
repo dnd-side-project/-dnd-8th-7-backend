@@ -20,7 +20,6 @@ import com.dnd8th.error.exception.user.UserNotFoundException;
 import com.dnd8th.repository.BlockRepository;
 import com.dnd8th.repository.UserRepository;
 import com.dnd8th.util.DateParser;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
