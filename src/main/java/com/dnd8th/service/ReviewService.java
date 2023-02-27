@@ -62,7 +62,6 @@ public class ReviewService {
         return reviewGetResponse;
     }
 
-    @Transactional
     public void updateReview(String userEmail, Long reviewId, ReviewUpdateRequest reviewUpdateRequest) {
         User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
