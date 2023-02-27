@@ -47,7 +47,6 @@ public class JwtProviderService {
 
         return Jwts.builder()
                 .setSubject(email)
-                .claim("access_token", accessToken)
                 .claim("role", Role.USER.name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenPeriod))
@@ -113,14 +112,14 @@ public class JwtProviderService {
 
     public Authentication getAuthentication(String token) {
         String email = getEmail(token);
-        String accessToken = getAccessToken(token);
+//        String accessToken = getAccessToken(token);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         UserDetails userDetails = User.builder()
                 .username(email)
-                .password(accessToken)
+                .password("")
                 .authorities(authorities)
                 .build();
 
