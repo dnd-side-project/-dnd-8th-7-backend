@@ -86,7 +86,9 @@ public class BlockService {
             blockWeekPartDto.add(week);
         }
         String name = userFindDao.findUserNameByEmail(email);
+        String imgPath = userFindDao.findUserImgPathByEmail(email);
         blockMainWeekGetResponse.setUser(name);
+        blockMainWeekGetResponse.setImgPath(imgPath);
         blockMainWeekGetResponse.setDailyBlocks(blockWeekPartDto);
         return blockMainWeekGetResponse;
     }
