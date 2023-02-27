@@ -52,12 +52,4 @@ public class Review {
         this.retrospectionLock = retrospectionLock;
         this.emotion = emotion;
     }
-
-    @Builder
-    public void updateReview(String retrospection, Boolean retrospectionLock,
-                             String emotion) {
-        this.retrospection = retrospection;
-        this.retrospectionLock = retrospectionLock;
-        this.emotion = emotion;
-    }
 }

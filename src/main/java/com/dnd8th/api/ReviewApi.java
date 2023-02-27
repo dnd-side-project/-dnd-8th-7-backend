@@ -26,8 +26,8 @@ public class ReviewApi {
             @RequestBody @Valid ReviewCreateRequest reviewCreateRequest,
             @AuthenticationPrincipal
             UserDetails userDetails) {
-        //String userEmail = userDetails.getUsername();
-        reviewService.createReview(reviewCreateRequest, "harin14@naver.com");
+        String userEmail = userDetails.getUsername();
+        reviewService.createReview(reviewCreateRequest, userEmail);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("");
     }

@@ -2,6 +2,7 @@ package com.dnd8th.dto.review;
 
 import com.dnd8th.entity.Review;
 import com.dnd8th.entity.User;
+import com.dnd8th.util.validator.YYYYMMDD;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class ReviewUpdateRequest {
     @NotBlank
+    @YYYYMMDD
     private String date;
     @NotBlank
     private String emoticon;

@@ -1,5 +1,6 @@
 package com.dnd8th.service;
 
+import com.dnd8th.dao.ReviewUpdateDao;
 import com.dnd8th.dto.review.ReviewCreateRequest;
 import com.dnd8th.dto.review.ReviewGetResponse;
 import com.dnd8th.dto.review.ReviewUpdateRequest;
@@ -26,6 +27,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final DateParser dateParser;
+    private final ReviewUpdateDao reviewUpdateDao;
 
     public void createReview(ReviewCreateRequest reviewCreateRequest, String userEmail) {
         User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
@@ -68,7 +70,6 @@ public class ReviewService {
         if (reviewOwner != user) {
             throw new ReviewAccessDeniedException();
         }
-        Date date = dateParser.parseDate(reviewUpdateRequest.getDate());
-        review.updateReview(reviewUpdateRequest.getReview(),reviewUpdateRequest.isSecret(), reviewUpdateRequest.getEmoticon());
+        reviewUpdateDao.updateReview(reviewId, reviewUpdateRequest);
     }
 }
