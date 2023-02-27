@@ -36,6 +36,11 @@ public enum ErrorCode {
     TASK_NOT_FOUND("T01", "Task is not Found.", HttpStatus.BAD_REQUEST.value()),
     TASK_ACCESS_DENIED("T02", "Task Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
 
+    // Review
+
+    REVIEW_NOT_FOUND("R01", "Review is not Found.", HttpStatus.BAD_REQUEST.value()),
+    REVIEW_ACCESS_DENIED("R02", "Review Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
+
     // Keep
 
     KEEP_NOT_FOUND("K01", "Keep is not Found.", HttpStatus.BAD_REQUEST.value()),

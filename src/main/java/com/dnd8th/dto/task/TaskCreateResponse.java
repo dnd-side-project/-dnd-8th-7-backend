@@ -11,14 +11,14 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class TaskCreateResponse {
     @NotNull
-    private Long blockId;
+    private Long taskId;
 
     @NotBlank
     private String content;
 
     @Builder
-    public TaskCreateResponse(Long blockId, String content) {
-        this.blockId = blockId;
+    public TaskCreateResponse(Long taskId, String content) {
+        this.taskId = taskId;
         this.content = content;
     }
 }
