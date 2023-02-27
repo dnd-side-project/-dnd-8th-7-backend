@@ -4,12 +4,13 @@ package com.dnd8th.api;
 import com.dnd8th.dto.block.BlockCreateRequest;
 import com.dnd8th.dto.block.BlockMainGetResponse;
 import com.dnd8th.dto.block.BlockMainWeekGetResponse;
+import com.dnd8th.dto.block.BlockUpdateRequest;
 import com.dnd8th.dto.keep.KeepBlockResponse;
 import com.dnd8th.dto.keep.KeepCreateRequest;
 import com.dnd8th.service.BlockService;
-import javax.validation.Valid;
-
 import com.dnd8th.service.KeepService;
+import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -41,6 +41,17 @@ public class BlockApi {
             @AuthenticationPrincipal UserDetails userDetails) {
         blockService.createBlock(blockCreateRequest, userDetails.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).body("");
+    }
+
+    @PatchMapping("/{blockId}")
+    public ResponseEntity<String> updateBlock(
+            @PathVariable Long blockId,
+            @RequestBody @Valid BlockUpdateRequest blockUpdateRequest,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        String email = userDetails.getUsername();
+        blockService.updateBlock(blockUpdateRequest, email, blockId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 
     @GetMapping("/{date}")
@@ -78,7 +89,7 @@ public class BlockApi {
         return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
 
-    @GetMapping ("/save")
+    @GetMapping("/save")
     public ResponseEntity<List<KeepBlockResponse>> getKeepBlock(
             @AuthenticationPrincipal UserDetails userDetails) {
         String email = userDetails.getUsername();
@@ -86,7 +97,7 @@ public class BlockApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(keepBlocks);
     }
 
-    @DeleteMapping ("/{blockId}/save")
+    @DeleteMapping("/{blockId}/save")
     public ResponseEntity<String> deleteKeepBlock(
             @PathVariable("blockId") Long blockId,
             @AuthenticationPrincipal UserDetails userDetails) {
