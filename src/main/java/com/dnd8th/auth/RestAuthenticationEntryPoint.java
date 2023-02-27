@@ -17,10 +17,13 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException authException) throws IOException, ServletException {
         ObjectMapper objectMapper = new ObjectMapper();
-        
-        response.setStatus(ErrorCode.USER_ACCESS_DENIED.getStatus());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(
-                ErrorResponse.from(ErrorCode.USER_ACCESS_DENIED)));
+        String authorization = request.getHeader("Authorization");
+
+        if (authorization.equals("") || authorization.equals("Bearer ") || authorization == null) {
+            response.setStatus(ErrorCode.USER_ACCESS_DENIED.getStatus());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.getWriter().write(objectMapper.writeValueAsString(
+                    ErrorResponse.from(ErrorCode.USER_ACCESS_DENIED)));
+        }
     }
 }

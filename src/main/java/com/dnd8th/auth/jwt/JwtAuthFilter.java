@@ -3,7 +3,6 @@ package com.dnd8th.auth.jwt;
 import com.dnd8th.error.ErrorResponse;
 import com.dnd8th.error.exception.ErrorCode;
 import com.dnd8th.error.exception.auth.AccessTokenInvalidException;
-import com.dnd8th.error.exception.auth.AccessTokenNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -42,11 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             setErrorResponse(HttpStatus.UNAUTHORIZED, response, ErrorCode.ACCESS_TOKEN_INVALID);
         } catch (JwtException jwtException) {
             setErrorResponse(HttpStatus.UNAUTHORIZED, response, ErrorCode.ACCESS_TOKEN_INVALID);
-        } catch (AccessTokenNotFoundException accessTokenNotFoundException) {
-            setErrorResponse(HttpStatus.UNAUTHORIZED, response,
-                    ErrorCode.ACCESS_TOKEN_NOT_FOUND_IN_HEADER);
         }
-
         filterChain.doFilter(request, response);
     }
 

@@ -21,6 +21,13 @@ public class UserFindDao {
                 .fetchOne();
     }
 
+    public String findUserImgPathByEmail(String email) {
+        return queryFactory.select(user.imagePath)
+                .from(user)
+                .where(user.email.eq(email))
+                .fetchOne();
+    }
+
     public User findUserByEmail(String email) {
         return queryFactory.selectFrom(user)
                 .where(user.email.eq(email))

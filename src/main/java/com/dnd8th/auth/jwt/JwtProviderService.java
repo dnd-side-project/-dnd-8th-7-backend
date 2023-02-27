@@ -1,6 +1,7 @@
 package com.dnd8th.auth.jwt;
 
 import com.dnd8th.entity.Role;
+import com.dnd8th.error.exception.auth.AccessTokenExpiredException;
 import com.dnd8th.error.exception.auth.AccessTokenInvalidException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,8 +32,7 @@ import org.springframework.util.StringUtils;
 public class JwtProviderService {
 
     private final HttpSession httpSession;
-    private final long accessTokenPeriod = 1000L * 60L * 60L; // 60분
-    private final long refreshPeriod = 1000L * 60L * 60L * 24L * 14L;      // 14일
+    private final long accessTokenPeriod = 1000L * 60L * 60L * 24L * 7L; // 7일
     @Value("${app.auth.token-secret-key}")
     private String secretKey;
     private Key key;
@@ -54,9 +54,25 @@ public class JwtProviderService {
                 .compact();
     }
 
-    //추후 수정
-    public String generateTokenFromRefreshToken(String refreshToken) {
-        return null;
+    public String refreshToken(String token) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+            String email = claims.getSubject();
+            if (claims.getExpiration().before(new Date())) {
+                throw new AccessTokenExpiredException();
+            }
+            Date newExpiration = new Date(System.currentTimeMillis() + accessTokenPeriod);
+            return Jwts.builder()
+                    .setSubject(email)
+                    .claim("access_token", (String) claims.get("access_token"))
+                    .claim("role", Role.USER.name())
+                    .setIssuedAt(new Date())
+                    .setExpiration(newExpiration)
+                    .signWith(key)
+                    .compact();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new AccessTokenInvalidException();
+        }
     }
 
     public String getEmailFromHeaderAccessToken(HttpServletRequest request) {
