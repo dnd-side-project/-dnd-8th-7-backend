@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -98,6 +99,12 @@ public class AuthApi {
         // 클라이언트로 JWT token 응답
         return ResponseEntity.ok()
                 .body(jwtToken);
+    }
+
+    @PostMapping("/api/auth/token/{token}")
+    public ResponseEntity<String> refreshToken(@PathVariable String token) {
+        String newToken = jwtProviderService.refreshToken(token);
+        return ResponseEntity.status(HttpStatus.OK).body(newToken);
     }
 
     private ResponseEntity<GoogleOAuthTokenResponse> getTokenResponse(String code) {
