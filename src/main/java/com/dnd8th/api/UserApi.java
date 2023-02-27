@@ -3,16 +3,25 @@ package com.dnd8th.api;
 import com.dnd8th.dto.user.UserGetDto;
 import com.dnd8th.dto.user.UserGetResponse;
 import com.dnd8th.entity.User;
+import com.dnd8th.service.AwsS3Service;
 import com.dnd8th.service.UserService;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -21,6 +30,7 @@ import javax.validation.Valid;
 public class UserApi {
 
     private final UserService userService;
+    private final AwsS3Service awsS3Service;
 
     @DeleteMapping("")
     public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserDetails userDetails) {
@@ -30,13 +40,24 @@ public class UserApi {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> uploadProfileImage(
+            @RequestPart("image")
+            MultipartFile multipartFile,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        String email = userDetails.getUsername();
+        String imagePath = awsS3Service.uploadImageToS3(multipartFile, email);
+        return ResponseEntity.status(HttpStatus.CREATED).body(imagePath);
+    }
+
     @GetMapping("")
     public ResponseEntity<UserGetResponse> getUser(
             @AuthenticationPrincipal UserDetails userDetails) {
         String email = userDetails.getUsername();
 
         User user = userService.getUser(email);
-        UserGetResponse userGetResponse =  UserGetResponse.builder()
+        UserGetResponse userGetResponse = UserGetResponse.builder()
                 .imgPath(user.getImagePath())
                 .user(user.getName())
                 .introduction(user.getIntroduction())

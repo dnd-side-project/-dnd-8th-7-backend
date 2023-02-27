@@ -48,7 +48,9 @@ public enum ErrorCode {
 
     // external API
     EXTERNAL_API_FAILED("E01", "External API Request is failed.",
-            HttpStatus.INTERNAL_SERVER_ERROR.value());;
+            HttpStatus.INTERNAL_SERVER_ERROR.value()),
+    IMAGE_UPLOADED_FAILED("E02", "Image Upload API Request is failed.",
+            HttpStatus.INTERNAL_SERVER_ERROR.value());
 
     private final String code;
     private final String message;
