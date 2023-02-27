@@ -32,7 +32,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer ignoreConfigure() {
         //filter 타지 않도록 함
         return web -> web.ignoring()
-                .mvcMatchers("/api/auth/token/**", "/api/login/**");
+                .mvcMatchers("/api/auth/**", "/api/login/**");
     }
 
     @Bean
