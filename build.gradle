@@ -62,6 +62,9 @@ dependencies {
 
     //emoji
     implementation 'com.vdurmont:emoji-java:5.1.1'
+
+    //aws service
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 jar {
