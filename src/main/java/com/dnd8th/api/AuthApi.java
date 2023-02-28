@@ -4,6 +4,7 @@ import com.dnd8th.auth.jwt.JwtProviderService;
 import com.dnd8th.dto.auth.GoogleOAuthTokenResponse;
 import com.dnd8th.dto.auth.GoogleOAuthUserInfoResponse;
 import com.dnd8th.dto.auth.UserLoginRequest;
+import com.dnd8th.dto.auth.UserLoginResponse;
 import com.dnd8th.error.exception.auth.AccessTokenNotFoundException;
 import com.dnd8th.error.exception.auth.ExternalApiFailException;
 import com.dnd8th.service.UserService;
@@ -66,7 +67,7 @@ public class AuthApi {
     }
 
     @PostMapping("/api/login/callback/google")
-    public ResponseEntity<String> googleCallback(@RequestParam String code) {
+    public ResponseEntity<UserLoginResponse> googleCallback(@RequestParam String code) {
         // code로 access_token 가져오기
         ResponseEntity<GoogleOAuthTokenResponse> responseEntity = getTokenResponse(code);
         String accessToken = Optional.ofNullable(responseEntity.getBody())
@@ -83,6 +84,8 @@ public class AuthApi {
                 .orElseThrow(ExternalApiFailException::new)
                 .getGivenName();
 
+        Boolean isNewUser = false;
+
         //email을 통해 회원 가입 여부를 확인 후, 비회원일시 회원가입
         if (!userService.existsByEmail(email)) {
             userService.signUp(UserLoginRequest.builder()
@@ -90,15 +93,21 @@ public class AuthApi {
                     .name(givenName)
                     .imagePath("")
                     .build());
+            isNewUser = true;
         }
 
         // JWT token 생성
         String jwtToken = jwtProviderService.generateToken(email,
                 accessToken);
 
+        UserLoginResponse userLoginResponse = UserLoginResponse.builder()
+                .token(jwtToken)
+                .isNewUser(isNewUser)
+                .build();
+
         // 클라이언트로 JWT token 응답
         return ResponseEntity.ok()
-                .body(jwtToken);
+                .body(userLoginResponse);
     }
 
     @PostMapping("/api/auth/token/{token}")
