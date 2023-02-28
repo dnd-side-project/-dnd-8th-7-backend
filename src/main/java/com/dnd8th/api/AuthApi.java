@@ -91,7 +91,8 @@ public class AuthApi {
             userService.signUp(UserLoginRequest.builder()
                     .email(email)
                     .name(givenName)
-                    .imagePath("")
+                    .imagePath(
+                            "https://harublock-image-bucket.s3.ap-northeast-2.amazonaws.com/onboarding/default_profile_image.png")
                     .build());
             isNewUser = true;
         }
