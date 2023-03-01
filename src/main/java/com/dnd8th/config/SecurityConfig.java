@@ -41,7 +41,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(
                 List.of("http://localhost:8081", "http://localhost:3000",
                         "https://harublock.vercel.app"));
-        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedMethods(
+                Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE"));
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
