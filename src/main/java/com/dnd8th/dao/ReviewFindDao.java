@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-import static com.dnd8th.entity.QBlock.block;
 import static com.dnd8th.entity.QReview.review;
 
 @Service

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.dnd8th.entity.QBlock.block;
 import static com.dnd8th.entity.QKeep.keep;
 
 @Service
