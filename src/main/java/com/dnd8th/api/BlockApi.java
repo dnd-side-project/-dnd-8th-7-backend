@@ -1,10 +1,7 @@
 package com.dnd8th.api;
 
 
-import com.dnd8th.dto.block.BlockCreateRequest;
-import com.dnd8th.dto.block.BlockMainGetResponse;
-import com.dnd8th.dto.block.BlockMainWeekGetResponse;
-import com.dnd8th.dto.block.BlockUpdateRequest;
+import com.dnd8th.dto.block.*;
 import com.dnd8th.dto.keep.KeepBlockResponse;
 import com.dnd8th.dto.keep.KeepCreateRequest;
 import com.dnd8th.service.BlockService;
@@ -70,6 +67,15 @@ public class BlockApi {
         String email = userDetails.getUsername();
         BlockMainGetResponse mainDto = blockService.getBlockDetail(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainDto);
+    }
+
+    @GetMapping("/single/{blockId}")
+    public ResponseEntity
+            <BlockGetResponse> getBlock(@AuthenticationPrincipal UserDetails userDetails,
+                                        @PathVariable("blockId") Long blockId) {
+        String email = userDetails.getUsername();
+        BlockGetResponse blockGetResponse = blockService.getBlock(email, blockId);
+        return ResponseEntity.status(HttpStatus.OK).body(blockGetResponse);
     }
 
     @DeleteMapping("/{blockId}")
