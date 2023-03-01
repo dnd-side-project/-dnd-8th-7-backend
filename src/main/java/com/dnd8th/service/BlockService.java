@@ -11,6 +11,7 @@ import com.dnd8th.dto.block.BlockPartDto;
 import com.dnd8th.dto.block.BlockSumDto;
 import com.dnd8th.dto.block.BlockUpdateRequest;
 import com.dnd8th.dto.block.BlockWeekPartDto;
+import com.dnd8th.dto.block.BlockGetResponse;
 import com.dnd8th.dto.task.TaskPartDto;
 import com.dnd8th.dto.task.TaskSumDto;
 import com.dnd8th.entity.Block;
@@ -49,6 +50,24 @@ public class BlockService {
         Date date = dateParser.parseDate(blockCreateRequest.getDate());
 
         blockRepository.save(blockCreateRequest.toEntity(user, date));
+    }
+
+    public BlockGetResponse getBlock(String userEmail, Long blockId) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+        Block block = blockRepository.findById(blockId).orElseThrow(BlockNotFoundException::new);
+
+        User blockOwner = block.getUser();
+        if (user != blockOwner) {
+            throw new BlockAccessDeniedException();
+        }
+        String date = dateParser.toString(block.getDate());
+        BlockGetResponse blockGetResponse = BlockGetResponse.builder()
+                .blockColor(block.getBlockColor())
+                .isSecret(block.getBlockLock())
+                .emoticon(block.getEmotion())
+                .title(block.getTitle())
+                .date(date).build();
+        return blockGetResponse;
     }
 
     public void updateBlock(BlockUpdateRequest blockUpdateRequest, String userEmail, Long blockId) {
