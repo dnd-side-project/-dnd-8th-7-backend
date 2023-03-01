@@ -113,9 +113,14 @@ public class BlockService {
         List<BlockPartDto> blocksDto = new ArrayList<>();
         for (Block block : blocks) {
             TaskSumDto task = convertToSumTask(block.getId());
-            BlockPartDto blockdto = new BlockPartDto(
-                    block.getId(), block.getBlockColor(), block.getEmotion(),
-                    task.getSumOfTask(), task.getSumOfDoneTask(), task.getTasks());
+            BlockPartDto blockdto = BlockPartDto.builder()
+                    .blockId(block.getId())
+                    .title(block.getTitle())
+                    .color(block.getBlockColor())
+                    .icon(block.getEmotion())
+                    .sumOfTask(task.getSumOfTask())
+                    .sumOfDoneTask(task.getSumOfDoneTask())
+                    .tasks(task.getTasks()).build();
             blocksDto.add(blockdto);
             totalTask = totalTask + task.getSumOfTask();
         }
