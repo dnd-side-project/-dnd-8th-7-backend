@@ -19,7 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 @Table(name = "review")
 @NoArgsConstructor
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @Column(name = "id")

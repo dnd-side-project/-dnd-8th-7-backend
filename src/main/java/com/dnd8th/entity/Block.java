@@ -14,7 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 @Table(name = "block")
 @NoArgsConstructor
-public class Block {
+public class Block extends BaseEntity {
 
     @Id
     @Column(name = "id")

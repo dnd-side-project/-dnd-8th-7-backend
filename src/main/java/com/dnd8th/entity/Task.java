@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "task")
 @NoArgsConstructor
-public class Task {
+public class Task extends BaseEntity {
 
     @Id
     @Column(name = "id")

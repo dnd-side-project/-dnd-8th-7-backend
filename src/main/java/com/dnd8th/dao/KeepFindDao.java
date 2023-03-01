@@ -21,6 +21,7 @@ public class KeepFindDao {
     public List<Keep> findByEmail(String email) {
         return queryFactory.selectFrom(keep)
                 .where(keep.user.email.eq(email))
+                .orderBy(keep.createdAt.asc())
                 .fetch();
     }
 }
