@@ -19,7 +19,7 @@ public class BlockPartDto {
 
     @Builder
     public BlockPartDto(
-            Long blockId, String color, String icon, Integer sumOfTask, Integer sumOfDoneTask, List<TaskPartDto> tasks) {
+            Long blockId, String color, String icon, String title, Integer sumOfTask, Integer sumOfDoneTask, List<TaskPartDto> tasks) {
         this.blockId = blockId;
         this.color = color;
         this.icon = icon;
