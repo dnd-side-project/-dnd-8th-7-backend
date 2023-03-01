@@ -26,6 +26,7 @@ public class BlockFindDao{
         return queryFactory.select(block.blockColor)
                 .from(block)
                 .where(block.user.email.eq(email), block.date.eq(date))
+                .orderBy(block.createdAt.asc())
                 .fetch();
     }
 
@@ -33,6 +34,7 @@ public class BlockFindDao{
         return queryFactory
                 .selectFrom(block)
                 .where(block.user.email.eq(email), block.date.eq(date))
+                .orderBy(block.createdAt.asc())
                 .fetch();
     }
 
@@ -40,6 +42,7 @@ public class BlockFindDao{
         return queryFactory
                 .selectFrom(task)
                 .where(task.block.id.eq(bockId))
+                .orderBy(task.createdAt.asc())
                 .fetch();
     }
 }

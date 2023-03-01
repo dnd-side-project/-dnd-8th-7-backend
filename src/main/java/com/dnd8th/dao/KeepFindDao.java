@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.dnd8th.entity.QBlock.block;
 import static com.dnd8th.entity.QKeep.keep;
 
 @Service
@@ -21,6 +22,7 @@ public class KeepFindDao {
     public List<Keep> findByEmail(String email) {
         return queryFactory.selectFrom(keep)
                 .where(keep.user.email.eq(email))
+                .orderBy(keep.createdAt.asc())
                 .fetch();
     }
 }

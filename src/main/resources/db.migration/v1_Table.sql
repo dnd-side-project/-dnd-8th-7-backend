@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS users (
     introduction VARCHAR(45),
     user_lock BOOLEAN,
     roles VARCHAR(10),
-    img_path VARCHAR(45)
+    img_path VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS block (
@@ -14,6 +16,8 @@ CREATE TABLE IF NOT EXISTS block (
     block_color VARCHAR(10),
     datetime DATE,
     emotion VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_email VARCHAR(45) REFERENCES users ON DELETE CASCADE
 );
 
@@ -21,6 +25,8 @@ CREATE TABLE IF NOT EXISTS task (
     id SERIAL PRIMARY KEY,
     contents VARCHAR(100),
     status BOOLEAN,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     block_id INTEGER REFERENCES block ON DELETE CASCADE
 );
 
@@ -30,6 +36,8 @@ CREATE TABLE IF NOT EXISTS review (
     retrospection VARCHAR(100),
     retrospection_lock BOOLEAN,
     emotion VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_email VARCHAR(45) REFERENCES users ON DELETE CASCADE
 );
 
@@ -39,6 +47,8 @@ CREATE TABLE IF NOT EXISTS keep (
     block_color VARCHAR(10),
     emotion VARCHAR(45),
     sum_of_task INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_email VARCHAR(45) REFERENCES users ON DELETE CASCADE,
     block_id INTEGER REFERENCES block ON DELETE CASCADE
 );

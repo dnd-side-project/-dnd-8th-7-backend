@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Table(name = "keep")
 @NoArgsConstructor
-public class Keep {
+public class Keep extends BaseEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
