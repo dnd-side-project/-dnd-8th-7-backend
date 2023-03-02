@@ -5,13 +5,14 @@ import lombok.Data;
 
 @Data
 public class TaskPartDto {
-    private Long task_id;
+
+    private Long taskId;
     private String task;
     private Boolean isDone;
 
     @Builder
-    public TaskPartDto(Long task_id, String task, Boolean isDone) {
-        this.task_id = task_id;
+    public TaskPartDto(Long taskId, String task, Boolean isDone) {
+        this.taskId = taskId;
         this.task = task;
         this.isDone = isDone;
     }
