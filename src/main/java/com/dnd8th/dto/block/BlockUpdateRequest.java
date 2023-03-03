@@ -14,23 +14,22 @@ public class BlockUpdateRequest {
     @NotBlank
     private String title;
 
-    //    @Emoji
     @NotBlank
-    private String emoticon;
+    private String emoji;
 
     @ColorHex
     @NotBlank
-    private String blockColor;
+    private String backgroundColor;
 
     @NotNull
     private Boolean isSecret;
 
     @Builder
-    public BlockUpdateRequest(String title, String emoticon, String blockColor,
+    public BlockUpdateRequest(String title, String emoji, String backgroundColor,
             Boolean isSecret) {
         this.title = title;
-        this.emoticon = emoticon;
-        this.blockColor = blockColor;
+        this.emoji = emoji;
+        this.backgroundColor = backgroundColor;
         this.isSecret = isSecret;
     }
 }

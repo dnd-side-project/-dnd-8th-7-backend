@@ -20,8 +20,8 @@ public class BlockUpdateDao {
     public void updateBlock(Long blockId, BlockUpdateRequest blockUpdateRequest) {
         queryFactory.update(block)
                 .set(block.title, blockUpdateRequest.getTitle())
-                .set(block.emotion, blockUpdateRequest.getEmoticon())
-                .set(block.blockColor, blockUpdateRequest.getBlockColor())
+                .set(block.emotion, blockUpdateRequest.getEmoji())
+                .set(block.blockColor, blockUpdateRequest.getBackgroundColor())
                 .set(block.blockLock, blockUpdateRequest.getIsSecret())
                 .where(block.id.eq(blockId))
                 .execute();

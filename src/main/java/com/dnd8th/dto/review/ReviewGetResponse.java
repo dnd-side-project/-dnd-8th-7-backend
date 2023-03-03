@@ -1,6 +1,7 @@
 package com.dnd8th.dto.review;
 
 import com.dnd8th.util.validator.YYYYMMDD;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,16 +16,17 @@ public class ReviewGetResponse {
     @YYYYMMDD
     private String date;
     @NotBlank
-    private String emoticon;
+    private String emoji;
     @NotBlank
     private String review;
+    @JsonProperty("isSecret")
     @NotNull
     private boolean secret;
 
     @Builder
-    public ReviewGetResponse(String date, String emoticon, String review, Boolean secret) {
+    public ReviewGetResponse(String date, String emoji, String review, Boolean secret) {
         this.date = date;
-        this.emoticon = emoticon;
+        this.emoji = emoji;
         this.review = review;
         this.secret = secret;
     }

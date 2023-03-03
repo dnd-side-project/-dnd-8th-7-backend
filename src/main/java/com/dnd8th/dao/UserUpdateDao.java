@@ -19,10 +19,10 @@ public class UserUpdateDao {
 
     public void updateUser(String email, UserGetDto userGetDto) {
         queryFactory.update(user)
-                .set(user.imagePath, userGetDto.getImgPath())
-                .set(user.name, userGetDto.getUser())
+                .set(user.imagePath, userGetDto.getImgUrl())
+                .set(user.name, userGetDto.getNickname())
                 .set(user.introduction, userGetDto.getIntroduction())
-                .set(user.userLock, userGetDto.getLock())
+                .set(user.userLock, userGetDto.getSecret())
                 .where(user.email.eq(email))
                 .execute();
     }

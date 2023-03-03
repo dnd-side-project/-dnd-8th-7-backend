@@ -6,18 +6,18 @@ import lombok.Data;
 @Data
 public class KeepBlockResponse {
     private Long blockId;
-    private String color;
-    private String icon;
+    private String backgroundColor;
+    private String emoji;
     private String title;
-    private Integer sumOfTask;
+    private Integer numOfTasks;
 
     @Builder
     public KeepBlockResponse(
-            Long blockId, String color, String icon, String title, Integer sumOfTask) {
+            Long blockId, String backgroundColor, String emoji, String title, Integer numOfTasks) {
         this.blockId = blockId;
-        this.color = color;
-        this.icon = icon;
+        this.backgroundColor = backgroundColor;
+        this.emoji = emoji;
         this.title = title;
-        this.sumOfTask = sumOfTask;
+        this.numOfTasks = numOfTasks;
     }
 }

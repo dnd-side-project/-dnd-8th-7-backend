@@ -74,10 +74,10 @@ public class UserApi {
 
         User user = userService.getUser(email);
         UserGetResponse userGetResponse = UserGetResponse.builder()
-                .imgPath(user.getImagePath())
-                .user(user.getName())
+                .imgUrl(user.getImagePath())
+                .nickname(user.getName())
                 .introduction(user.getIntroduction())
-                .lock(user.getUserLock()).build();
+                .secret(user.getUserLock()).build();
         return ResponseEntity.ok(userGetResponse);
     }
 
@@ -88,10 +88,10 @@ public class UserApi {
         String email = userDetails.getUsername();
 
         UserGetDto userGetDto = UserGetDto.builder()
-                .imgPath(userGetResponse.getImgPath())
-                .user(userGetResponse.getUser())
+                .imgUrl(userGetResponse.getImgUrl())
+                .nickname(userGetResponse.getNickname())
                 .introduction(userGetResponse.getIntroduction())
-                .lock(userGetResponse.getLock()).build();
+                .secret(userGetResponse.getSecret()).build();
         userService.updateUser(email, userGetDto);
         return ResponseEntity.ok("");
     }

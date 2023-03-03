@@ -7,14 +7,14 @@ import java.util.List;
 
 @Data
 public class TaskSumDto {
-    private Integer sumOfTask;
-    private Integer sumOfDoneTask;
+    private Integer numOfTasks;
+    private Integer numOfDoneTask;
     private List<TaskPartDto> tasks;
 
     @Builder
-    public TaskSumDto(Integer sumOfTask, Integer sumOfDoneTask, List<TaskPartDto> tasks){
-        this.sumOfTask = sumOfTask;
-        this.sumOfDoneTask = sumOfDoneTask;
+    public TaskSumDto(Integer numOfTasks, Integer numOfDoneTask, List<TaskPartDto> tasks){
+        this.numOfTasks = numOfTasks;
+        this.numOfDoneTask = numOfDoneTask;
         this.tasks = tasks;
     }
 

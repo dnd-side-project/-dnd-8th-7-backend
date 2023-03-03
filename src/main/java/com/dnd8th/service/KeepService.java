@@ -63,10 +63,10 @@ public class KeepService {
             }
             KeepBlockResponse keepBlock = KeepBlockResponse.builder()
                     .blockId(keep.getId())
-                    .color(keep.getBlockColor())
-                    .icon(keep.getEmotion())
+                    .backgroundColor(keep.getBlockColor())
+                    .emoji(keep.getEmotion())
                     .title(keep.getTitle())
-                    .sumOfTask(keep.getSumOfTask()).build();
+                    .numOfTasks(keep.getSumOfTask()).build();
             keepBlocks.add(keepBlock);
         }
         return keepBlocks;

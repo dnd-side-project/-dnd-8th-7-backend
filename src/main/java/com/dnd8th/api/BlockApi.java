@@ -1,11 +1,7 @@
 package com.dnd8th.api;
 
 
-import com.dnd8th.dto.block.BlockCreateRequest;
-import com.dnd8th.dto.block.BlockMainGetResponse;
-import com.dnd8th.dto.block.BlockMainWeekGetResponse;
-import com.dnd8th.dto.block.BlockUpdateRequest;
-import com.dnd8th.dto.block.BlockGetResponse;
+import com.dnd8th.dto.block.*;
 import com.dnd8th.dto.keep.KeepBlockResponse;
 import com.dnd8th.dto.keep.KeepCreateRequest;
 import com.dnd8th.service.BlockService;
@@ -57,10 +53,10 @@ public class BlockApi {
 
     @GetMapping("/{date}")
     public ResponseEntity
-            <BlockMainWeekGetResponse> getMainWeek(@AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable("date") String date) {
+            <List<BlockWeekPartResponse>> getMainWeek(@AuthenticationPrincipal UserDetails userDetails,
+                                                      @PathVariable("date") String date) {
         String email = userDetails.getUsername();
-        BlockMainWeekGetResponse mainWeek = blockService.getBlockWeek(email, date);
+        List<BlockWeekPartResponse> mainWeek = blockService.getBlockWeek(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainWeek);
     }
 

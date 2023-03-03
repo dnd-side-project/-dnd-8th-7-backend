@@ -18,20 +18,18 @@ public class ReviewCreateRequest {
     @NotBlank
     private String date;
 
-    //    @Emoji
     @NotBlank
-    private String emoticon;
+    private String emoji;
 
     @NotBlank
     private String review;
-
     @NotNull
     private Boolean isSecret;
 
     @Builder
-    public ReviewCreateRequest(String date, String emoticon, String review, Boolean isSecret) {
+    public ReviewCreateRequest(String date, String emoji, String review, Boolean isSecret) {
         this.date = date;
-        this.emoticon = emoticon;
+        this.emoji = emoji;
         this.review = review;
         this.isSecret = isSecret;
     }
@@ -40,7 +38,7 @@ public class ReviewCreateRequest {
         return Review.builder()
                 .user(user)
                 .date(date)
-                .emotion(emoticon)
+                .emotion(emoji)
                 .retrospection(review)
                 .retrospectionLock(isSecret)
                 .build();

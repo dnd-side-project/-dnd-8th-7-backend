@@ -22,7 +22,7 @@ public class ReviewUpdateDao {
         queryFactory.update(review)
                 .set(review.retrospection, reviewUpdateRequest.getReview())
                 .set(review.retrospectionLock, reviewUpdateRequest.isSecret())
-                .set(review.emotion, reviewUpdateRequest.getEmoticon())
+                .set(review.emotion, reviewUpdateRequest.getEmoji())
                 .where(review.id.eq(reviewId))
                 .execute();
     }

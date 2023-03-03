@@ -13,12 +13,12 @@ public class UserSignUpResponse {
 
     @Email(message = "Invalid Email Format.")
     private String email;
-    private String name;
+    private String nickname;
 
 
     @Builder
     public UserSignUpResponse(User user) {
         this.email = user.getEmail();
-        this.name = user.getName();
+        this.nickname = user.getName();
     }
 }
