@@ -9,6 +9,7 @@ import com.dnd8th.error.exception.auth.AccessTokenNotFoundException;
 import com.dnd8th.error.exception.auth.ExternalApiFailException;
 import com.dnd8th.service.UserService;
 import java.util.Optional;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,9 +81,7 @@ public class AuthApi {
                 .orElseThrow(ExternalApiFailException::new)
                 .getEmail();
 
-        String givenName = Optional.ofNullable(userInfo.getBody())
-                .orElseThrow(ExternalApiFailException::new)
-                .getGivenName();
+        String randomUserName = "user@" + UUID.randomUUID().toString();
 
         Boolean isNewUser = false;
 
@@ -90,7 +89,7 @@ public class AuthApi {
         if (!userService.existsByEmail(email)) {
             userService.signUp(UserLoginRequest.builder()
                     .email(email)
-                    .nickname(givenName)
+                    .nickname(randomUserName)
                     .imageUrl(
                             "https://harublock-image-bucket.s3.ap-northeast-2.amazonaws.com/onboarding/default_profile_image.png")
                     .build());

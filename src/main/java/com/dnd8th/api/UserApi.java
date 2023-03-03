@@ -1,7 +1,9 @@
 package com.dnd8th.api;
 
+import com.dnd8th.dao.UserNameFindDuplicatedDao;
 import com.dnd8th.dto.user.UserGetDto;
 import com.dnd8th.dto.user.UserGetResponse;
+import com.dnd8th.dto.user.UserNameDuplicatedResponse;
 import com.dnd8th.entity.User;
 import com.dnd8th.service.AwsS3Service;
 import com.dnd8th.service.UserService;
@@ -16,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +34,7 @@ public class UserApi {
 
     private final UserService userService;
     private final AwsS3Service awsS3Service;
+    private final UserNameFindDuplicatedDao userNameFindDuplicatedDao;
 
     @DeleteMapping("")
     public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserDetails userDetails) {
@@ -38,6 +42,18 @@ public class UserApi {
 
         userService.deleteUser(email);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
+    }
+
+    @GetMapping("/nickname/{nickname}")
+    public ResponseEntity<UserNameDuplicatedResponse> getNameDuplicated(
+            @PathVariable String nickname) {
+        boolean nameDuplicated = userNameFindDuplicatedDao.isNameDuplicated(nickname);
+
+        UserNameDuplicatedResponse userNameDuplicatedResponse = UserNameDuplicatedResponse.builder()
+                .duplicated(nameDuplicated)
+                .build();
+
+        return ResponseEntity.ok(userNameDuplicatedResponse);
     }
 
     @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
