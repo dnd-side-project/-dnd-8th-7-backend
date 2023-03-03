@@ -22,24 +22,23 @@ public class BlockCreateRequest {
     @NotBlank
     private String title;
 
-    //    @Emoji
     @NotBlank
-    private String emoticon;
+    private String emoji;
 
     @ColorHex
     @NotBlank
-    private String blockColor;
+    private String backgroundColor;
 
     @NotNull
     private Boolean isSecret;
 
     @Builder
-    public BlockCreateRequest(String date, String title, String emoticon, String blockColor,
+    public BlockCreateRequest(String date, String title, String emoji, String backgroundColor,
             Boolean isSecret) {
         this.date = date;
         this.title = title;
-        this.emoticon = emoticon;
-        this.blockColor = blockColor;
+        this.emoji = emoji;
+        this.backgroundColor = backgroundColor;
         this.isSecret = isSecret;
     }
 
@@ -49,8 +48,8 @@ public class BlockCreateRequest {
                 .user(user)
                 .blockLock(isSecret)
                 .title(title)
-                .emotion(emoticon)
-                .blockColor(blockColor)
+                .emotion(emoji)
+                .blockColor(backgroundColor)
                 .date(date)
                 .build();
     }

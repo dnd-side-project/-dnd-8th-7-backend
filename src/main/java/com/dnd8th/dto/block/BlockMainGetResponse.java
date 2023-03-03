@@ -9,16 +9,17 @@ import java.util.List;
 @Data
 public class BlockMainGetResponse {
     private String date;
-    private Integer totalBlock;
-    private Integer totalTask;
+    private Integer numOfTotalBlocks;
+    private Integer numOfTotalTasks;
     private Long reviewId;
     private List<BlockPartDto> blocks = new ArrayList<>();
 
     @Builder
-    public BlockMainGetResponse(String date, Integer totalBlock, Integer totalTask, Long reviewId, List<BlockPartDto> blocks){
+    public BlockMainGetResponse(String date, Integer numOfTotalBlocks, Integer numOfTotalTasks,
+                                Long reviewId, List<BlockPartDto> blocks){
         this.date = date;
-        this.totalBlock = totalBlock;
-        this.totalTask = totalTask;
+        this.numOfTotalBlocks = numOfTotalBlocks;
+        this.numOfTotalTasks = numOfTotalTasks;
         this.reviewId = reviewId;
         this.blocks = blocks;
     }

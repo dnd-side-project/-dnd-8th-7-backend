@@ -10,22 +10,23 @@ import java.util.List;
 @Data
 public class BlockPartDto {
     private Long blockId;
-    private String color;
-    private String icon;
+    private String backgroundColor;
+    private String emoji;
     private String title;
-    private Integer sumOfTask;
-    private Integer sumOfDoneTask;
+    private Integer numOfTasks;
+    private Integer numOfDoneTask;
     private List<TaskPartDto> tasks = new ArrayList<>();
 
     @Builder
     public BlockPartDto(
-            Long blockId, String color, String icon, String title, Integer sumOfTask, Integer sumOfDoneTask, List<TaskPartDto> tasks) {
+            Long blockId, String backgroundColor, String emoji, String title, Integer numOfTasks,
+            Integer numOfDoneTask, List<TaskPartDto> tasks) {
         this.blockId = blockId;
-        this.color = color;
-        this.icon = icon;
+        this.backgroundColor = backgroundColor;
+        this.emoji = emoji;
         this.title = title;
-        this.sumOfTask = sumOfTask;
-        this.sumOfDoneTask = sumOfDoneTask;
+        this.numOfTasks = numOfTasks;
+        this.numOfDoneTask = numOfDoneTask;
         this.tasks = tasks;
     }
 }

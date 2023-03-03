@@ -6,11 +6,10 @@ import com.dnd8th.dao.ReviewFindDao;
 import com.dnd8th.dao.UserFindDao;
 import com.dnd8th.dto.block.BlockCreateRequest;
 import com.dnd8th.dto.block.BlockMainGetResponse;
-import com.dnd8th.dto.block.BlockMainWeekGetResponse;
 import com.dnd8th.dto.block.BlockPartDto;
 import com.dnd8th.dto.block.BlockSumDto;
 import com.dnd8th.dto.block.BlockUpdateRequest;
-import com.dnd8th.dto.block.BlockWeekPartDto;
+import com.dnd8th.dto.block.BlockWeekPartResponse;
 import com.dnd8th.dto.block.BlockGetResponse;
 import com.dnd8th.dto.task.TaskPartDto;
 import com.dnd8th.dto.task.TaskSumDto;
@@ -39,7 +38,6 @@ public class BlockService {
 
     private final BlockFindDao blockFindDao;
     private final BlockUpdateDao blockUpdateDao;
-    private final UserFindDao userFindDao;
     private final ReviewFindDao reviewFindDao;
     private final UserRepository userRepository;
     private final BlockRepository blockRepository;
@@ -62,9 +60,9 @@ public class BlockService {
         }
         String date = dateParser.toString(block.getDate());
         BlockGetResponse blockGetResponse = BlockGetResponse.builder()
-                .blockColor(block.getBlockColor())
-                .isSecret(block.getBlockLock())
-                .emoticon(block.getEmotion())
+                .backgroundColor(block.getBlockColor())
+                .secret(block.getBlockLock())
+                .emoji(block.getEmotion())
                 .title(block.getTitle())
                 .date(date).build();
         return blockGetResponse;
@@ -93,23 +91,17 @@ public class BlockService {
         blockRepository.delete(block);
     }
 
-    public BlockMainWeekGetResponse getBlockWeek(String email, String date) {
-        BlockMainWeekGetResponse blockMainWeekGetResponse = new BlockMainWeekGetResponse();
-        List<BlockWeekPartDto> blockWeekPartDto = new ArrayList<>();
+    public List<BlockWeekPartResponse> getBlockWeek(String email, String date) {
+        List<BlockWeekPartResponse> blockWeekPartResponse = new ArrayList<>();
         Date targetDate = dateParser.parseDate(date);
         targetDate.setDate(targetDate.getDate() - 4);
         for (int i = 0; i < 7; i++) {
             targetDate.setDate(targetDate.getDate() + 1);
             List<String> color = blockFindDao.findByEmailAndDate(email, targetDate);
-            BlockWeekPartDto week = convertToWeekDTO(color, targetDate);
-            blockWeekPartDto.add(week);
+            BlockWeekPartResponse week = convertToWeekDTO(color, targetDate);
+            blockWeekPartResponse.add(week);
         }
-        String name = userFindDao.findUserNameByEmail(email);
-        String imgPath = userFindDao.findUserImgPathByEmail(email);
-        blockMainWeekGetResponse.setUser(name);
-        blockMainWeekGetResponse.setImgPath(imgPath);
-        blockMainWeekGetResponse.setDailyBlocks(blockWeekPartDto);
-        return blockMainWeekGetResponse;
+        return blockWeekPartResponse;
     }
 
     public BlockMainGetResponse getBlockDetail(String email, String date) {
@@ -118,13 +110,16 @@ public class BlockService {
         List<Block> blocks = blockFindDao.getDailyBlock(email, targetDate);
         BlockSumDto blockSumDto = convertToSumBlock(blocks);
         Long reviewId = reviewFindDao.findByEmailAndDate(email, targetDate);
-        return new BlockMainGetResponse(dateParser.toString(targetDate),
-                blockSumDto.getTotalBlock(), blockSumDto.getTotalTask(),
-                reviewId, blockSumDto.getBlocks());
+        return BlockMainGetResponse.builder()
+                .date(dateParser.toString(targetDate))
+                .numOfTotalBlocks(blockSumDto.getNumOfTotalBlocks())
+                .numOfTotalTasks(blockSumDto.getNumOfTotalTasks())
+                .blocks(blockSumDto.getBlocks())
+                .reviewId(reviewId).build();
     }
 
-    private BlockWeekPartDto convertToWeekDTO(List<String> colors, Date date) {
-        return new BlockWeekPartDto(dateParser.toString(date), colors);
+    private BlockWeekPartResponse convertToWeekDTO(List<String> colors, Date date) {
+        return new BlockWeekPartResponse(dateParser.toString(date), colors);
     }
 
     private BlockSumDto convertToSumBlock(List<Block> blocks) {
@@ -135,13 +130,13 @@ public class BlockService {
             BlockPartDto blockdto = BlockPartDto.builder()
                     .blockId(block.getId())
                     .title(block.getTitle())
-                    .color(block.getBlockColor())
-                    .icon(block.getEmotion())
-                    .sumOfTask(task.getSumOfTask())
-                    .sumOfDoneTask(task.getSumOfDoneTask())
+                    .backgroundColor(block.getBlockColor())
+                    .emoji(block.getEmotion())
+                    .numOfTasks(task.getNumOfTasks())
+                    .numOfDoneTask(task.getNumOfDoneTask())
                     .tasks(task.getTasks()).build();
             blocksDto.add(blockdto);
-            totalTask = totalTask + task.getSumOfTask();
+            totalTask = totalTask + task.getNumOfTasks();
         }
         return new BlockSumDto(blocksDto.size(), totalTask, blocksDto);
     }
@@ -151,8 +146,10 @@ public class BlockService {
         List<Task> tasks = blockFindDao.getDailyTask(blockId);
         Integer done = 0;
         for (Task task : tasks) {
-            TaskPartDto taskPartDto = new TaskPartDto(task.getId(), task.getContents(),
-                    task.getStatus());
+            TaskPartDto taskPartDto = TaskPartDto.builder()
+                    .taskId(task.getId())
+                    .done(task.getStatus())
+                    .task(task.getContents()).build();
             tasksDto.add(taskPartDto);
             if (task.getStatus()) {
                 done = done + 1;

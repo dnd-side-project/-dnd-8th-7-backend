@@ -1,5 +1,6 @@
 package com.dnd8th.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,19 +12,20 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class UserGetResponse {
     @NotBlank
-    private String imgPath;
+    private String imgUrl;
     @NotBlank
-    private String user;
+    private String nickname;
     @NotBlank
     private String introduction;
+    @JsonProperty("isSecret")
     @NotNull
-    private Boolean lock;
+    private Boolean secret;
 
     @Builder
-    public UserGetResponse(String imgPath, String user, String introduction, Boolean lock) {
-        this.imgPath = imgPath;
-        this.user = user;
+    public UserGetResponse(String imgUrl, String nickname, String introduction, Boolean secret) {
+        this.imgUrl = imgUrl;
+        this.nickname = nickname;
         this.introduction = introduction;
-        this.lock = lock;
+        this.secret = secret;
     }
 }

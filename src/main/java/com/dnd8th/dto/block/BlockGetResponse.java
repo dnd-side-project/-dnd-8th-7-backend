@@ -2,6 +2,7 @@ package com.dnd8th.dto.block;
 
 import com.dnd8th.util.validator.ColorHex;
 import com.dnd8th.util.validator.YYYYMMDD;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,22 +21,23 @@ public class BlockGetResponse {
     private String title;
 
     @NotBlank
-    private String emoticon;
+    private String emoji;
 
     @ColorHex
     @NotBlank
-    private String blockColor;
+    private String backgroundColor;
 
+    @JsonProperty("isSecret")
     @NotNull
-    private Boolean isSecret;
+    private Boolean secret;
 
     @Builder
-    public BlockGetResponse(String date, String title, String emoticon, String blockColor,
-                              Boolean isSecret) {
+    public BlockGetResponse(String date, String title, String emoji, String backgroundColor,
+                              Boolean secret) {
         this.date = date;
         this.title = title;
-        this.emoticon = emoticon;
-        this.blockColor = blockColor;
-        this.isSecret = isSecret;
+        this.emoji = emoji;
+        this.backgroundColor = backgroundColor;
+        this.secret = secret;
     }
 }

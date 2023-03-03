@@ -17,22 +17,22 @@ public class UserLoginRequest {
     private String email;
 
     @NotBlank
-    private String name;
+    private String nickname;
 
-    private String imagePath;
+    private String imageUrl;
 
     @Builder
-    public UserLoginRequest(String email, String name, String imagePath) {
+    public UserLoginRequest(String email, String nickname, String imageUrl) {
         this.email = email;
-        this.name = name;
-        this.imagePath = imagePath;
+        this.nickname = nickname;
+        this.imageUrl = imageUrl;
     }
 
     public User toEntity() {
         return User.builder()
                 .email(email)
-                .name(name)
-                .imagePath(imagePath)
+                .name(nickname)
+                .imagePath(imageUrl)
                 .role(Role.USER)
                 .build();
     }

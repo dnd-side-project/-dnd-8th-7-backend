@@ -7,14 +7,14 @@ import java.util.List;
 
 @Data
 public class BlockSumDto {
-    private Integer totalBlock;
-    private Integer totalTask;
+    private Integer numOfTotalBlocks;
+    private Integer numOfTotalTasks;
     private List<BlockPartDto> blocks;
 
     @Builder
-    public BlockSumDto(Integer totalBlock, Integer totalTask, List<BlockPartDto> blocks){
-        this.totalBlock = totalBlock;
-        this.totalTask = totalTask;
+    public BlockSumDto(Integer numOfTotalBlocks, Integer numOfTotalTasks, List<BlockPartDto> blocks){
+        this.numOfTotalBlocks = numOfTotalBlocks;
+        this.numOfTotalTasks = numOfTotalTasks;
         this.blocks = blocks;
     }
 }

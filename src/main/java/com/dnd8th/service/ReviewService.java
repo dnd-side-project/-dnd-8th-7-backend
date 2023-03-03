@@ -56,7 +56,7 @@ public class ReviewService {
         String date = dateParser.toString(review.getDate());
         ReviewGetResponse reviewGetResponse = ReviewGetResponse.builder()
                 .date(date)
-                .emoticon(review.getEmotion())
+                .emoji(review.getEmotion())
                 .review(review.getRetrospection())
                 .secret(review.getRetrospectionLock()).build();
         return reviewGetResponse;
