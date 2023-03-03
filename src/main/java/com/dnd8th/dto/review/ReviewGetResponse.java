@@ -19,13 +19,13 @@ public class ReviewGetResponse {
     @NotBlank
     private String review;
     @NotNull
-    private boolean isSecret;
+    private boolean secret;
 
     @Builder
-    public ReviewGetResponse(String date, String emoticon, String review, Boolean isSecret) {
+    public ReviewGetResponse(String date, String emoticon, String review, Boolean secret) {
         this.date = date;
         this.emoticon = emoticon;
         this.review = review;
-        this.isSecret = isSecret;
+        this.secret = secret;
     }
 }
