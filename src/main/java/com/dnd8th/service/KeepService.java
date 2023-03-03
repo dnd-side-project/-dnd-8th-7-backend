@@ -85,7 +85,8 @@ public class KeepService {
     public void createKeepBlockOnADate(List<Long> blockIds, String email, String date) {
         Date targetDate = dateParser.parseDate(date);
         for( Long blockId: blockIds) {
-            Block block = blockRepository.findById(blockId).orElseThrow(BlockNotFoundException::new);
+            Keep keep = keepRepository.findById(blockId).orElseThrow(KeepNotFoundException::new);
+            Block block = blockRepository.findById(keep.getBlock().getId()).orElseThrow(BlockNotFoundException::new);
             User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
             Block newBlock = Block.builder()
                     .blockLock(false)
