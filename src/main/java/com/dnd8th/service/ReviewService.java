@@ -58,7 +58,7 @@ public class ReviewService {
                 .date(date)
                 .emoticon(review.getEmotion())
                 .review(review.getRetrospection())
-                .isSecret(review.getRetrospectionLock()).build();
+                .secret(review.getRetrospectionLock()).build();
         return reviewGetResponse;
     }
 
