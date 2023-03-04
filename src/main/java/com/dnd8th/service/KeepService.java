@@ -97,7 +97,7 @@ public class KeepService {
                     .emotion(block.getEmotion())
                     .user(user).build();
             Block createdBlock = blockRepository.save(newBlock);
-            setTask(createdBlock, blockId);
+            setTask(createdBlock, keep.getBlock().getId());
         }
     }
 
