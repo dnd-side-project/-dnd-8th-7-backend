@@ -22,9 +22,8 @@ import static com.dnd8th.entity.QTask.task;
 public class BlockFindDao{
     private final JPAQueryFactory queryFactory;
 
-    public List<String> findByEmailAndDate(String email, Date date) {
-        return queryFactory.select(block.blockColor)
-                .from(block)
+    public List<Block> findByEmailAndDate(String email, Date date) {
+        return queryFactory.selectFrom(block)
                 .where(block.user.email.eq(email), block.date.eq(date))
                 .orderBy(block.createdAt.asc())
                 .fetch();

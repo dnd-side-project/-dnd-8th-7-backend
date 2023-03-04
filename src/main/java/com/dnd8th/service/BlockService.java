@@ -4,13 +4,7 @@ import com.dnd8th.dao.BlockFindDao;
 import com.dnd8th.dao.BlockUpdateDao;
 import com.dnd8th.dao.ReviewFindDao;
 import com.dnd8th.dao.UserFindDao;
-import com.dnd8th.dto.block.BlockCreateRequest;
-import com.dnd8th.dto.block.BlockMainGetResponse;
-import com.dnd8th.dto.block.BlockPartDto;
-import com.dnd8th.dto.block.BlockSumDto;
-import com.dnd8th.dto.block.BlockUpdateRequest;
-import com.dnd8th.dto.block.BlockWeekPartResponse;
-import com.dnd8th.dto.block.BlockGetResponse;
+import com.dnd8th.dto.block.*;
 import com.dnd8th.dto.task.TaskPartDto;
 import com.dnd8th.dto.task.TaskSumDto;
 import com.dnd8th.entity.Block;
@@ -97,8 +91,8 @@ public class BlockService {
         targetDate.setDate(targetDate.getDate() - 4);
         for (int i = 0; i < 7; i++) {
             targetDate.setDate(targetDate.getDate() + 1);
-            List<String> color = blockFindDao.findByEmailAndDate(email, targetDate);
-            BlockWeekPartResponse week = convertToWeekDTO(color, targetDate);
+            List<Block> blocks = blockFindDao.findByEmailAndDate(email, targetDate);
+            BlockWeekPartResponse week = convertToWeekDTO(blocks, targetDate);
             blockWeekPartResponse.add(week);
         }
         return blockWeekPartResponse;
@@ -118,8 +112,18 @@ public class BlockService {
                 .reviewId(reviewId).build();
     }
 
-    private BlockWeekPartResponse convertToWeekDTO(List<String> colors, Date date) {
-        return new BlockWeekPartResponse(dateParser.toString(date), colors);
+    private BlockWeekPartResponse convertToWeekDTO(List<Block> blocks, Date date) {
+        List<BlockWeekPartDto> blockWeekPartDtos = new ArrayList<>();
+        for(Block block:blocks){
+            BlockWeekPartDto blockWeekPartDto = BlockWeekPartDto.builder()
+                    .blockId(block.getId())
+                    .backgroundColor(block.getBlockColor()).build();
+            blockWeekPartDtos.add(blockWeekPartDto);
+        }
+        return BlockWeekPartResponse.builder()
+                .date(dateParser.toString(date))
+                .backgroundColors(blockWeekPartDtos)
+                .build();
     }
 
     private BlockSumDto convertToSumBlock(List<Block> blocks) {

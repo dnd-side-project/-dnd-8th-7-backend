@@ -9,10 +9,10 @@ import java.util.List;
 @Data
 public class BlockWeekPartResponse {
     private String date;
-    private List<String> backgroundColors = new ArrayList<>();
+    private List<BlockWeekPartDto> backgroundColors = new ArrayList<>();
 
     @Builder
-    public BlockWeekPartResponse(String date, List<String> backgroundColors) {
+    public BlockWeekPartResponse(String date, List<BlockWeekPartDto> backgroundColors) {
         this.date = date;
         this.backgroundColors = backgroundColors;
     }
