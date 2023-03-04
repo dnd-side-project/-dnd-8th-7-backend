@@ -28,5 +28,24 @@
 - **Front-end** : TypeScript, Next, React Native, Zustand, Tailwind, Storybook
 - **Back-end** : Java, Spring boot, Spring Data Jpa, QueryDSL, JUnit
 - **DB** : PostgreSql, Redis
-- **Infra** : AWS Services(EC2, S3, RDS, Route53, CloudFront),
-  Docker
+- **Infra** : AWS Services(EC2, S3, RDS, Route53, CloudFront), Docker
+
+## 📋 API Docs
+
+[API Docs](https://www.notion.so/eunseong/API-ad7cd23937574300ad77c5ac7307919d)
+
+## 🛠️ Architecture
+
+<details>
+<summary><b>Version 1</b></summary>
+<img src="https://user-images.githubusercontent.com/86864534/222876094-b6406625-e1f9-4a98-8f6f-ca055a1d42c7.png"/>
+</details>
+
+## 📈 ERD
+
+## ✍️ Process Docs
+
+<details>
+  <summary><b>User Login Process</b></summary>
+  <img src="https://user-images.githubusercontent.com/86864534/222876245-a21fb974-dc5e-4dc2-8512-2bf93cc5b485.png" />
+</details>
