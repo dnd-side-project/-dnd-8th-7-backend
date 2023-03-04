@@ -44,7 +44,7 @@ public class Block extends BaseEntity {
     @JoinColumn(name = "user_email")
     private User user;
 
-    @OneToOne(mappedBy = "block")
+    @OneToOne(mappedBy = "block", orphanRemoval = true)
     private Keep keep;
 
     @Builder
