@@ -113,12 +113,12 @@ public class KeepService {
                 .emotion(block.getEmotion())
                 .user(user).build();
         Block createdBlock = blockRepository.save(newBlock);
-        setTask(createdBlock, createdBlock.getId());
+        setTask(createdBlock, blockId);
         return createdBlock;
     }
 
-    public void setTask(Block block, Long originBlockId){
-        List<Task> tasks = taskRepository.findByBlock_Id(originBlockId);
+    public void setTask(Block block, Long BlockId){
+        List<Task> tasks = taskRepository.findByBlock_Id(BlockId);
         for(Task task: tasks) {
             Task newTask = Task.builder()
                     .status(false)
