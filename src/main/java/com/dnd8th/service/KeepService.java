@@ -41,9 +41,10 @@ public class KeepService {
     public void createKeepBlock(Long blockId, String email) {
         Block block = blockRepository.findById(blockId).orElseThrow(BlockNotFoundException::new);
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        Block newblock = createKeepSingleBlockOnADate(blockId, email, "0000-01-01");
         List<Task> tasks = blockFindDao.getDailyTask(blockId);
         Keep keep = Keep.builder()
-                .block(block)
+                .block(newblock)
                 .user(user)
                 .blockColor(block.getBlockColor())
                 .emotion(block.getEmotion())
@@ -84,7 +85,7 @@ public class KeepService {
 
     public void createKeepBlockOnADate(List<Long> blockIds, String email, String date) {
         Date targetDate = dateParser.parseDate(date);
-        for( Long blockId: blockIds) {
+        for (Long blockId : blockIds) {
             Keep keep = keepRepository.findById(blockId).orElseThrow(KeepNotFoundException::new);
             Block block = blockRepository.findById(keep.getBlock().getId()).orElseThrow(BlockNotFoundException::new);
             User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
@@ -98,6 +99,22 @@ public class KeepService {
             Block createdBlock = blockRepository.save(newBlock);
             setTask(createdBlock, blockId);
         }
+    }
+
+    public Block createKeepSingleBlockOnADate(Long blockId, String email, String date) {
+        Date targetDate = dateParser.parseDate(date);
+        Block block = blockRepository.findById(blockId).orElseThrow(BlockNotFoundException::new);
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        Block newBlock = Block.builder()
+                .blockLock(false)
+                .title(block.getTitle())
+                .blockColor(block.getBlockColor())
+                .date(targetDate)
+                .emotion(block.getEmotion())
+                .user(user).build();
+        Block createdBlock = blockRepository.save(newBlock);
+        setTask(createdBlock, blockId);
+        return createdBlock;
     }
 
     public void setTask(Block block, Long originBlockId){

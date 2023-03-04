@@ -44,7 +44,7 @@ public class Block extends BaseEntity {
     @JoinColumn(name = "user_email")
     private User user;
 
-    @OneToOne(mappedBy = "block", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "block", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Keep keep;
 
     @Builder
