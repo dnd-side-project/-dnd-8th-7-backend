@@ -1,9 +1,8 @@
 package com.dnd8th.service;
 
-import com.dnd8th.dao.BlockFindDao;
-import com.dnd8th.dao.BlockUpdateDao;
-import com.dnd8th.dao.ReviewFindDao;
-import com.dnd8th.dao.UserFindDao;
+import com.dnd8th.dao.block.BlockFindDao;
+import com.dnd8th.dao.block.BlockUpdateDao;
+import com.dnd8th.dao.review.ReviewFindDao;
 import com.dnd8th.dto.block.*;
 import com.dnd8th.dto.task.TaskPartDto;
 import com.dnd8th.dto.task.TaskSumDto;

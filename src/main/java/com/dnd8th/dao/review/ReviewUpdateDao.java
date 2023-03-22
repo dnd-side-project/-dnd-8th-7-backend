@@ -1,4 +1,4 @@
-package com.dnd8th.dao;
+package com.dnd8th.dao.review;
 
 import com.dnd8th.dto.review.ReviewUpdateRequest;
 import com.querydsl.jpa.impl.JPAQueryFactory;

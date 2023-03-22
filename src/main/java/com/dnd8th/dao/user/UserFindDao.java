@@ -1,4 +1,4 @@
-package com.dnd8th.dao;
+package com.dnd8th.dao.user;
 
 import com.dnd8th.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;

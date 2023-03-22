@@ -1,6 +1,6 @@
 package com.dnd8th.service;
 
-import com.dnd8th.dao.ReviewUpdateDao;
+import com.dnd8th.dao.review.ReviewUpdateDao;
 import com.dnd8th.dto.review.ReviewCreateRequest;
 import com.dnd8th.dto.review.ReviewGetResponse;
 import com.dnd8th.dto.review.ReviewUpdateRequest;
