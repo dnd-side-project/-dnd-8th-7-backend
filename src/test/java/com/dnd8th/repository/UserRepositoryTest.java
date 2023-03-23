@@ -53,4 +53,17 @@ class UserRepositoryTest {
                 .orElseThrow(UserNotFoundException::new))
                 .isInstanceOf(UserNotFoundException.class);
     }
+
+    @Test
+    @DisplayName("email 중복 여부를 확인하기 위해 해당 email 존재 여부를 확인한다.")
+    void existsByEmail() {
+        //given
+        String email = "test@gmail.com";
+
+        //when
+        boolean existsByEmail = userRepository.existsByEmail(email);
+
+        //then
+        assertThat(existsByEmail).isTrue();
+    }
 }
