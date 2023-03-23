@@ -64,9 +64,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     //test container
-    testImplementation "org.testcontainers:testcontainers"
-    testImplementation "org.testcontainers:junit-jupiter"
-    testImplementation "org.testcontainers:postgresql"
+    testImplementation "org.testcontainers:testcontainers:1.17.2"
+    testImplementation "org.testcontainers:junit-jupiter:1.17.2"
+    testImplementation "org.testcontainers:postgresql:1.17.6"
 }
 
 jar {
