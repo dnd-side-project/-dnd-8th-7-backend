@@ -63,6 +63,9 @@ dependencies {
     //aws service
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+    //Rest Assured
+    testImplementation 'io.rest-assured:rest-assured:3.3.0'
+
     //test container
     testImplementation "org.testcontainers:testcontainers:1.17.2"
     testImplementation "org.testcontainers:junit-jupiter:1.17.2"
