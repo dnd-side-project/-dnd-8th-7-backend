@@ -27,26 +27,25 @@ public enum ErrorCode {
     REFRESH_TOKEN_EXPIRED("AT05", "Refreshed Token is Expired.", HttpStatus.UNAUTHORIZED.value()),
 
     // Block
-
     BLOCK_NOT_FOUND("B01", "Block is not Found.", HttpStatus.BAD_REQUEST.value()),
     BLOCK_ACCESS_DENIED("B02", "Block Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
 
     // Task
-
     TASK_NOT_FOUND("T01", "Task is not Found.", HttpStatus.BAD_REQUEST.value()),
     TASK_ACCESS_DENIED("T02", "Task Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
 
     // Review
-
     REVIEW_NOT_FOUND("R01", "Review is not Found.", HttpStatus.BAD_REQUEST.value()),
     REVIEW_ACCESS_DENIED("R02", "Review Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
 
     // Keep
-
     KEEP_NOT_FOUND("K01", "Keep is not Found.", HttpStatus.BAD_REQUEST.value()),
     KEEP_ACCESS_DENIED("K02", "Keep Access is Denied.", HttpStatus.UNAUTHORIZED.value()),
 
-    // external API
+    // Report
+    MONTH_INPUT_INVALID("RP01", "Month Input is Invalid.", HttpStatus.BAD_REQUEST.value()),
+
+    // External API
     EXTERNAL_API_FAILED("E01", "External API Request is failed.",
             HttpStatus.INTERNAL_SERVER_ERROR.value()),
     IMAGE_UPLOADED_FAILED("E02", "Image Upload API Request is failed.",
