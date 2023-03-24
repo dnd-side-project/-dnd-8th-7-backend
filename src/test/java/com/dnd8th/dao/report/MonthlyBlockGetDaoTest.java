@@ -2,6 +2,7 @@ package com.dnd8th.dao.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.dnd8th.dto.report.MonthlyBlockGetDTO;
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Role;
 import com.dnd8th.entity.Task;
@@ -74,11 +75,12 @@ class MonthlyBlockGetDaoTest {
         Integer month = 3;
 
         //when
-        List<Block> blocks = monthlyBlockGetDao.getMonthlyBlock(userEmail, month);
+        List<MonthlyBlockGetDTO> monthlyBlock = monthlyBlockGetDao.getMonthlyBlock(userEmail,
+                month);
 
         //then
-        assertThat(blocks.size()).isEqualTo(8);
-        for (Block block : blocks) {
+        assertThat(monthlyBlock.size()).isEqualTo(8);
+        for (MonthlyBlockGetDTO block : monthlyBlock) {
             assertThat(block.getTasks().size()).isEqualTo(3);
         }
     }
