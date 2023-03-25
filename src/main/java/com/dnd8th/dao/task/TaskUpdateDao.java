@@ -1,4 +1,4 @@
-package com.dnd8th.dao;
+package com.dnd8th.dao.task;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

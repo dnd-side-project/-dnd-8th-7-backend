@@ -1,4 +1,4 @@
-package com.dnd8th.dao;
+package com.dnd8th.dao.block;
 
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Task;

@@ -1,7 +1,7 @@
 package com.dnd8th.service;
 
-import com.dnd8th.dao.BlockFindDao;
-import com.dnd8th.dao.KeepFindDao;
+import com.dnd8th.dao.block.BlockFindDao;
+import com.dnd8th.dao.keep.KeepFindDao;
 import com.dnd8th.dto.keep.KeepBlockResponse;
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Keep;
