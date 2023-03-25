@@ -23,12 +23,6 @@ jobs:
           java-version: '11'
           distribution: 'temurin' # https://github.com/actions/setup-java
 
-      ## set up Docker engine environment
-      - name: Set up Docker engine
-        uses: docker/setup-docker@v2.6.1
-        with:
-          docker-version: '20.10.11'
-
       ## gradle caching
       - name: Gradle Caching
         uses: actions/cache@v3
