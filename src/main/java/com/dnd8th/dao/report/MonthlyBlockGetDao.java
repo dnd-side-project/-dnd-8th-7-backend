@@ -1,9 +1,8 @@
 package com.dnd8th.dao.report;
 
 import static com.dnd8th.entity.QBlock.block;
+import static com.dnd8th.entity.QKeep.keep;
 import static com.dnd8th.entity.QTask.task;
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.list;
 
 import com.dnd8th.dto.report.MonthlyBlockGetDTO;
 import com.dnd8th.dto.report.MonthlyTaskGetDTO;
@@ -25,18 +24,27 @@ public class MonthlyBlockGetDao {
     private final JPAQueryFactory queryFactory;
 
     public List<MonthlyBlockGetDTO> getMonthlyBlock(String userEmail, Integer month) {
-        Map<Block, List<Task>> transform = queryFactory.selectFrom(block)
+        List<Block> blocks = queryFactory.selectFrom(block)
+                .leftJoin(block.tasks, task).fetchJoin()
+                .leftJoin(block.keep, keep).fetchJoin()
                 .where(block.user.email.eq(userEmail)
                         .and(block.date.month().eq(month)))
                 .orderBy(block.createdAt.asc())
-                .leftJoin(block.tasks, task)
-                .transform(groupBy(block).as(list(task)));
+                .fetch();
+
+        List<Task> tasks = queryFactory.selectFrom(task)
+                .where(task.block.in(blocks))
+                .fetch();
+
+        Map<Block, List<Task>> transform = tasks.stream()
+                .collect(Collectors.groupingBy(Task::getBlock));
 
         return transform.entrySet().stream()
                 .map(entry -> {
                     Block block = entry.getKey();
-                    List<Task> tasks = entry.getValue();
-                    List<MonthlyTaskGetDTO> taskGetDTOS = tasks.stream().map(MonthlyTaskGetDTO::new)
+                    List<Task> taskList = entry.getValue();
+                    List<MonthlyTaskGetDTO> taskGetDTOS = taskList.stream()
+                            .map(MonthlyTaskGetDTO::new)
                             .collect(Collectors.toList());
                     return MonthlyBlockGetDTO.builder()
                             .id(block.getId())
