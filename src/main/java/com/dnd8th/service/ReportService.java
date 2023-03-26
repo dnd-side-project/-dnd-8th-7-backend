@@ -26,10 +26,13 @@ public class ReportService {
         }
 
         List<MonthlyBlockGetDTO> monthlyBlock = getMonthlyBlock(userEmail, month);
+        if (monthlyBlock != null) {
+            String mostTaskRateBlockContent = getMostTaskRateBlockContent(monthlyBlock);
 
-        String mostTaskRateBlockContent = getMostTaskRateBlockContent(monthlyBlock);
-
-        return new MostTaskRateBlockGetResponse(mostTaskRateBlockContent);
+            return new MostTaskRateBlockGetResponse(mostTaskRateBlockContent);
+        } else {
+            return new MostTaskRateBlockGetResponse(null);
+        }
     }
 
     private String getMostTaskRateBlockContent(List<MonthlyBlockGetDTO> monthlyBlock) {
