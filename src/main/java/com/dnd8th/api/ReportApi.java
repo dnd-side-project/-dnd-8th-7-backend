@@ -1,6 +1,6 @@
 package com.dnd8th.api;
 
-import com.dnd8th.dto.report.MostTaskRateBlockGetResponse;
+import com.dnd8th.dto.report.ReportBlockGetResponse;
 import com.dnd8th.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +19,26 @@ public class ReportApi {
     private final ReportService reportService;
 
     @GetMapping("/most-task-rate/{month}")
-    public ResponseEntity<MostTaskRateBlockGetResponse> getMostTaskRateBlock(
+    public ResponseEntity<ReportBlockGetResponse> getMostTaskRateBlock(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Integer month) {
 
         String userEmail = userDetails.getUsername();
-        MostTaskRateBlockGetResponse mostTaskRateBlock = reportService.getMostTaskRateBlock(
+        ReportBlockGetResponse mostTaskRateBlock = reportService.getMostTaskRateBlock(
                 userEmail, month);
 
         return ResponseEntity.ok().body(mostTaskRateBlock);
+    }
+
+    @GetMapping("/most-made-block/{month}")
+    public ResponseEntity<ReportBlockGetResponse> getMostMadeBlock(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Integer month) {
+
+        String userEmail = userDetails.getUsername();
+        ReportBlockGetResponse mostMadeBlock = reportService.getMostMadeBlock(
+                userEmail, month);
+
+        return ResponseEntity.ok().body(mostMadeBlock);
     }
 }

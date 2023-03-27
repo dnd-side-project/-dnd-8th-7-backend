@@ -1,4 +1,4 @@
-package com.dnd8th;
+package com.dnd8th.config;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.containers.PostgreSQLContainer;
