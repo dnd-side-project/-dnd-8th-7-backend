@@ -19,11 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MonthlyBlockGetDao {
+public class MonthlyBlockTaskGetDao {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<MonthlyBlockGetDTO> getMonthlyBlock(String userEmail, Integer month) {
+    public List<MonthlyBlockGetDTO> getMonthlyBlockAndTask(String userEmail, Integer month) {
         List<Block> blocks = queryFactory.selectFrom(block)
                 .leftJoin(block.tasks, task).fetchJoin()
                 .leftJoin(block.keep, keep).fetchJoin()

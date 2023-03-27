@@ -21,10 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-class MonthlyBlockGetDaoTest {
+class MonthlyBlockTaskGetDaoTest {
 
     @Autowired
-    MonthlyBlockGetDao monthlyBlockGetDao;
+    MonthlyBlockTaskGetDao monthlyBlockTaskGetDao;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -75,7 +75,8 @@ class MonthlyBlockGetDaoTest {
         Integer month = 3;
 
         //when
-        List<MonthlyBlockGetDTO> monthlyBlock = monthlyBlockGetDao.getMonthlyBlock(userEmail,
+        List<MonthlyBlockGetDTO> monthlyBlock = monthlyBlockTaskGetDao.getMonthlyBlockAndTask(
+                userEmail,
                 month);
 
         //then

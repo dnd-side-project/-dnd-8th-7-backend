@@ -3,8 +3,8 @@ package com.dnd8th.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.dnd8th.dao.report.MonthlyBlockGetDao;
-import com.dnd8th.dto.report.MostTaskRateBlockGetResponse;
+import com.dnd8th.dao.report.MonthlyBlockTaskGetDao;
+import com.dnd8th.dto.report.ReportBlockGetResponse;
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Role;
 import com.dnd8th.entity.Task;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 class ReportServiceTest {
 
     @Autowired
-    MonthlyBlockGetDao monthlyBlockGetDao;
+    MonthlyBlockTaskGetDao monthlyBlockTaskGetDao;
     @Autowired
     ReportService reportService;
     @Autowired
@@ -107,7 +107,7 @@ class ReportServiceTest {
         Integer month = 3;
 
         //when
-        MostTaskRateBlockGetResponse mostTaskRateBlock = reportService.getMostTaskRateBlock(
+        ReportBlockGetResponse mostTaskRateBlock = reportService.getMostTaskRateBlock(
                 userEmail, month);
 
         //then
@@ -122,7 +122,7 @@ class ReportServiceTest {
         Integer month = 3;
 
         //when
-        MostTaskRateBlockGetResponse mostTaskRateBlock = reportService.getMostTaskRateBlock(
+        ReportBlockGetResponse mostTaskRateBlock = reportService.getMostTaskRateBlock(
                 userEmail, month);
 
         //then

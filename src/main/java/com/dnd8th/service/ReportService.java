@@ -1,6 +1,6 @@
 package com.dnd8th.service;
 
-import com.dnd8th.dao.report.MonthlyBlockGetDao;
+import com.dnd8th.dao.report.MonthlyBlockTaskGetDao;
 import com.dnd8th.dto.report.MonthlyBlockGetDTO;
 import com.dnd8th.dto.report.MonthlyTaskGetDTO;
 import com.dnd8th.dto.report.ReportBlockGetResponse;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReportService {
 
-    private final MonthlyBlockGetDao monthlyBlockGetDao;
+    private final MonthlyBlockTaskGetDao monthlyBlockTaskGetDao;
 
     private static void isMonthValid(Integer month) {
         if (month < 1 || month > 12) {
@@ -90,7 +90,7 @@ public class ReportService {
     }
 
     private List<MonthlyBlockGetDTO> getMonthlyBlock(String userEmail, Integer month) {
-        return monthlyBlockGetDao.getMonthlyBlock(userEmail, month);
+        return monthlyBlockTaskGetDao.getMonthlyBlockAndTask(userEmail, month);
     }
 
 }
