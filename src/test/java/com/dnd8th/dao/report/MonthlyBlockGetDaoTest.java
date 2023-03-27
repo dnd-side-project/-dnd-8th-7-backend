@@ -2,13 +2,11 @@ package com.dnd8th.dao.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.dnd8th.dto.report.MonthlyBlockAndTaskGetDTO;
+import com.dnd8th.dto.report.MonthlyBlockGetDTO;
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Role;
-import com.dnd8th.entity.Task;
 import com.dnd8th.entity.User;
 import com.dnd8th.repository.BlockRepository;
-import com.dnd8th.repository.TaskRepository;
 import com.dnd8th.repository.UserRepository;
 import com.dnd8th.util.DateParser;
 import java.util.List;
@@ -21,18 +19,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-class MonthlyBlockTaskGetDaoTest {
+class MonthlyBlockGetDaoTest {
 
     @Autowired
-    MonthlyBlockTaskGetDao monthlyBlockTaskGetDao;
+    private MonthlyBlockGetDao monthlyBlockGetDao;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    BlockRepository blockRepository;
+    private BlockRepository blockRepository;
     @Autowired
-    TaskRepository taskRepository;
-    @Autowired
-    DateParser dateParser;
+    private DateParser dateParser;
 
     @BeforeEach
     void setUp() {
@@ -55,50 +51,39 @@ class MonthlyBlockTaskGetDaoTest {
                     .build()
             );
             savedBlock.getId();
-
-            for (int j = 0; j < 3; j++) {
-                taskRepository.save(Task.builder()
-                        .block(savedBlock)
-                        .status(true)
-                        .contents("task" + j)
-                        .build()
-                );
-            }
         }
     }
+
 
     @Test
     @DisplayName("월별 블록을 정상적으로 조회할 수 있다.")
-    void getMonthlyBlock() {
+    void getMonthlyBlockList() {
         //given
-        String userEmail = "test@gmail.com";
+        String email = "test@gmail.com";
         Integer month = 3;
 
         //when
-        List<MonthlyBlockAndTaskGetDTO> monthlyBlock = monthlyBlockTaskGetDao.getMonthlyBlockAndTask(
-                userEmail,
+        List<MonthlyBlockGetDTO> monthlyBlockList = monthlyBlockGetDao.getMonthlyBlockList(email,
                 month);
 
         //then
-        assertThat(monthlyBlock.size()).isEqualTo(8);
-        for (MonthlyBlockAndTaskGetDTO block : monthlyBlock) {
-            assertThat(block.getTasks().size()).isEqualTo(3);
-        }
+        assertThat(monthlyBlockList.size()).isEqualTo(8);
+        assertThat(monthlyBlockList.get(0).getTitle()).isEqualTo("content1");
     }
 
     @Test
-    @DisplayName("월별 블록이 없는 경우, 빈 리스트를 반환한다.")
-    void getMonthlyBlockWhenNoBlock() {
+    @DisplayName("해당 월의 블록이 없는 경우 빈 리스트를 반환한다.")
+    void getMonthlyBlockListNoBlock() {
         //given
-        String userEmail = "test@gmail.com";
-        Integer month = 2;
+        String email = "test@gmail.com";
+        Integer month = 11;
 
         //when
-        List<MonthlyBlockAndTaskGetDTO> monthlyBlock = monthlyBlockTaskGetDao.getMonthlyBlockAndTask(
-                userEmail,
+        List<MonthlyBlockGetDTO> monthlyBlockList = monthlyBlockGetDao.getMonthlyBlockList(email,
                 month);
 
         //then
-        assertThat(monthlyBlock.size()).isEqualTo(0);
+        assertThat(monthlyBlockList.size()).isEqualTo(0);
     }
+
 }

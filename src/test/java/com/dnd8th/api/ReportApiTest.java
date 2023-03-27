@@ -94,14 +94,36 @@ class ReportApiTest {
 
         // when
         ExtractableResponse<Response> extractableResponse = RestAssured.given()
+                .log().all()
                 .header("Authorization", authHeader)
                 .when()
                 .get("/api/report/most-task-rate/" + month)
                 .then()
                 .extract();
+
         // then
         assertThat(extractableResponse.statusCode()).isEqualTo(200);
+    }
 
+    @Test
+    @DisplayName("정상적으로 가장 많이 만든 블록을 확인할 수 있다.")
+    void getMostMadeBlock() {
+        // given
+        String token = jwtProviderService.generateToken("test@gmail.com", "");
+        String authHeader = "Bearer " + token;
+        Integer month = 3;
+
+        // when
+        ExtractableResponse<Response> extractableResponse = RestAssured.given()
+                .log().all()
+                .header("Authorization", authHeader)
+                .when()
+                .get("/api/report/most-made-block/" + month)
+                .then()
+                .extract();
+
+        // then
+        assertThat(extractableResponse.statusCode()).isEqualTo(200);
     }
 
 }
