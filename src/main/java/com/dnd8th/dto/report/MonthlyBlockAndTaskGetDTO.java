@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class MonthlyBlockGetDTO {
+public class MonthlyBlockAndTaskGetDTO {
 
     private Long id;
     private String title;
@@ -14,7 +14,7 @@ public class MonthlyBlockGetDTO {
     private List<MonthlyTaskGetDTO> tasks;
 
     @Builder
-    public MonthlyBlockGetDTO(Long id, String title, List<MonthlyTaskGetDTO> tasks) {
+    public MonthlyBlockAndTaskGetDTO(Long id, String title, List<MonthlyTaskGetDTO> tasks) {
         this.id = id;
         this.title = title;
         this.tasks = tasks;

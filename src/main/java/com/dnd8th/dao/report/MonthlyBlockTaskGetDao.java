@@ -4,7 +4,7 @@ import static com.dnd8th.entity.QBlock.block;
 import static com.dnd8th.entity.QKeep.keep;
 import static com.dnd8th.entity.QTask.task;
 
-import com.dnd8th.dto.report.MonthlyBlockGetDTO;
+import com.dnd8th.dto.report.MonthlyBlockAndTaskGetDTO;
 import com.dnd8th.dto.report.MonthlyTaskGetDTO;
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Task;
@@ -23,7 +23,7 @@ public class MonthlyBlockTaskGetDao {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<MonthlyBlockGetDTO> getMonthlyBlockAndTask(String userEmail, Integer month) {
+    public List<MonthlyBlockAndTaskGetDTO> getMonthlyBlockAndTask(String userEmail, Integer month) {
         List<Block> blocks = queryFactory.selectFrom(block)
                 .leftJoin(block.tasks, task).fetchJoin()
                 .leftJoin(block.keep, keep).fetchJoin()
@@ -46,7 +46,7 @@ public class MonthlyBlockTaskGetDao {
                     List<MonthlyTaskGetDTO> taskGetDTOS = taskList.stream()
                             .map(MonthlyTaskGetDTO::new)
                             .collect(Collectors.toList());
-                    return MonthlyBlockGetDTO.builder()
+                    return MonthlyBlockAndTaskGetDTO.builder()
                             .id(block.getId())
                             .title(block.getTitle())
                             .tasks(taskGetDTOS)
