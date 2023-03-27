@@ -3,7 +3,7 @@ package com.dnd8th.service;
 import com.dnd8th.dao.report.MonthlyBlockGetDao;
 import com.dnd8th.dto.report.MonthlyBlockGetDTO;
 import com.dnd8th.dto.report.MonthlyTaskGetDTO;
-import com.dnd8th.dto.report.MostTaskRateBlockGetResponse;
+import com.dnd8th.dto.report.ReportBlockGetResponse;
 import com.dnd8th.error.exception.report.MonthInputInvalidException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,19 +20,27 @@ public class ReportService {
 
     private final MonthlyBlockGetDao monthlyBlockGetDao;
 
-    public MostTaskRateBlockGetResponse getMostTaskRateBlock(String userEmail, Integer month) {
+    private static void isMonthValid(Integer month) {
         if (month < 1 || month > 12) {
             throw new MonthInputInvalidException();
         }
+    }
+
+    public ReportBlockGetResponse getMostTaskRateBlock(String userEmail, Integer month) {
+        isMonthValid(month);
 
         List<MonthlyBlockGetDTO> monthlyBlock = getMonthlyBlock(userEmail, month);
         if (monthlyBlock != null) {
             String mostTaskRateBlockContent = getMostTaskRateBlockContent(monthlyBlock);
 
-            return new MostTaskRateBlockGetResponse(mostTaskRateBlockContent);
-        } else {
-            return new MostTaskRateBlockGetResponse(null);
+            return new ReportBlockGetResponse(mostTaskRateBlockContent);
         }
+
+        return new ReportBlockGetResponse(null);
+    }
+
+    public ReportBlockGetResponse getMostMadeBlock(String userEmail, Integer month) {
+        return null;
     }
 
     private String getMostTaskRateBlockContent(List<MonthlyBlockGetDTO> monthlyBlock) {
@@ -84,4 +92,5 @@ public class ReportService {
     private List<MonthlyBlockGetDTO> getMonthlyBlock(String userEmail, Integer month) {
         return monthlyBlockGetDao.getMonthlyBlock(userEmail, month);
     }
+
 }
