@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MostTaskRateBlockGetResponse {
+public class ReportBlockGetResponse {
 
     private String content;
 
-    public MostTaskRateBlockGetResponse(String content) {
+    public ReportBlockGetResponse(String content) {
         this.content = content;
     }
 }
