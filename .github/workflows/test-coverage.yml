@@ -1,0 +1,62 @@
+name: Harublock Code Coverage
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  code-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      ## jdk setting
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin' # https://github.com/actions/setup-java
+
+      ## gradle caching
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      ## create application.yml
+      - name: Create application.yml
+        env:
+          PROPERTIES: ${{ secrets.PROD_PROPERTIES }}
+        run: |
+          mkdir -p ./src/main/resources
+          echo "${{ env.PROPERTIES }}" > ./src/main/resources/application.yml
+
+      ## create test application.yml
+      - name: Create test-application.yml
+        env:
+          PROPERTIES: ${{ secrets.TEST_PROPERTIES }}
+        run: |
+          mkdir -p ./src/test/resources
+          echo "${{ env.PROPERTIES }}" > ./src/test/resources/application.yml
+
+      ## Test with Gradle
+      - name: Test with Gradle
+        run: ./gradlew build jacocoTestReport
+
+      ## Report to CodeCov
+      - name: Report to CodeCov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./build/reports/jacoco/test/jacocoTestReport.xml
