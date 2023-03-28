@@ -2,7 +2,7 @@
     <img src="https://user-images.githubusercontent.com/86864534/222874803-77f9a765-bd9c-44d9-8478-62699ed19294.png">
 </div>
 
-# 하루 블럭
+# 하루 블럭 [![codecov](https://codecov.io/gh/dnd-side-project/dnd-8th-7-backend/branch/main/graph/badge.svg?token=A0EO0JG772)](https://codecov.io/gh/dnd-side-project/dnd-8th-7-backend)
 
 > ⏰ 하루를 블럭으로 나누어 복잡한 일상을 심플하게 만들어주는, 하루블럭
 
