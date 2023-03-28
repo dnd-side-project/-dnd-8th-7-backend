@@ -120,4 +120,19 @@ class ReportServiceTest extends ReportTest {
         //then
         assertThat(mostMadeBlock.getContent()).isEqualTo("content1");
     }
+
+    @Test
+    @DisplayName("충분한 블록 및 태스크가 없을 때, null 값을 반환한다")
+    void getMonthlyLeastAchievementNull() {
+        //given
+        String userEmail = "test2@gmail.com";
+        Integer month = 3;
+
+        //when
+        ReportBlockGetResponse mostTaskRateBlock = reportService.getLeastTaskRateBlock(
+                userEmail, month);
+
+        //then
+        assertThat(mostTaskRateBlock.getContent()).isNull();
+    }
 }
