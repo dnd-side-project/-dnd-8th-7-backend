@@ -105,4 +105,34 @@ class ReportServiceTest extends ReportTest {
         assertThatThrownBy(() -> reportService.getMostMadeBlock(userEmail, month))
                 .isInstanceOf(MonthInputInvalidException.class);
     }
+
+    @Test
+    @DisplayName("가장 저조한 달성률의 블록을 가져온다.")
+    void getMonthlyLowestAchievementBlock() {
+        //given
+        String userEmail = "test@gmail.com";
+        Integer month = 3;
+
+        //when
+        ReportBlockGetResponse mostMadeBlock = reportService.getLeastTaskRateBlock(userEmail,
+                month);
+
+        //then
+        assertThat(mostMadeBlock.getContent()).isEqualTo("content1");
+    }
+
+    @Test
+    @DisplayName("충분한 블록 및 태스크가 없을 때, null 값을 반환한다")
+    void getMonthlyLeastAchievementNull() {
+        //given
+        String userEmail = "test2@gmail.com";
+        Integer month = 3;
+
+        //when
+        ReportBlockGetResponse mostTaskRateBlock = reportService.getLeastTaskRateBlock(
+                userEmail, month);
+
+        //then
+        assertThat(mostTaskRateBlock.getContent()).isNull();
+    }
 }

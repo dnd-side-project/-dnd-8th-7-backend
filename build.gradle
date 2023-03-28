@@ -10,6 +10,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     //querydsl 추가
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id 'jacoco' // jacoco 플러그인 추가
 }
 
 group = 'com'
@@ -25,6 +26,11 @@ configurations {
 repositories {
     mavenCentral()
 }
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -78,6 +84,17 @@ jar {
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+
+    reports {
+        html.enabled true
+        xml.enabled true
+        csv.enabled false
+    }
 }
 
 //querydsl 추가 시작

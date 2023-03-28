@@ -41,4 +41,16 @@ public class ReportApi {
 
         return ResponseEntity.ok().body(mostMadeBlock);
     }
+
+    @GetMapping("/least-task-rate/{month}")
+    public ResponseEntity<ReportBlockGetResponse> getLeastTaskRateBlock(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Integer month) {
+
+        String userEmail = userDetails.getUsername();
+        ReportBlockGetResponse leastTaskRateBlock = reportService.getLeastTaskRateBlock(
+                userEmail, month);
+
+        return ResponseEntity.ok().body(leastTaskRateBlock);
+    }
 }
