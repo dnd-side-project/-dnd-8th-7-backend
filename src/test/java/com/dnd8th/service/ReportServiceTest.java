@@ -19,10 +19,11 @@ class ReportServiceTest extends ReportTest {
     void getMonthlyBlockWithException() {
         //given
         String userEmail = "test@gmail.com";
+        Integer year = 2023;
         Integer month = 13;
 
         //when & then
-        assertThatThrownBy(() -> reportService.getMostTaskRateBlock(userEmail, month))
+        assertThatThrownBy(() -> reportService.getMostTaskRateBlock(userEmail, year, month))
                 .isInstanceOf(MonthInputInvalidException.class);
     }
 
@@ -31,11 +32,12 @@ class ReportServiceTest extends ReportTest {
     void getMonthlyHighestAchievementBlock() {
         //given
         String userEmail = "test@gmail.com";
+        Integer year = 2023;
         Integer month = 3;
 
         //when
         ReportBlockGetResponse mostTaskRateBlock = reportService.getMostTaskRateBlock(
-                userEmail, month);
+                userEmail, year, month);
 
         //then
         assertThat(mostTaskRateBlock.getContent()).isEqualTo("content2");
@@ -46,11 +48,12 @@ class ReportServiceTest extends ReportTest {
     void getMonthlyHighestAchievementNull() {
         //given
         String userEmail = "test2@gmail.com";
+        Integer year = 2023;
         Integer month = 3;
 
         //when
         ReportBlockGetResponse mostTaskRateBlock = reportService.getMostTaskRateBlock(
-                userEmail, month);
+                userEmail, year, month);
 
         //then
         assertThat(mostTaskRateBlock.getContent()).isNull();
@@ -62,19 +65,21 @@ class ReportServiceTest extends ReportTest {
         //given
         String userEmail = "test@gmail.com";
         User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+        Integer year = 2023;
         Integer month = 3;
         blockRepository.save(Block.builder()
                 .user(user)
                 .title("content2")
                 .blockLock(true)
                 .blockColor("#111111")
-                .date(dateParser.parseDate("2021-03-02"))
+                .date(dateParser.parseDate("2023-03-02"))
                 .emotion("😁")
                 .build()
         );
 
         //when
-        ReportBlockGetResponse mostMadeBlock = reportService.getMostMadeBlock(userEmail, month);
+        ReportBlockGetResponse mostMadeBlock = reportService.getMostMadeBlock(userEmail, year,
+                month);
 
         //then
         assertThat(mostMadeBlock.getContent()).isEqualTo("content2");
@@ -85,10 +90,12 @@ class ReportServiceTest extends ReportTest {
     void getMonthlyMostMadeBlockNull() {
         //given
         String userEmail = "test@gmail.com";
+        Integer year = 2023;
         Integer month = 4;
 
         //when
-        ReportBlockGetResponse mostMadeBlock = reportService.getMostMadeBlock(userEmail, month);
+        ReportBlockGetResponse mostMadeBlock = reportService.getMostMadeBlock(userEmail, year,
+                month);
 
         //then
         assertThat(mostMadeBlock.getContent()).isNull();
@@ -99,10 +106,11 @@ class ReportServiceTest extends ReportTest {
     void getMonthlyBlockWException() {
         //given
         String userEmail = "test@gmail.com";
+        Integer year = 2023;
         Integer month = 13;
 
         //when & then
-        assertThatThrownBy(() -> reportService.getMostMadeBlock(userEmail, month))
+        assertThatThrownBy(() -> reportService.getMostMadeBlock(userEmail, year, month))
                 .isInstanceOf(MonthInputInvalidException.class);
     }
 
@@ -111,10 +119,11 @@ class ReportServiceTest extends ReportTest {
     void getMonthlyLowestAchievementBlock() {
         //given
         String userEmail = "test@gmail.com";
+        Integer year = 2023;
         Integer month = 3;
 
         //when
-        ReportBlockGetResponse mostMadeBlock = reportService.getLeastTaskRateBlock(userEmail,
+        ReportBlockGetResponse mostMadeBlock = reportService.getLeastTaskRateBlock(userEmail, year,
                 month);
 
         //then
@@ -126,11 +135,12 @@ class ReportServiceTest extends ReportTest {
     void getMonthlyLeastAchievementNull() {
         //given
         String userEmail = "test2@gmail.com";
+        Integer year = 2023;
         Integer month = 3;
 
         //when
         ReportBlockGetResponse mostTaskRateBlock = reportService.getLeastTaskRateBlock(
-                userEmail, month);
+                userEmail, year, month);
 
         //then
         assertThat(mostTaskRateBlock.getContent()).isNull();

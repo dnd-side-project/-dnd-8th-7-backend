@@ -6,6 +6,7 @@ import com.dnd8th.dto.report.MonthlyBlockAndTaskGetDTO;
 import com.dnd8th.dto.report.MonthlyBlockGetDTO;
 import com.dnd8th.dto.report.MonthlyTaskGetDTO;
 import com.dnd8th.dto.report.ReportBlockGetResponse;
+import com.dnd8th.dto.report.ReportMonthlyComparisonGetResponse;
 import com.dnd8th.error.exception.report.MonthInputInvalidException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,13 @@ public class ReportService {
         Map<String, List<Double>> blockTaskRateMap = new HashMap<>();
         for (MonthlyBlockAndTaskGetDTO block : monthlyBlock) {
             List<MonthlyTaskGetDTO> tasks = block.getTasks();
-            if (tasks.size() == 0) {
+            if (tasks.size() == 0) { //task 미 존재시 달성도 0.0으로 처리
+                String blockContent = block.getTitle();
+
+                List<Double> rates = blockTaskRateMap.getOrDefault(blockContent, new ArrayList<>());
+                rates.add(0.0);
+
+                blockTaskRateMap.put(blockContent, rates);
                 continue;
             }
 
@@ -59,10 +66,12 @@ public class ReportService {
         return blockTaskRateMap;
     }
 
-    public ReportBlockGetResponse getMostTaskRateBlock(String userEmail, Integer month) {
+    public ReportBlockGetResponse getMostTaskRateBlock(String userEmail, Integer year,
+            Integer month) {
         isMonthValid(month);
 
-        List<MonthlyBlockAndTaskGetDTO> monthlyBlock = getMonthlyBlockAndTask(userEmail, month);
+        List<MonthlyBlockAndTaskGetDTO> monthlyBlock = getMonthlyBlockAndTask(userEmail, year,
+                month);
         if (monthlyBlock.isEmpty()) {
             return new ReportBlockGetResponse(null);
         }
@@ -71,10 +80,10 @@ public class ReportService {
         return new ReportBlockGetResponse(mostTaskRateBlockContent);
     }
 
-    public ReportBlockGetResponse getMostMadeBlock(String userEmail, Integer month) {
+    public ReportBlockGetResponse getMostMadeBlock(String userEmail, Integer year, Integer month) {
         isMonthValid(month);
 
-        List<MonthlyBlockGetDTO> monthlyBlock = getMonthlyBlock(userEmail, month);
+        List<MonthlyBlockGetDTO> monthlyBlock = getMonthlyBlock(userEmail, year, month);
         if (monthlyBlock.isEmpty()) {
             return new ReportBlockGetResponse(null);
         }
@@ -83,16 +92,24 @@ public class ReportService {
         return new ReportBlockGetResponse(mostMadeBlockContent);
     }
 
-    public ReportBlockGetResponse getLeastTaskRateBlock(String userEmail, Integer month) {
+    public ReportBlockGetResponse getLeastTaskRateBlock(String userEmail, Integer year,
+            Integer month) {
         isMonthValid(month);
 
-        List<MonthlyBlockAndTaskGetDTO> monthlyBlock = getMonthlyBlockAndTask(userEmail, month);
+        List<MonthlyBlockAndTaskGetDTO> monthlyBlock = getMonthlyBlockAndTask(userEmail, year,
+                month);
         if (monthlyBlock.isEmpty()) {
             return new ReportBlockGetResponse(null);
         }
 
         String leastTaskRateBlockContent = getLeastTaskRateBlockContent(monthlyBlock);
         return new ReportBlockGetResponse(leastTaskRateBlockContent);
+    }
+
+    public ReportMonthlyComparisonGetResponse getMonthlyComparison(String userEmail, Integer year,
+            Integer month,
+            Integer day) {
+        return null;
     }
 
     private String getLeastTaskRateBlockContent(List<MonthlyBlockAndTaskGetDTO> monthlyBlock) {
@@ -133,8 +150,9 @@ public class ReportService {
                 .orElse(null);
     }
 
-    private List<MonthlyBlockGetDTO> getMonthlyBlock(String userEmail, Integer month) {
-        return monthlyBlockGetDao.getMonthlyBlockList(userEmail, month);
+    private List<MonthlyBlockGetDTO> getMonthlyBlock(String userEmail, Integer year,
+            Integer month) {
+        return monthlyBlockGetDao.getMonthlyBlockList(userEmail, year, month);
     }
 
     private String getMostTaskRateBlockContent(List<MonthlyBlockAndTaskGetDTO> monthlyBlock) {
@@ -161,8 +179,8 @@ public class ReportService {
         return mostTaskRateBlockContent;
     }
 
-    private List<MonthlyBlockAndTaskGetDTO> getMonthlyBlockAndTask(String userEmail,
+    private List<MonthlyBlockAndTaskGetDTO> getMonthlyBlockAndTask(String userEmail, Integer year,
             Integer month) {
-        return monthlyBlockTaskGetDao.getMonthlyBlockAndTask(userEmail, month);
+        return monthlyBlockTaskGetDao.getMonthlyBlockAndTask(userEmail, year, month);
     }
 }

@@ -17,6 +17,7 @@ class ReportApiTest extends ReportTest {
         // given
         String token = jwtProviderService.generateToken("test@gmail.com", "");
         String authHeader = "Bearer " + token;
+        Integer year = 2023;
         Integer month = 3;
 
         // when
@@ -24,7 +25,7 @@ class ReportApiTest extends ReportTest {
                 .log().all()
                 .header("Authorization", authHeader)
                 .when()
-                .get("/api/report/most-task-rate/" + month)
+                .get("/api/report/most-task-rate/" + year + "/" + month)
                 .then()
                 .extract();
 
@@ -38,6 +39,7 @@ class ReportApiTest extends ReportTest {
         // given
         String token = jwtProviderService.generateToken("test@gmail.com", "");
         String authHeader = "Bearer " + token;
+        Integer year = 2023;
         Integer month = 3;
 
         // when
@@ -45,7 +47,7 @@ class ReportApiTest extends ReportTest {
                 .log().all()
                 .header("Authorization", authHeader)
                 .when()
-                .get("/api/report/most-made-block/" + month)
+                .get("/api/report/most-made-block/" + year + "/" + month)
                 .then()
                 .extract();
 
@@ -59,6 +61,7 @@ class ReportApiTest extends ReportTest {
         // given
         String token = jwtProviderService.generateToken("test@gmail.com", "");
         String authHeader = "Bearer " + token;
+        Integer year = 2023;
         Integer month = 3;
 
         // when
@@ -66,7 +69,7 @@ class ReportApiTest extends ReportTest {
                 .log().all()
                 .header("Authorization", authHeader)
                 .when()
-                .get("/api/report/least-task-rate/" + month)
+                .get("/api/report/least-task-rate/" + year + "/" + month)
                 .then()
                 .extract();
 

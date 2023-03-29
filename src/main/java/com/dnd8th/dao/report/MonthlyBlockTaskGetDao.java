@@ -23,12 +23,14 @@ public class MonthlyBlockTaskGetDao {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<MonthlyBlockAndTaskGetDTO> getMonthlyBlockAndTask(String userEmail, Integer month) {
+    public List<MonthlyBlockAndTaskGetDTO> getMonthlyBlockAndTask(String userEmail, Integer year,
+            Integer month) {
         List<Block> blocks = queryFactory.selectFrom(block)
                 .leftJoin(block.tasks, task).fetchJoin()
                 .leftJoin(block.keep, keep).fetchJoin()
-                .where(block.user.email.eq(userEmail)
-                        .and(block.date.month().eq(month)))
+                .where(block.user.email.eq(userEmail),
+                        block.date.year().eq(year),
+                        (block.date.month().eq(month)))
                 .orderBy(block.createdAt.asc())
                 .fetch();
 
