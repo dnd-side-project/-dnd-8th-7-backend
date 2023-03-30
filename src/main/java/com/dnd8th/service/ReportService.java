@@ -7,6 +7,7 @@ import com.dnd8th.dto.report.MonthlyBlockGetDTO;
 import com.dnd8th.dto.report.MonthlyTaskGetDTO;
 import com.dnd8th.dto.report.ReportBlockGetResponse;
 import com.dnd8th.dto.report.ReportMonthlyComparisonGetResponse;
+import com.dnd8th.error.exception.report.DayInputInvalidException;
 import com.dnd8th.error.exception.report.MonthInputInvalidException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,12 @@ public class ReportService {
     private static void isMonthValid(Integer month) {
         if (month < 1 || month > 12) {
             throw new MonthInputInvalidException();
+        }
+    }
+
+    private static void isDateValid(Integer Date) {
+        if (Date < 1 || Date > 31) {
+            throw new DayInputInvalidException();
         }
     }
 
@@ -64,6 +71,35 @@ public class ReportService {
             blockTaskRateMap.put(blockContent, rates);
         }
         return blockTaskRateMap;
+    }
+
+    private static Integer getAchieveRateAverage(
+            List<MonthlyBlockAndTaskGetDTO> monthlyBlock) {
+        List<Double> achieveRates = new ArrayList<>();
+        for (MonthlyBlockAndTaskGetDTO block : monthlyBlock) {
+            List<MonthlyTaskGetDTO> tasks = block.getTasks();
+            if (tasks.size() == 0) { //task 미 존재시 달성도 0.0으로 처리
+                achieveRates.add(0.0);
+                continue;
+            }
+
+            Integer totalTaskCount = tasks.size();
+            Integer achievedTaskCount = 0;
+            for (MonthlyTaskGetDTO task : tasks) {
+                if (task.getStatus()) {
+                    achievedTaskCount++;
+                }
+            }
+
+            Double taskAchievedRate = (double) achievedTaskCount / totalTaskCount;
+            achieveRates.add(taskAchievedRate);
+        }
+
+        if (achieveRates.isEmpty()) {
+            return 0;
+        }
+        return (int) (achieveRates.stream().mapToDouble(Double::doubleValue).average().getAsDouble()
+                * 100);
     }
 
     public ReportBlockGetResponse getMostTaskRateBlock(String userEmail, Integer year,
@@ -109,8 +145,39 @@ public class ReportService {
     public ReportMonthlyComparisonGetResponse getMonthlyComparison(String userEmail, Integer year,
             Integer month,
             Integer day) {
-        return null;
+        isMonthValid(month);
+        isDateValid(day);
+
+        List<MonthlyBlockAndTaskGetDTO> monthlyBlock = getMonthlyBlockAndTaskWithDate(userEmail,
+                year,
+                month, day);
+
+        Integer compareYear = getCompareYear(year, month);
+        Integer compareMonth = getCompareMonth(month);
+
+        List<MonthlyBlockAndTaskGetDTO> prevMonthlyBlock = getMonthlyBlockAndTaskWithDate(userEmail,
+                compareYear, compareMonth, day);
+
+        return ReportMonthlyComparisonGetResponse.builder()
+                .nowMonthAchievementRate(getAchieveRateAverage(monthlyBlock))
+                .lastMonthAchievementRate(getAchieveRateAverage(prevMonthlyBlock))
+                .build();
     }
+
+    private Integer getCompareMonth(Integer month) {
+        if (month == 1) {
+            return 12;
+        }
+        return month - 1;
+    }
+
+    private Integer getCompareYear(Integer year, Integer month) {
+        if (month == 1) {
+            return year - 1;
+        }
+        return year;
+    }
+
 
     private String getLeastTaskRateBlockContent(List<MonthlyBlockAndTaskGetDTO> monthlyBlock) {
         //hash map key: content string, value: task achieved rate
@@ -182,5 +249,12 @@ public class ReportService {
     private List<MonthlyBlockAndTaskGetDTO> getMonthlyBlockAndTask(String userEmail, Integer year,
             Integer month) {
         return monthlyBlockTaskGetDao.getMonthlyBlockAndTask(userEmail, year, month);
+    }
+
+    private List<MonthlyBlockAndTaskGetDTO> getMonthlyBlockAndTaskWithDate(String userEmail,
+            Integer year,
+            Integer month, Integer day) {
+        return monthlyBlockTaskGetDao.getMonthlyBlockAndTaskWithDate(userEmail, year, month,
+                day);
     }
 }
