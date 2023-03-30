@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.dnd8th.common.ReportTest;
 import com.dnd8th.dto.report.ReportBlockGetResponse;
+import com.dnd8th.dto.report.ReportMonthlyComparisonGetResponse;
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.User;
+import com.dnd8th.error.exception.report.DayInputInvalidException;
 import com.dnd8th.error.exception.report.MonthInputInvalidException;
 import com.dnd8th.error.exception.user.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -144,5 +146,71 @@ class ReportServiceTest extends ReportTest {
 
         //then
         assertThat(mostTaskRateBlock.getContent()).isNull();
+    }
+
+    @Test
+    @DisplayName("특정 년월의 특정일까지의 성취률을 불러온다. 이 때 블록 정보가 없다면 0을 반환한다")
+    void getAchievementRate() {
+        //given
+        String userEmail = "test@gmail.com";
+        Integer year = 2023;
+        Integer month = 3;
+        Integer day = 2;
+
+        //when
+        ReportMonthlyComparisonGetResponse monthlyComparison = reportService.getMonthlyComparison(
+                userEmail, year,
+                month, day);
+
+        //then
+        assertThat(monthlyComparison.getLastMonthAchievementRate()).isEqualTo(0);
+        assertThat(monthlyComparison.getNowMonthAchievementRate()).isEqualTo(25);
+    }
+
+    @Test
+    @DisplayName("1월에서 작년 12월의 성취률을 정상적으로 반환한다.")
+    void getAchievementRateWithLastYear() {
+        //given
+        String userEmail = "test@gmail.com";
+        Integer year = 2023;
+        Integer month = 1;
+        Integer day = 1;
+
+        //when
+        ReportMonthlyComparisonGetResponse monthlyComparison = reportService.getMonthlyComparison(
+                userEmail, year,
+                month, day);
+
+        //then
+        assertThat(monthlyComparison.getLastMonthAchievementRate()).isEqualTo(50);
+        assertThat(monthlyComparison.getNowMonthAchievementRate()).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("특정 년월의 특정일까지의 성취률을 불러올 때, 잘못된 월에 대해 예외를 발생시킨다.")
+    void getAchievementRateWithInvalidMonth() {
+        //given
+        String userEmail = "test@gmail.com";
+        Integer year = 2023;
+        Integer month = 13;
+        Integer day = 2;
+
+        //when & then
+        assertThatThrownBy(() -> reportService.getMonthlyComparison(userEmail, year, month, day))
+                .isInstanceOf(MonthInputInvalidException.class);
+    }
+
+    @Test
+    @DisplayName("특정 년월의 특정일까지의 성취률을 불러올 때, 잘못된 일에 대해 예외를 발생시킨다.")
+    void getAchievementRateWithInvalidDay() {
+        //given
+        String userEmail = "test@gmail.com";
+        Integer year = 2023;
+        Integer month = 3;
+        Integer day = 33;
+
+        //when & then
+        assertThatThrownBy(() -> reportService.getMonthlyComparison(userEmail, year, month, day))
+                .isInstanceOf(DayInputInvalidException.class);
     }
 }
