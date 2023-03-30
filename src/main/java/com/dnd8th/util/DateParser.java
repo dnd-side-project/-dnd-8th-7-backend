@@ -12,6 +12,14 @@ public class DateParser {
 
     private static SimpleDateFormat formatting = new SimpleDateFormat("yyyy-MM-dd");
 
+    public static String getDayOfWeek(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        String[] daysOfWeek = {"", "일", "월", "화", "수", "목", "금", "토"};
+        return daysOfWeek[dayOfWeek];
+    }
+
     public Date getDate(int year, int month, int date) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month - 1, date, 0, 0, 0);
