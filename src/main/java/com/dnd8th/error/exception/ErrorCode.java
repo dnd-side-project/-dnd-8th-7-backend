@@ -44,6 +44,7 @@ public enum ErrorCode {
 
     // Report
     MONTH_INPUT_INVALID("RP01", "Month Input is Invalid.", HttpStatus.BAD_REQUEST.value()),
+    DAY_INPUT_INVALID("RP02", "Day Input is Invalid.", HttpStatus.BAD_REQUEST.value()),
 
     // External API
     EXTERNAL_API_FAILED("E01", "External API Request is failed.",
