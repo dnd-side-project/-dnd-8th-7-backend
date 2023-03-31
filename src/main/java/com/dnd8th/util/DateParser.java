@@ -12,12 +12,25 @@ public class DateParser {
 
     private static SimpleDateFormat formatting = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static String getDayOfWeek(Date date) {
+    public String getDayOfWeek(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         String[] daysOfWeek = {"", "일", "월", "화", "수", "목", "금", "토"};
         return daysOfWeek[dayOfWeek];
+    }
+
+
+    /**
+     * 해당 날짜를 요일에 해당하는 정수로 반환 일요일 : 1, 월요일 : 2, ... , 토요일 : 7
+     *
+     * @param date
+     * @return Integer
+     */
+    public Integer getDayOfWeekInt(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     public Date getDate(int year, int month, int date) {
