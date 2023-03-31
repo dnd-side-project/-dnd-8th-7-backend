@@ -23,6 +23,18 @@ class DateParserTest {
     }
 
     @Test
+    void getDayOfWeekInt() {
+        //given
+        Date date = dateParser.getDate(2023, 3, 1);
+
+        //when
+        Integer dayOfWeekInt = dateParser.getDayOfWeekInt(date);
+
+        //then
+        assertThat(dayOfWeekInt).isEqualTo(4);
+    }
+
+    @Test
     void getDate() {
         //given
         int year = 2023;
