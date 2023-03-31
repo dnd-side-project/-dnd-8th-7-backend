@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.dnd8th.common.ReportTest;
+import com.dnd8th.dto.report.MonthlyDayComparisonGetResponse;
 import com.dnd8th.dto.report.ReportBlockGetResponse;
 import com.dnd8th.dto.report.ReportMonthlyComparisonGetResponse;
 import com.dnd8th.entity.Block;
@@ -212,5 +213,51 @@ class ReportServiceTest extends ReportTest {
         //when & then
         assertThatThrownBy(() -> reportService.getMonthlyComparison(userEmail, year, month, day))
                 .isInstanceOf(DayInputInvalidException.class);
+    }
+
+    @Test
+    @DisplayName("특정 년월의 요일 간의 성취률을 불러올 수 있다.")
+    void getAchievementRateByDay() {
+        //given
+        String userEmail = "test@gmail.com";
+        Integer year = 2023;
+        Integer month = 3;
+
+        //when
+        MonthlyDayComparisonGetResponse monthlyDayComparison = reportService.getMonthlyDayComparison(
+                userEmail, year,
+                month);
+
+        //then
+        assertThat(monthlyDayComparison.getSunday()).isEqualTo(20);
+        assertThat(monthlyDayComparison.getMonday()).isEqualTo(16);
+        assertThat(monthlyDayComparison.getTuesday()).isEqualTo(14);
+        assertThat(monthlyDayComparison.getWednesday()).isEqualTo(6);
+        assertThat(monthlyDayComparison.getThursday()).isEqualTo(50);
+        assertThat(monthlyDayComparison.getFriday()).isEqualTo(33);
+        assertThat(monthlyDayComparison.getSaturday()).isEqualTo(25);
+    }
+
+    @Test
+    @DisplayName("특정 년월의 요일 간의 성취률을 불러올 수 있다. 단 블럭 정보가 없는 경우 0을 반환한다")
+    void getAchievementRateByDayWithNoBlock() {
+        //given
+        String userEmail = "test@gmail.com";
+        Integer year = 2023;
+        Integer month = 2;
+
+        //when
+        MonthlyDayComparisonGetResponse monthlyDayComparison = reportService.getMonthlyDayComparison(
+                userEmail, year,
+                month);
+
+        //then
+        assertThat(monthlyDayComparison.getSunday()).isEqualTo(0);
+        assertThat(monthlyDayComparison.getMonday()).isEqualTo(0);
+        assertThat(monthlyDayComparison.getTuesday()).isEqualTo(0);
+        assertThat(monthlyDayComparison.getWednesday()).isEqualTo(0);
+        assertThat(monthlyDayComparison.getThursday()).isEqualTo(0);
+        assertThat(monthlyDayComparison.getFriday()).isEqualTo(0);
+        assertThat(monthlyDayComparison.getSaturday()).isEqualTo(0);
     }
 }
