@@ -4,12 +4,16 @@ import com.dnd8th.dao.report.MonthlyBlockGetDao;
 import com.dnd8th.dao.report.MonthlyBlockTaskGetDao;
 import com.dnd8th.dto.report.MonthlyBlockAndTaskGetDTO;
 import com.dnd8th.dto.report.MonthlyBlockGetDTO;
+import com.dnd8th.dto.report.MonthlyDayComparisonGetResponse;
 import com.dnd8th.dto.report.MonthlyTaskGetDTO;
 import com.dnd8th.dto.report.ReportBlockGetResponse;
 import com.dnd8th.dto.report.ReportMonthlyComparisonGetResponse;
 import com.dnd8th.error.exception.report.DayInputInvalidException;
 import com.dnd8th.error.exception.report.MonthInputInvalidException;
+import com.dnd8th.util.DateParser;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +29,7 @@ public class ReportService {
 
     private final MonthlyBlockTaskGetDao monthlyBlockTaskGetDao;
     private final MonthlyBlockGetDao monthlyBlockGetDao;
+    private final DateParser dateParser;
 
     private static void isMonthValid(Integer month) {
         if (month < 1 || month > 12) {
@@ -162,6 +167,77 @@ public class ReportService {
                 .nowMonthAchievementRate(getAchieveRateAverage(monthlyBlock))
                 .lastMonthAchievementRate(getAchieveRateAverage(prevMonthlyBlock))
                 .build();
+    }
+
+    public MonthlyDayComparisonGetResponse getMonthlyDayComparison(String userEmail, Integer year,
+            Integer month) {
+        isMonthValid(month);
+
+        List<MonthlyBlockAndTaskGetDTO> monthlyBlock = getMonthlyBlockAndTask(userEmail, year,
+                month);
+
+        Map<Integer, List<Double>> monthlyDayStatus = getMonthlyDayStatus(monthlyBlock);
+        return monthlyDayStatusToPercentage(monthlyDayStatus);
+    }
+
+    private MonthlyDayComparisonGetResponse monthlyDayStatusToPercentage(
+            Map<Integer, List<Double>> monthlyDayStatus) {
+        List<Integer> monthlyDayStatusPercentage = new ArrayList<>(Collections.nCopies(8, 0));
+        for (Integer dayOfWeek : monthlyDayStatus.keySet()) {
+            List<Double> rates = monthlyDayStatus.get(dayOfWeek);
+            Double average = rates.stream().mapToDouble(Double::doubleValue).average()
+                    .getAsDouble();
+            monthlyDayStatusPercentage.set(dayOfWeek, (int) (average * 100));
+        }
+
+        return MonthlyDayComparisonGetResponse.builder()
+                .sunday(monthlyDayStatusPercentage.get(1))
+                .monday(monthlyDayStatusPercentage.get(2))
+                .tuesday(monthlyDayStatusPercentage.get(3))
+                .wednesday(monthlyDayStatusPercentage.get(4))
+                .thursday(monthlyDayStatusPercentage.get(5))
+                .friday(monthlyDayStatusPercentage.get(6))
+                .saturday(monthlyDayStatusPercentage.get(7))
+                .build();
+    }
+
+    private Map<Integer, List<Double>> getMonthlyDayStatus(
+            List<MonthlyBlockAndTaskGetDTO> monthlyBlock) {
+        Map<Integer, List<Double>> blockTaskRateMap = new HashMap<>();
+        for (MonthlyBlockAndTaskGetDTO block : monthlyBlock) {
+            List<MonthlyTaskGetDTO> tasks = block.getTasks();
+            if (tasks.size() == 0) { //task 미 존재시 달성도 0.0으로 처리
+                Date date = block.getDate();
+                Integer dayOfWeek = dateParser.getDayOfWeekInt(date);
+
+                List<Double> rates = blockTaskRateMap.getOrDefault(dayOfWeek,
+                        new ArrayList<>());
+                rates.add(0.0);
+
+                blockTaskRateMap.put(dayOfWeek, rates);
+                continue;
+            }
+
+            Integer totalTaskCount = tasks.size();
+            Integer achievedTaskCount = 0;
+            for (MonthlyTaskGetDTO task : tasks) {
+                if (task.getStatus()) {
+                    achievedTaskCount++;
+                }
+            }
+
+            Double taskAchievedRate = (double) achievedTaskCount / totalTaskCount;
+
+            Date date = block.getDate();
+            Integer dayOfWeek = dateParser.getDayOfWeekInt(date);
+
+            List<Double> rates = blockTaskRateMap.getOrDefault(dayOfWeek, new ArrayList<>());
+            rates.add(taskAchievedRate);
+
+            blockTaskRateMap.put(dayOfWeek, rates);
+        }
+
+        return blockTaskRateMap;
     }
 
     private Integer getCompareMonth(Integer month) {

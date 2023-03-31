@@ -1,5 +1,6 @@
 package com.dnd8th.api;
 
+import com.dnd8th.dto.report.MonthlyDayComparisonGetResponse;
 import com.dnd8th.dto.report.ReportBlockGetResponse;
 import com.dnd8th.dto.report.ReportMonthlyComparisonGetResponse;
 import com.dnd8th.service.ReportService;
@@ -70,5 +71,18 @@ public class ReportApi {
                 userEmail, year, month, day);
 
         return ResponseEntity.ok().body(monthlyComparison);
+    }
+
+    @GetMapping("/monthly-day-comparison/{year}/{month}")
+    public ResponseEntity<MonthlyDayComparisonGetResponse> getMonthlyDayComparison(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Integer year,
+            @PathVariable Integer month) {
+
+        String userEmail = userDetails.getUsername();
+        MonthlyDayComparisonGetResponse monthlyDayComparison = reportService.getMonthlyDayComparison(
+                userEmail, year, month);
+
+        return ResponseEntity.ok().body(monthlyDayComparison);
     }
 }
