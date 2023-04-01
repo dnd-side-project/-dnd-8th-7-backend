@@ -14,9 +14,11 @@ public class MonthlyBlockAndTaskGetDTO {
     private List<MonthlyTaskGetDTO> tasks;
 
     @Builder
-    public MonthlyBlockAndTaskGetDTO(Long id, String title, List<MonthlyTaskGetDTO> tasks) {
+    public MonthlyBlockAndTaskGetDTO(Long id, String title, Date date,
+            List<MonthlyTaskGetDTO> tasks) {
         this.id = id;
         this.title = title;
+        this.date = date;
         this.tasks = tasks;
     }
 }

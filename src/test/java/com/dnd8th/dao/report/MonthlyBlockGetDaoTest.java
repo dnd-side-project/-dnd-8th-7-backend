@@ -15,10 +15,12 @@ class MonthlyBlockGetDaoTest extends ReportTest {
     void getMonthlyBlockList() {
         //given
         String email = "test@gmail.com";
+        Integer year = 2023;
         Integer month = 3;
 
         //when
         List<MonthlyBlockGetDTO> monthlyBlockList = monthlyBlockGetDao.getMonthlyBlockList(email,
+                year,
                 month);
 
         //then
@@ -31,10 +33,12 @@ class MonthlyBlockGetDaoTest extends ReportTest {
     void getMonthlyBlockListNoBlock() {
         //given
         String email = "test@gmail.com";
+        Integer year = 2023;
         Integer month = 11;
 
         //when
         List<MonthlyBlockGetDTO> monthlyBlockList = monthlyBlockGetDao.getMonthlyBlockList(email,
+                year,
                 month);
 
         //then
