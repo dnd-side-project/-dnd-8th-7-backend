@@ -63,7 +63,7 @@ public abstract class ReportTest {
                     .title("content" + i)
                     .blockLock(true)
                     .blockColor("#111111")
-                    .date(dateParser.parseDate("2021-03-0" + i))
+                    .date(dateParser.parseDate("2023-03-0" + i))
                     .emotion("😁")
                     .build()
             );
@@ -86,5 +86,46 @@ public abstract class ReportTest {
                 }
             }
         }
+
+        Block savedBlock = blockRepository.save(Block.builder()
+                .user(testUser)
+                .title("content")
+                .blockLock(true)
+                .blockColor("#111111")
+                .date(dateParser.parseDate("2023-01-01"))
+                .emotion("😁")
+                .build()
+        );
+
+        taskRepository.save(Task.builder()
+                .block(savedBlock)
+                .status(true)
+                .contents("task")
+                .build()
+        );
+
+        Block savedBlock2 = blockRepository.save(Block.builder()
+                .user(testUser)
+                .title("content")
+                .blockLock(true)
+                .blockColor("#111111")
+                .date(dateParser.parseDate("2022-12-01"))
+                .emotion("😁")
+                .build()
+        );
+
+        taskRepository.save(Task.builder()
+                .block(savedBlock2)
+                .status(true)
+                .contents("task")
+                .build()
+        );
+
+        taskRepository.save(Task.builder()
+                .block(savedBlock2)
+                .status(false)
+                .contents("task2")
+                .build()
+        );
     }
 }
