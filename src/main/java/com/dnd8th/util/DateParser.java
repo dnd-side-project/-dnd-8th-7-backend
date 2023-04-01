@@ -22,4 +22,18 @@ public class DateParser {
     public String toString(Date date) {
         return formatting.format(date);
     }
+
+    public Date getDateXDaysAgo(Date date, int days) {
+        long timeInMillis = date.getTime();
+        long daysInMillis = days * 24 * 60 * 60 * 1000L;
+        long targetTimeInMillis = timeInMillis - daysInMillis;
+        return new Date(targetTimeInMillis);
+    }
+
+    public Date getDateXDaysLater(Date date, int days) {
+        long timeInMillis = date.getTime();
+        long daysInMillis = days * 24 * 60 * 60 * 1000L;
+        long targetTimeInMillis = timeInMillis + daysInMillis;
+        return new Date(targetTimeInMillis);
+    }
 }

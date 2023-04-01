@@ -15,9 +15,10 @@ import com.dnd8th.error.exception.user.UserNotFoundException;
 import com.dnd8th.repository.BlockRepository;
 import com.dnd8th.repository.UserRepository;
 import com.dnd8th.util.DateParser;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -84,17 +85,36 @@ public class BlockService {
         blockRepository.delete(block);
     }
 
-    public List<BlockWeekPartResponse> getBlockWeek(String email, String date) {
-        List<BlockWeekPartResponse> blockWeekPartResponse = new ArrayList<>();
+    public List<BlockCalendarResponse> getBlockWeek(String email, String date) {
         Date targetDate = dateParser.parseDate(date);
-        targetDate.setDate(targetDate.getDate() - 4);
-        for (int i = 0; i < 7; i++) {
-            targetDate.setDate(targetDate.getDate() + 1);
-            List<Block> blocks = blockFindDao.findByEmailAndDate(email, targetDate);
-            BlockWeekPartResponse week = convertToWeekDTO(blocks, targetDate);
-            blockWeekPartResponse.add(week);
+        Date startedAt = dateParser.getDateXDaysAgo(targetDate,6);
+        Date endedAt = dateParser.getDateXDaysLater(targetDate,6);
+        List<Block> blocks = blockFindDao.getBlocksByDate(email, startedAt, endedAt);
+
+        List<String> dates = new ArrayList<>();
+        while (startedAt.before(endedAt)) {
+            String formattedDateTime = dateParser.toString(startedAt);
+            dates.add(formattedDateTime);
+            startedAt = dateParser.getDateXDaysAgo(targetDate, 1);
         }
-        return blockWeekPartResponse;
+
+        Map<String, List<Block>> blocksByDate = blocks.stream()
+                .collect(Collectors.groupingBy(block -> dateParser.toString(block.getDate())));
+
+        return blocksByDate.entrySet().stream()
+                .map(block -> {
+                    return BlockCalendarResponse.builder()
+                            .date(block.getKey())
+                            .backgroundColors(block.getValue().stream()
+                                    .map(blockCalender -> {
+                                        return BlockCalendarDto.builder()
+                                                .blockId(blockCalender.getId())
+                                                .backgroundColor(blockCalender.getBlockColor()).build();
+                                    })
+                                    .collect(Collectors.toList())
+                            ).build();
+                })
+                .collect(Collectors.toList());
     }
 
     public BlockMainGetResponse getBlockDetail(String email, String date) {
@@ -111,17 +131,17 @@ public class BlockService {
                 .reviewId(reviewId).build();
     }
 
-    private BlockWeekPartResponse convertToWeekDTO(List<Block> blocks, Date date) {
-        List<BlockWeekPartDto> blockWeekPartDtos = new ArrayList<>();
+    private BlockCalendarResponse convertToWeekDTO(List<Block> blocks, Date date) {
+        List<BlockCalendarDto> blockCalendarDtos = new ArrayList<>();
         for(Block block:blocks){
-            BlockWeekPartDto blockWeekPartDto = BlockWeekPartDto.builder()
+            BlockCalendarDto blockCalendarDto = BlockCalendarDto.builder()
                     .blockId(block.getId())
                     .backgroundColor(block.getBlockColor()).build();
-            blockWeekPartDtos.add(blockWeekPartDto);
+            blockCalendarDtos.add(blockCalendarDto);
         }
-        return BlockWeekPartResponse.builder()
+        return BlockCalendarResponse.builder()
                 .date(dateParser.toString(date))
-                .backgroundColors(blockWeekPartDtos)
+                .backgroundColors(blockCalendarDtos)
                 .build();
     }
 

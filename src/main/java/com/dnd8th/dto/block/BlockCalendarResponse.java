@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class BlockWeekPartResponse {
+public class BlockCalendarResponse {
     private String date;
-    private List<BlockWeekPartDto> backgroundColors = new ArrayList<>();
+    private List<BlockCalendarDto> backgroundColors = new ArrayList<>();
 
     @Builder
-    public BlockWeekPartResponse(String date, List<BlockWeekPartDto> backgroundColors) {
+    public BlockCalendarResponse(String date, List<BlockCalendarDto> backgroundColors) {
         this.date = date;
         this.backgroundColors = backgroundColors;
     }
