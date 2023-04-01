@@ -53,13 +53,12 @@ public class BlockService {
             throw new BlockAccessDeniedException();
         }
         String date = dateParser.toString(block.getDate());
-        BlockGetResponse blockGetResponse = BlockGetResponse.builder()
+        return BlockGetResponse.builder()
                 .backgroundColor(block.getBlockColor())
                 .secret(block.getBlockLock())
                 .emoji(block.getEmotion())
                 .title(block.getTitle())
                 .date(date).build();
-        return blockGetResponse;
     }
 
     public void updateBlock(BlockUpdateRequest blockUpdateRequest, String userEmail, Long blockId) {
@@ -86,26 +85,29 @@ public class BlockService {
     }
 
     public List<BlockCalendarResponse> getBlockWeek(String email, String date) {
+        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
         Date targetDate = dateParser.parseDate(date);
         Date startedAt = dateParser.getDateXDaysAgo(targetDate,6);
-        Date endedAt = dateParser.getDateXDaysLater(targetDate,6);
+        Date endedAt = dateParser.getDateXDaysLater(targetDate,7);
         List<Block> blocks = blockFindDao.getBlocksByDate(email, startedAt, endedAt);
-
-        List<String> dates = new ArrayList<>();
-        while (startedAt.before(endedAt)) {
-            String formattedDateTime = dateParser.toString(startedAt);
-            dates.add(formattedDateTime);
-            startedAt = dateParser.getDateXDaysAgo(targetDate, 1);
-        }
 
         Map<String, List<Block>> blocksByDate = blocks.stream()
                 .collect(Collectors.groupingBy(block -> dateParser.toString(block.getDate())));
 
-        return blocksByDate.entrySet().stream()
-                .map(block -> {
+        Map<String,  List<Block>> blocksByWeek = new LinkedHashMap<>();
+        List<Block> emptyBlocks = new ArrayList<>();
+        while (startedAt.before(endedAt)) {
+            String formattedDateTime = dateParser.toString(startedAt);
+            blocksByWeek.put(formattedDateTime, blocksByDate.getOrDefault(formattedDateTime, emptyBlocks));
+            startedAt = dateParser.getDateXDaysLater(startedAt, 1);
+        }
+
+        return blocksByWeek.entrySet().stream()
+                .map(blockResponse -> {
                     return BlockCalendarResponse.builder()
-                            .date(block.getKey())
-                            .backgroundColors(block.getValue().stream()
+                            .date(blockResponse.getKey())
+                            .backgroundColors(blockResponse.getValue().stream()
                                     .map(blockCalender -> {
                                         return BlockCalendarDto.builder()
                                                 .blockId(blockCalender.getId())
@@ -129,20 +131,6 @@ public class BlockService {
                 .numOfTotalTasks(blockSumDto.getNumOfTotalTasks())
                 .blocks(blockSumDto.getBlocks())
                 .reviewId(reviewId).build();
-    }
-
-    private BlockCalendarResponse convertToWeekDTO(List<Block> blocks, Date date) {
-        List<BlockCalendarDto> blockCalendarDtos = new ArrayList<>();
-        for(Block block:blocks){
-            BlockCalendarDto blockCalendarDto = BlockCalendarDto.builder()
-                    .blockId(block.getId())
-                    .backgroundColor(block.getBlockColor()).build();
-            blockCalendarDtos.add(blockCalendarDto);
-        }
-        return BlockCalendarResponse.builder()
-                .date(dateParser.toString(date))
-                .backgroundColors(blockCalendarDtos)
-                .build();
     }
 
     private BlockSumDto convertToSumBlock(List<Block> blocks) {
