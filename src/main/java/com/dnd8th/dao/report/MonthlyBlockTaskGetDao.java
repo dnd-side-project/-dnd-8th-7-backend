@@ -10,6 +10,7 @@ import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Task;
 import com.dnd8th.util.DateParser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +67,7 @@ public class MonthlyBlockTaskGetDao {
         Map<Block, List<Task>> transform = tasks.stream()
                 .collect(Collectors.groupingBy(Task::getBlock));
 
-        return transform.entrySet().stream()
+        List<MonthlyBlockAndTaskGetDTO> collectByTask = transform.entrySet().stream()
                 .map(entry -> {
                     Block block = entry.getKey();
                     List<Task> taskList = entry.getValue();
@@ -80,6 +81,21 @@ public class MonthlyBlockTaskGetDao {
                             .tasks(taskGetDTOS)
                             .build();
                 })
+                .collect(Collectors.toList());
+
+        //task 없는 block 추가
+        blocks.stream()
+                .filter(block -> !transform.containsKey(block))
+                .map(block -> MonthlyBlockAndTaskGetDTO.builder()
+                        .id(block.getId())
+                        .title(block.getTitle())
+                        .date(block.getDate())
+                        .tasks(new ArrayList<>())
+                        .build())
+                .sorted(Comparator.comparing(MonthlyBlockAndTaskGetDTO::getDate))
+                .forEach(collectByTask::add);
+
+        return collectByTask.stream()
                 .sorted(Comparator.comparing(MonthlyBlockAndTaskGetDTO::getDate))
                 .collect(Collectors.toList());
     }
