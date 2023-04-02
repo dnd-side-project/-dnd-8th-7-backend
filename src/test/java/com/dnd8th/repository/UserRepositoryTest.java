@@ -3,32 +3,12 @@ package com.dnd8th.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.dnd8th.entity.Role;
 import com.dnd8th.entity.User;
 import com.dnd8th.error.exception.user.UserNotFoundException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class UserRepositoryTest {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @BeforeEach
-    void userSetup() {
-        userRepository.save(User.builder()
-                .name("test")
-                .email("test@gmail.com")
-                .role(Role.USER)
-                .imagePath("")
-                .build());
-    }
+class UserRepositoryTest extends RepositoryTest {
 
     @Test
     @DisplayName("email로 유저를 찾는다.")
