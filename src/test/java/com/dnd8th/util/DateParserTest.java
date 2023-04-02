@@ -79,4 +79,36 @@ class DateParserTest {
         //then
         assertThat(toString).isEqualTo("2023-03-01");
     }
+
+    @Test
+    void testGetDateXDaysAgo() {
+        //given
+        Date date = dateParser.getDate(2023, 3, 2);
+
+        //when
+        Date dateXDaysAgo = dateParser.getDateXDaysAgo(date, 1);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateXDaysAgo);
+
+        //then
+        assertThat(cal.get(Calendar.YEAR)).isEqualTo(2023);
+        assertThat(cal.get(Calendar.MONTH) + 1).isEqualTo(3);
+        assertThat(cal.get(Calendar.DAY_OF_MONTH)).isEqualTo(1);
+    }
+
+    @Test
+    void testGetDateXDaysLater() {
+        //given
+        Date date = dateParser.getDate(2023, 3, 2);
+
+        //when
+        Date dateXDaysAgo = dateParser.getDateXDaysLater(date, 1);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateXDaysAgo);
+
+        //then
+        assertThat(cal.get(Calendar.YEAR)).isEqualTo(2023);
+        assertThat(cal.get(Calendar.MONTH) + 1).isEqualTo(3);
+        assertThat(cal.get(Calendar.DAY_OF_MONTH)).isEqualTo(3);
+    }
 }

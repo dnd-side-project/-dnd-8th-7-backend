@@ -53,10 +53,19 @@ public class BlockApi {
 
     @GetMapping("/{date}")
     public ResponseEntity
-            <List<BlockWeekPartResponse>> getMainWeek(@AuthenticationPrincipal UserDetails userDetails,
+            <List<BlockCalendarResponse>> getMainWeek(@AuthenticationPrincipal UserDetails userDetails,
                                                       @PathVariable("date") String date) {
         String email = userDetails.getUsername();
-        List<BlockWeekPartResponse> mainWeek = blockService.getBlockWeek(email, date);
+        List<BlockCalendarResponse> mainWeek = blockService.getBlockWeek(email, date);
+        return ResponseEntity.status(HttpStatus.OK).body(mainWeek);
+    }
+
+    @GetMapping("/monthly/{date}")
+    public ResponseEntity
+            <List<BlockCalendarResponse>> getMainMonth(@AuthenticationPrincipal UserDetails userDetails,
+                                                      @PathVariable("date") String date) {
+        String email = userDetails.getUsername();
+        List<BlockCalendarResponse> mainWeek = blockService.getBlockMonth(email, date);
         return ResponseEntity.status(HttpStatus.OK).body(mainWeek);
     }
 
