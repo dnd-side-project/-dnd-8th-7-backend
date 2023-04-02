@@ -19,7 +19,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         ObjectMapper objectMapper = new ObjectMapper();
         String authorization = request.getHeader("Authorization");
 
-        if (authorization.equals("") || authorization.equals("Bearer ") || authorization == null) {
+        if (authorization == null || authorization.equals("") || authorization.equals("Bearer ")) {
             response.setStatus(ErrorCode.USER_ACCESS_DENIED.getStatus());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(objectMapper.writeValueAsString(
