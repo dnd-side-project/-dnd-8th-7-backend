@@ -92,7 +92,7 @@ public class BlockService {
         Date targetDate = dateParser.parseDate(date);
         Date startedAt = dateParser.getDateXDaysAgo(targetDate,6);
         Date endedAt = dateParser.getDateXDaysLater(targetDate,7);
-        List<Block> blocks = blockFindDao.getBlocksByDate(email, startedAt, endedAt);
+        List<BlockCalendarGetDTO> blocks = blockFindDao.getBlocksByDate(email, startedAt, endedAt);
         return getBlocksCalender(startedAt,endedAt,blocks);
     }
 
@@ -105,17 +105,17 @@ public class BlockService {
         Date startedAt = Date.from(firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endedAt = Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
         endedAt = dateParser.getDateXDaysLater(endedAt,1);
-        List<Block> blocks = blockFindDao.getBlocksByDate(email, startedAt, endedAt);
+        List<BlockCalendarGetDTO> blocks = blockFindDao.getBlocksByDate(email, startedAt, endedAt);
 
         return getBlocksCalender(startedAt, endedAt, blocks);
     }
 
-    public List<BlockCalendarResponse> getBlocksCalender(Date startedAt, Date endedAt, List<Block> blocks){
-        Map<String, List<Block>> blocksByDate = blocks.stream()
+    public List<BlockCalendarResponse> getBlocksCalender(Date startedAt, Date endedAt, List<BlockCalendarGetDTO> blocks){
+        Map<String, List<BlockCalendarGetDTO>> blocksByDate = blocks.stream()
                 .collect(Collectors.groupingBy(block -> dateParser.toString(block.getDate())));
 
-        Map<String,  List<Block>> blocksByWeek = new LinkedHashMap<>();
-        List<Block> emptyBlocks = new ArrayList<>();
+        Map<String,  List<BlockCalendarGetDTO>> blocksByWeek = new LinkedHashMap<>();
+        List<BlockCalendarGetDTO> emptyBlocks = new ArrayList<>();
         while (startedAt.before(endedAt)) {
             String formattedDateTime = dateParser.toString(startedAt);
             blocksByWeek.put(formattedDateTime, blocksByDate.getOrDefault(formattedDateTime, emptyBlocks));
@@ -128,7 +128,7 @@ public class BlockService {
                             .date(blockResponse.getKey())
                             .backgroundColors(blockResponse.getValue().stream()
                                     .map(blockCalender -> {
-                                        return BlockCalendarDto.builder()
+                                        return BlockCalendarDTO.builder()
                                                 .blockId(blockCalender.getId())
                                                 .backgroundColor(blockCalender.getBlockColor()).build();
                                     })
