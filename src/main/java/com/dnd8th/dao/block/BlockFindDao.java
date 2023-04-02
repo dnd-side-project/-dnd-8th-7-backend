@@ -1,7 +1,6 @@
 package com.dnd8th.dao.block;
 
 import com.dnd8th.dto.block.BlockCalendarGetDTO;
-import com.dnd8th.dto.report.MonthlyBlockGetDTO;
 import com.dnd8th.entity.Block;
 import com.dnd8th.entity.Task;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.dnd8th.entity.QBlock.block;
+import static com.dnd8th.entity.QKeep.keep;
 import static com.dnd8th.entity.QTask.task;
 
 
@@ -28,6 +28,7 @@ public class BlockFindDao{
     public List<BlockCalendarGetDTO> getBlocksByDate(String email, Date startedAt, Date endedAt) {
         List<Block> blocks = queryFactory.selectFrom(block)
                 .where(block.user.email.eq(email), block.date.between(startedAt, endedAt))
+                .leftJoin(block.keep, keep).fetchJoin()
                 .orderBy(block.createdAt.asc())
                 .fetch();
 
