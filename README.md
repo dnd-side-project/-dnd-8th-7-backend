@@ -13,7 +13,8 @@
 ## 📚 Skill Stack
 
 - **Front-end** : TypeScript, Next, React Native, Zustand, Tailwind, Storybook
-- **Back-end** : Java 11, Spring boot, Spring Data Jpa, QueryDSL, JUnit, RestAssured, TestContainers
+- **Back-end** : Java 11, Spring boot, Spring Data Jpa, QueryDSL, JUnit, RestAssured,
+  TestContainers, Jacoco
 - **DB** : PostgreSql, Redis
 - **Infra** : AWS Services(EC2, S3, RDS, Route53, CloudFront, ALB), Docker
 
