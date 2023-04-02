@@ -89,4 +89,32 @@ public class BlockServiceTest {
         //then
         assertThat(blockCalendarResponse.size()).isEqualTo(13);
     }
+
+    @Test
+    @DisplayName("30일 간의 블럭 결과를 가져올 때 잘못된 이메일을 에러를 낸다.")
+    void getInMonthBlocksReturnErrorIfWrongEmailIsGiven() {
+        //given
+        String userEmail = "wrongTest@gmail.com";
+        String date = "2023-03-04";
+
+        //when & then
+        assertThatThrownBy(() -> blockService.getBlockMonth(userEmail,date))
+                .isInstanceOf(UserNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("30일 간의 블럭 결과를 가져온다.")
+    void getInAMonthBlocks() {
+        //given
+        String userEmail = "test@gmail.com";
+        String date = "2023-03-04";
+
+        //when
+        List<BlockCalendarResponse> blockCalendarResponse = blockService.getBlockMonth(
+                userEmail, date
+        );
+
+        //then
+        assertThat(blockCalendarResponse.size()).isEqualTo(31);
+    }
 }
