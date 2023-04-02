@@ -10,25 +10,12 @@
 >
 > 프로젝트 기간: 2023.01.08 ~
 
-## 💡 Background
-
-1. 계획을 세우고 실천하는 일은 너무나 어렵습니다.
-2. 많은 사람들이 중요하고 굵직한 일을 위주로 하루를 계획합니다.
-3. 일들의 우선순위를 파악하기 어렵습니다.
-
-## 📝 Features
-
-1. **블럭을 만들어 직관적인 UI로 일들을 관리합니다.**
-2. **간단한 회고로 하루를 정리합니다.**
-3. **리포트를 통해 계획의 달성률을 확인합니다.**
-4. **간단하게 계획을 공유하고, 응원할 수 있습니다.**
-
 ## 📚 Skill Stack
 
 - **Front-end** : TypeScript, Next, React Native, Zustand, Tailwind, Storybook
-- **Back-end** : Java 11, Spring boot, Spring Data Jpa, QueryDSL, JUnit
+- **Back-end** : Java 11, Spring boot, Spring Data Jpa, QueryDSL, JUnit, RestAssured, TestContainers
 - **DB** : PostgreSql, Redis
-- **Infra** : AWS Services(EC2, S3, RDS, Route53, CloudFront), Docker
+- **Infra** : AWS Services(EC2, S3, RDS, Route53, CloudFront, ALB), Docker
 
 ## 📋 API Docs
 
@@ -36,10 +23,13 @@
 
 ## 🛠️ Architecture
 
-<details>
-<summary><b>Version 1</b></summary>
+### 백엔드
+
+### CI/CD
+
+### AWS
+
 <img src="https://user-images.githubusercontent.com/86864534/222876094-b6406625-e1f9-4a98-8f6f-ca055a1d42c7.png"/>
-</details>
 
 ## 📈 ERD
 
