@@ -4,15 +4,18 @@ import com.dnd8th.dao.report.MonthlyBlockGetDao;
 import com.dnd8th.dao.report.MonthlyBlockTaskGetDao;
 import com.dnd8th.dto.report.MonthlyBlockAndTaskGetDTO;
 import com.dnd8th.dto.report.MonthlyBlockGetDTO;
+import com.dnd8th.dto.report.MonthlyBlockReportGetResponse;
 import com.dnd8th.dto.report.MonthlyDayComparisonGetResponse;
 import com.dnd8th.dto.report.MonthlyTaskGetDTO;
 import com.dnd8th.dto.report.ReportBlockGetResponse;
 import com.dnd8th.dto.report.ReportMonthlyComparisonGetResponse;
 import com.dnd8th.error.exception.report.DayInputInvalidException;
 import com.dnd8th.error.exception.report.MonthInputInvalidException;
+import com.dnd8th.error.exception.report.SortInputInvalidException;
 import com.dnd8th.util.DateParser;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -107,6 +110,45 @@ public class ReportService {
                 * 100);
     }
 
+    private static void extractMonthlyBlockAndTask(List<MonthlyBlockAndTaskGetDTO> monthlyBlock,
+            Map<String, List<Double>> blockTaskRateMap,
+            Map<String, List<Integer>> blockAchievedCountMap,
+            Map<String, List<Integer>> blockTotalCountMap) {
+        for (MonthlyBlockAndTaskGetDTO block : monthlyBlock) {
+            List<MonthlyTaskGetDTO> tasks = block.getTasks();
+            if (tasks.size() == 0) { //task 미 존재시 강제 누락
+                continue;
+            }
+
+            Integer totalTaskCount = tasks.size();
+            Integer achievedTaskCount = 0;
+            for (MonthlyTaskGetDTO task : tasks) {
+                if (task.getStatus()) {
+                    achievedTaskCount++;
+                }
+            }
+
+            Double taskAchievedRate = (double) achievedTaskCount / totalTaskCount;
+
+            String blockContent = block.getTitle();
+
+            List<Double> rates = blockTaskRateMap.getOrDefault(blockContent, new ArrayList<>());
+            rates.add(taskAchievedRate);
+
+            List<Integer> achievedCounts = blockAchievedCountMap.getOrDefault(blockContent,
+                    new ArrayList<>());
+            achievedCounts.add(achievedTaskCount);
+
+            List<Integer> totalCounts = blockTotalCountMap.getOrDefault(blockContent,
+                    new ArrayList<>());
+            totalCounts.add(totalTaskCount);
+
+            blockTaskRateMap.put(blockContent, rates);
+            blockAchievedCountMap.put(blockContent, achievedCounts);
+            blockTotalCountMap.put(blockContent, totalCounts);
+        }
+    }
+
     public ReportBlockGetResponse getMostTaskRateBlock(String userEmail, Integer year,
             Integer month) {
         isMonthValid(month);
@@ -178,6 +220,78 @@ public class ReportService {
 
         Map<Integer, List<Double>> monthlyDayStatus = getMonthlyDayStatus(monthlyBlock);
         return monthlyDayStatusToPercentage(monthlyDayStatus);
+    }
+
+    public List<MonthlyBlockReportGetResponse> getBlockReport(String userEmail, String sort,
+            Integer year, Integer month) {
+        isMonthValid(month);
+        isSortValid(sort);
+
+        List<MonthlyBlockAndTaskGetDTO> monthlyBlock = getMonthlyBlockAndTask(userEmail, year,
+                month);
+
+        return monthlyBlockExtractAndSort(monthlyBlock, sort);
+    }
+
+    private List<MonthlyBlockReportGetResponse> monthlyBlockExtractAndSort(
+            List<MonthlyBlockAndTaskGetDTO> monthlyBlock, String sort) {
+        //data extract
+        Map<String, List<Double>> blockTaskRateMap = new HashMap<>();
+        Map<String, List<Integer>> blockAchievedCountMap = new HashMap<>();
+        Map<String, List<Integer>> blockTotalCountMap = new HashMap<>();
+        extractMonthlyBlockAndTask(monthlyBlock, blockTaskRateMap, blockAchievedCountMap,
+                blockTotalCountMap);
+
+        List<MonthlyBlockReportGetResponse> monthlyBlockReportGetResponses = new ArrayList<>();
+        extractedDataToResponseDTO(blockTaskRateMap, blockAchievedCountMap, blockTotalCountMap,
+                monthlyBlockReportGetResponses);
+
+        //sort
+        sortMonthlyBlockReportGetResponse(sort, monthlyBlockReportGetResponses);
+
+        return monthlyBlockReportGetResponses;
+    }
+
+    private void sortMonthlyBlockReportGetResponse(String sort,
+            List<MonthlyBlockReportGetResponse> monthlyBlockReportGetResponses) {
+        if (sort.equals("task-rate")) {
+            monthlyBlockReportGetResponses.sort(
+                    Comparator.comparing(MonthlyBlockReportGetResponse::getTaskRatePercentage)
+                            .reversed());
+        } else {
+            monthlyBlockReportGetResponses.sort(
+                    Comparator.comparing(MonthlyBlockReportGetResponse::getBlockCount).reversed());
+        }
+    }
+
+    private void extractedDataToResponseDTO(Map<String, List<Double>> blockTaskRateMap,
+            Map<String, List<Integer>> blockAchievedCountMap,
+            Map<String, List<Integer>> blockTotalCountMap,
+            List<MonthlyBlockReportGetResponse> monthlyBlockReportGetResponses) {
+        for (String s : blockTaskRateMap.keySet()) {
+            List<Double> rates = blockTaskRateMap.get(s);
+            List<Integer> achievedCounts = blockAchievedCountMap.getOrDefault(s, new ArrayList<>());
+            List<Integer> totalCounts = blockTotalCountMap.getOrDefault(s, new ArrayList<>());
+            Double average = rates.stream().mapToDouble(Double::doubleValue).average()
+                    .getAsDouble();
+            Integer averagePercent = (int) (average * 100);
+            monthlyBlockReportGetResponses.add(
+                    MonthlyBlockReportGetResponse.builder()
+                            .title(s)
+                            .blockCount(rates.size())
+                            .achievedTaskCount(
+                                    achievedCounts.stream().mapToInt(Integer::intValue).sum())
+                            .totalTaskCount(totalCounts.stream().mapToInt(Integer::intValue).sum())
+                            .taskRatePercentage(averagePercent)
+                            .build()
+            );
+        }
+    }
+
+    private void isSortValid(String sort) {
+        if (!sort.equals("task-rate") && !sort.equals("most-block")) {
+            throw new SortInputInvalidException();
+        }
     }
 
     private MonthlyDayComparisonGetResponse monthlyDayStatusToPercentage(

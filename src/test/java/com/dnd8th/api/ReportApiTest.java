@@ -117,4 +117,33 @@ class ReportApiTest extends ReportTest {
         // then
         assertThat(extractableResponse.statusCode()).isEqualTo(200);
     }
+
+    @Test
+    @DisplayName("정상적으로 요일별 달성률을 가져올 수 있다.")
+    void getBlockReport() {
+        // given
+        String token = jwtProviderService.generateToken("test@gmail.com", "");
+        String authHeader = "Bearer " + token;
+
+        // when
+        ExtractableResponse<Response> extractableResponse = RestAssured.given()
+                .log().all()
+                .header("Authorization", authHeader)
+                .when()
+                .get("/api/report/block-report/task-rate/2023/3")
+                .then()
+                .extract();
+
+        ExtractableResponse<Response> extractableResponse2 = RestAssured.given()
+                .log().all()
+                .header("Authorization", authHeader)
+                .when()
+                .get("/api/report/block-report/most-block/2023/3")
+                .then()
+                .extract();
+
+        // then
+        assertThat(extractableResponse.statusCode()).isEqualTo(200);
+        assertThat(extractableResponse2.statusCode()).isEqualTo(200);
+    }
 }
