@@ -1,9 +1,11 @@
 package com.dnd8th.api;
 
+import com.dnd8th.dto.report.MonthlyBlockReportGetResponse;
 import com.dnd8th.dto.report.MonthlyDayComparisonGetResponse;
 import com.dnd8th.dto.report.ReportBlockGetResponse;
 import com.dnd8th.dto.report.ReportMonthlyComparisonGetResponse;
 import com.dnd8th.service.ReportService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -84,5 +86,19 @@ public class ReportApi {
                 userEmail, year, month);
 
         return ResponseEntity.ok().body(monthlyDayComparison);
+    }
+
+    @GetMapping("/block-report/{sort}/{year}/{month}")
+    public ResponseEntity<List<MonthlyBlockReportGetResponse>> getBlockReport(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable String sort,
+            @PathVariable Integer year,
+            @PathVariable Integer month) {
+
+        String userEmail = userDetails.getUsername();
+        List<MonthlyBlockReportGetResponse> blockReport = reportService.getBlockReport(
+                userEmail, sort, year, month);
+
+        return ResponseEntity.ok().body(blockReport);
     }
 }
