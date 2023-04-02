@@ -32,7 +32,7 @@ public class BlockFindDao{
                 .orderBy(block.createdAt.asc())
                 .fetch();
 
-        return blocks.stream().map(BlockCalendarGetDTO::new)
+        return blocks.stream().map(block -> BlockCalendarGetDTO.builder().block(block).build())
                 .collect(Collectors.toList());
     }
 
