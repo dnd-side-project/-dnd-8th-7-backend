@@ -26,7 +26,11 @@
 
 ### 백엔드
 
+![backend](https://user-images.githubusercontent.com/86864534/229432488-f87568b2-21b0-45c5-b2e5-48df3aca2a43.png)
+
 ### CI/CD
+
+![cicd](https://user-images.githubusercontent.com/86864534/229435221-cf4376e1-7024-4071-99c1-05a0f05174cc.png)
 
 ### AWS
 
