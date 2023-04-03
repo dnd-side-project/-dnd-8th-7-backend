@@ -34,6 +34,8 @@
 
 ## 📈 ERD
 
+![ERD](https://user-images.githubusercontent.com/86864534/229415245-d9a88a78-733d-45e7-a609-e2b90525dd83.png)
+
 ## ✍️ Process Docs
 
 <details>
