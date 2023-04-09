@@ -5,6 +5,7 @@ import com.dnd8th.entity.Role;
 import com.dnd8th.entity.User;
 import com.dnd8th.repository.UserRepository;
 import io.restassured.RestAssured;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,9 @@ public abstract class AuthTest {
     @Autowired
     protected JwtProviderService jwtProviderService;
 
+    @Autowired
+    protected EntityManager entityManager;
+
     @LocalServerPort
     protected int port;
 
@@ -34,5 +38,7 @@ public abstract class AuthTest {
                 .imagePath("")
                 .build()
         );
+        entityManager.flush();
+        entityManager.clear();
     }
 }
