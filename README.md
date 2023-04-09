@@ -26,13 +26,19 @@
 
 ### 백엔드
 
+![backend](https://user-images.githubusercontent.com/86864534/229432488-f87568b2-21b0-45c5-b2e5-48df3aca2a43.png)
+
 ### CI/CD
+
+![cicd](https://user-images.githubusercontent.com/86864534/229435221-cf4376e1-7024-4071-99c1-05a0f05174cc.png)
 
 ### AWS
 
 <img src="https://user-images.githubusercontent.com/86864534/222876094-b6406625-e1f9-4a98-8f6f-ca055a1d42c7.png"/>
 
 ## 📈 ERD
+
+![ERD](https://user-images.githubusercontent.com/86864534/229415245-d9a88a78-733d-45e7-a609-e2b90525dd83.png)
 
 ## ✍️ Process Docs
 

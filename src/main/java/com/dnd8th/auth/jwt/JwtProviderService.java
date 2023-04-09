@@ -75,32 +75,12 @@ public class JwtProviderService {
         }
     }
 
-    public String getEmailFromHeaderAccessToken(HttpServletRequest request) {
-        String jwtToken = getJwtTokenFromRequest(request);
-        String email = getEmail(jwtToken);
-
-        return email;
-    }
-
     public String getEmail(String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token).getBody().getSubject();
-        } catch (ExpiredJwtException expiredJwtException) {
-            return expiredJwtException.getClaims().getSubject();
-        }
-    }
-
-    public String getAccessToken(String token) {
-        try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token).getBody();
-
-            return (String) claims.get("access_token");
         } catch (ExpiredJwtException expiredJwtException) {
             return expiredJwtException.getClaims().getSubject();
         }
@@ -128,7 +108,6 @@ public class JwtProviderService {
 
     public Authentication getAuthentication(String token) {
         String email = getEmail(token);
-//        String accessToken = getAccessToken(token);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
